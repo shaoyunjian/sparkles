@@ -1,13 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+  <link rel="stylesheet" href="chatroom.css">
+  <title>Chatroom</title>
 </head>
+
 <body>
-  
+  <main>
+    <div class="chat-dashboard">
+
+      <!-- Left Navbar -->
+      <div class="navbar">
+        <div class="avatar">M</div>
+        <div class="icons">
+          <i class="fas fa-cog"></i>
+          <i class="fas fa-cog"></i>
+          <i class="fas fa-cog"></i>
+          <i class="fas fa-cog"></i>
+        </div>
+      </div>
+
+      <!-- Middle Chat List -->
+      <div class="chat-list">
+
+        <div class="chat-list-navbar">
+          <div class="title">Messages</div>
+          <input type="text" class="searchbar" placeholder="Search">
+        </div>
+
+        <div class="scrollbar">
+          <div class="message-box">
+            <div class="avatar">S</div>
+            <div class="name-message">
+              <div class="name">Shaoyun</div>
+              <div class="message">Happy New Year!</div>
+            </div>
+            <div class="message-time">13:29</div>
+          </div>
+          <div class="message-box">
+            <div class="avatar">S</div>
+            <div class="name-message">
+              <div class="name">Shaoyun</div>
+              <div class="message">Happy New Year!</div>
+            </div>
+            <div class="message-time">13:29</div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- Chatroom-->
+      <div class="chatbox">
+        <div class="top-bar">
+          <div class="avatar">
+            <p>S</p>
+          </div>
+          <div class="name">Shaoyun</div>
+          <div class="icons">
+            <i class="fas fa-search fa-lg"></i>
+            <i class="fas fa-video fa-lg"></i>
+            <i class="fas fa-phone fa-lg"></i>
+          </div>
+        </div>
+
+        <div class="middle-scollbar">
+          <div class="message-box">
+            <div class="receiver">
+              <div class="receiver-info">
+                <div class="receiver-name">Shaoyun</div>
+                <div class="receiving-time">13:25</div>
+              </div>
+              <div class="receiver-bubble bubble">Lorem ipsum dolor sit amet. Hic libero enim aut nihil facere ut voluptatem voluptas. In eaque dolores est voluptatibus
+              enim qui Quis incidunt aut mollitia amet et sequi suscipit! Sed vero debitis nam consequatur facere et beatae dolorem.
+              Ex ullam perferendis 33 voluptatibus odit qui minima consectetur est velit quia aut molestias Quis id odio quam ut sunt
+              consequatur.</div>
+            </div>
+            <div class="sender">
+              <div class="sender-info">
+                <div class="sender-name">Molly</div>
+                <div class="sending-time">13:29</div>
+              </div>
+              <div class="sender-bubble bubble">Lorem ipsum dolor sit amet. Hic libero enim aut nihil facere ut voluptatem voluptas. In eaque dolores est voluptatibus
+              enim qui Quis incidunt aut mollitia amet et sequi suscipit! Sed vero debitis nam consequatur facere et beatae dolorem.
+              Ex ullam perferendis 33 voluptatibus odit qui minima consectetur est velit quia aut molestias Quis id odio quam ut sunt
+              consequatur.</div>
+            </div>
+            <!-- <div class="typing">
+              <div class="bubble">
+                <div class="ellipsis one"></div>
+                <div class="ellipsis two"></div>
+                <div class="ellipsis three"></div>
+              </div>
+            </div> -->
+          </div>
+        </div>
+        <div class="bottom-bar">
+          <div class="text-area">
+            <input type="text" placeholder="Type a message..." />
+            <button type="submit"><i class="fas fa-paper-plane fa-lg"></i></button>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </main>
+
   <script src="chatroom.js"></script>
 </body>
+
 </html>
