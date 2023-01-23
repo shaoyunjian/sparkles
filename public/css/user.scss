@@ -1,0 +1,10 @@
+$testBorderLine: 1px solid red;
+
+.login-container,
+.register-container {
+  border: $testBorderLine;
+  width: 300px;
+  height: 200px;
+  margin: 10px auto;
+  text-align: center;
+}
