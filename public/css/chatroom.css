@@ -81,6 +81,7 @@ i {
   margin-bottom: 10px;
 }
 .chat-list .scrollbar {
+  height: 600px;
   overflow: auto;
 }
 .chat-list .scrollbar .message-box {
