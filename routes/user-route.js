@@ -120,13 +120,13 @@ router.get("/user/auth", async (req, res) => {
 
 
 //  ----------- logout --------------
+
 router.delete("/user/auth", (req, res) => {
   try {
     res.clearCookie("token")
     res.status(200).send({
       "ok": true
     })
-    return res.redirect("/")
   } catch (e) {
     console.log(e.message)
     res.status(500).send({
