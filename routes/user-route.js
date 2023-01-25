@@ -59,15 +59,14 @@ router.put("/user/auth", async (req, res) => {
   const password = req.body.password
 
   try {
-    const result = await User.exists({ email: email, password: password })
-    const userData = await User.findOne({ email: email })
-    const payload = {
-      id: userData.id,
-      name: userData.name,
-      email: userData.email,
-      avatarUrl: userData.avatar_url
-    }
-    if (result) {
+    const userData = await User.findOne({ email: email, password: password })
+    if (userData) {
+      const payload = {
+        id: userData.id,
+        name: userData.name,
+        email: userData.email,
+        avatarUrl: userData.avatar_url
+      }
       const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: "7d" })
       res.cookie("token", token)
 
