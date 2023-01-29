@@ -39,7 +39,7 @@
           <input type="text" class="searchbar" placeholder="Search">
         </div>
 
-        <div class="scrollbar">
+        <div class="scrollbar" id="chat-list-scrollbar">
           <div class="message-box">
             <div class="avatar">S</div>
             <div class="name-message">
@@ -48,14 +48,14 @@
             </div>
             <div class="message-time">13:29</div>
           </div>
-          <div class="message-box">
+          <!-- <div class="message-box">
             <div class="avatar">S</div>
             <div class="name-message">
               <div class="name">Shaoyun</div>
               <div class="message">Happy New Year!</div>
             </div>
             <div class="message-time">13:29</div>
-          </div>
+          </div> -->
 
         </div>
       </div>
@@ -76,33 +76,29 @@
         </div>
 
         <div class="middle-scollbar">
-          <div class="message-box">
-            <div class="receiver">
-              <div class="receiver-info">
-                <div class="receiver-name">Shaoyun</div>
-                <div class="receiving-time">13:25</div>
-              </div>
-              <div class="receiver-bubble bubble">Lorem ipsum dolor sit amet. Hic libero enim aut nihil facere ut
-                voluptatem voluptas. In eaque dolores est voluptatibus
-                enim qui Quis incidunt aut mollitia amet et sequi suscipit! Sed vero debitis nam consequatur facere et
-                beatae dolorem.
-                Ex ullam perferendis 33 voluptatibus odit qui minima consectetur est velit quia aut molestias Quis id
-                odio quam ut sunt
-                consequatur.</div>
+          <div class="message-box" id="chat-message-box">
+            <!-- <div class="receiver-info">
+              <div class="receiver-name">Shaoyun</div>
+              <div class="receiving-time">13:25</div>
             </div>
-            <div class="sender">
-              <div class="sender-info">
-                <div class="sender-name">Molly</div>
-                <div class="sending-time">13:29</div>
-              </div>
-              <div class="sender-bubble bubble">Lorem ipsum dolor sit amet. Hic libero enim aut nihil facere ut
-                voluptatem voluptas. In eaque dolores est voluptatibus
-                enim qui Quis incidunt aut mollitia amet et sequi suscipit! Sed vero debitis nam consequatur facere et
-                beatae dolorem.
-                Ex ullam perferendis 33 voluptatibus odit qui minima consectetur est velit quia aut molestias Quis id
-                odio quam ut sunt
-                consequatur.</div>
+            <div class="receiver-bubble bubble">Lorem ipsum dolor sit amet. Hic libero enim aut nihil facere ut
+              voluptatem voluptas. In eaque dolores est voluptatibus
+              enim qui Quis incidunt aut mollitia amet et sequi suscipit! Sed vero debitis nam consequatur facere et
+              beatae dolorem.
+              Ex ullam perferendis 33 voluptatibus odit qui minima consectetur est velit quia aut molestias Quis id
+              odio quam ut sunt
+              consequatur.</div>
+            <div class="sender-info">
+              <div class="sender-name">You</div>
+              <div class="sending-time">13:29</div>
             </div>
+            <div class="sender-bubble bubble">Lorem ipsum dolor sit amet. Hic libero enim aut nihil facere ut
+              voluptatem voluptas. In eaque dolores est voluptatibus
+              enim qui Quis incidunt aut mollitia amet et sequi suscipit! Sed vero debitis nam consequatur facere et
+              beatae dolorem.
+              Ex ullam perferendis 33 voluptatibus odit qui minima consectetur est velit quia aut molestias Quis id
+              odio quam ut sunt
+              consequatur.</div> -->
             <!-- <div class="typing">
               <div class="bubble">
                 <div class="ellipsis one"></div>
@@ -114,8 +110,10 @@
         </div>
         <div class="bottom-bar">
           <div class="text-area">
-            <input type="text" placeholder="Type a message..." />
-            <button type="submit"><i class="fas fa-paper-plane fa-lg"></i></button>
+            <input type="text" placeholder="Type a message..." id="input-message" />
+            <button id="send-message-btn">
+              <i class="fas fa-paper-plane fa-lg"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -123,7 +121,7 @@
 
     </div>
   </main>
-
+  <script src="/socket.io/socket.io.js"></script>
   <script src="chatroom.js"></script>
 </body>
 
