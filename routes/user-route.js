@@ -6,18 +6,8 @@ const router = express.Router()
 const jwt = require("jsonwebtoken")
 // const { cookieJwtAuth } = require("../cookieJwtAuth")
 
-const mongoose = require('mongoose')
-mongoose.connect(
-  process.env.MONGODB_URL,
-  {
-    maxPoolSize: 10,
-    dbName: process.env.MONGODB_DBNAME
-  },
-  mongoose.set('strictQuery', true)
-)
-
 const User = require("../models/user-schema")
-
+const mongoDB = require("../models/mongoose")
 
 // --------------- register ---------------
 
