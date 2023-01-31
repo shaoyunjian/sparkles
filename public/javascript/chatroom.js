@@ -35,8 +35,8 @@ async function fetchChatListAPI() {
     const friendName = data.participants[1].name
 
     chatListScrollbar.innerHTML += `
-      <div class="message-box" id="${data.participants[1]._id}">
-        <div class="avatar">S</div>
+      <div class="chat-list-message-box" data-id="${data._id}">
+        <div class="avatar">${friendName[0]}</div>
         <div class="name-message">
           <div class="name">${friendName}</div>
           <div class="message">${data.last_message}</div>
@@ -47,21 +47,6 @@ async function fetchChatListAPI() {
   })
 
 }
-
-// ------------ get current user -----------------
-
-// fetchCurrentUserAPI()
-// async function fetchCurrentUserAPI() {
-//   const response = await fetch("/api/user/auth", {
-//     method: "GET",
-//     headers: { "Content-Type": "application/json" }
-//   })
-
-//   const jsonData = await response.json()
-//   currentUsername = jsonData.data.name
-//   console.log(currentUsername)
-// }
-
 
 
 //------------- socket io --------------------
@@ -86,7 +71,13 @@ async function fetchCurrentUserAPI() {
   const jsonData = await response.json()
   const currentUsername = jsonData.data.name
   const currentUserId = jsonData.data.id
+  console.log("目前登入的使用者名：", currentUsername)
+  console.log("目前登入的使用者ID：", currentUserId)
 
+  // click on a chat in the list to join the corresponding chat room
+  clickChatList(currentUserId)
+
+  // --------------- handle input Messages ----------------
   inputMessage.addEventListener("keypress", (event) => {
     const inputMessageValue = inputMessage.value
     const msgData = {
@@ -176,11 +167,68 @@ function appendFriendsMessage(msg) {
 
 // ---------- display history messages ----------
 
+function clickChatList(senderId) {
 
-// displayHistoryMessages()
-// async function displayHistoryMessages() {
-//   const response = await fetch("/api/message", {
-//     method: "GET",
-//     headers: { "Content-Type": "application/json" }
-//   })
-// }
+  // chatroom avatar and name
+  const chatBoxTopBarAvatar = document.querySelector("#chatbox-top-bar-avatar")
+  const chatBoxTopBarName = document.querySelector("#chatbox-top-bar-name")
+
+  // chatroom messages
+  chatListScrollbar.addEventListener("click", (event) => {
+
+    const roomId = event.target.dataset.id
+    if (!roomId) return
+
+    displayHistoryMessages(roomId)
+    fetchChatroomAPI(roomId)
+
+    async function displayHistoryMessages(roomId) {
+      const response = await fetch(`/api/message/${roomId}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+      })
+
+      const jsonData = await response.json()
+
+      if (jsonData.data) {
+        // if there're already messages in the box, stop rendering history messages.
+        if (chatMessageBox.childElementCount) return
+
+        jsonData.data.forEach((data) => {
+          const historyMessage = {
+            userId: data.sender._id,
+            username: data.sender.name,
+            message: data.message_text,
+            time: data.sent_time
+          }
+
+          if (data.sender._id === senderId) {
+            appendMyMessage(historyMessage)
+          } else {
+            appendFriendsMessage(historyMessage)
+          }
+        })
+      } else {
+        chatMessageBox.innerHTML = "沒有任何訊息"
+      }
+
+    }
+
+    async function fetchChatroomAPI(roomId) {
+      const response = await fetch(`/api/chatroom?chatroomId=${roomId}`)
+
+      const jsonData = await response.json()
+      let friendName
+      jsonData.data[0].participants.forEach((value) => {
+        if (value._id !== senderId) {
+          friendName = value.name
+        }
+      })
+      chatBoxTopBarAvatar.innerHTML = `<p>${friendName[0]}</p>`
+      chatBoxTopBarName.textContent = friendName
+    }
+
+  })
+
+}
+
