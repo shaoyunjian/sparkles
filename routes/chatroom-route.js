@@ -6,59 +6,45 @@ const Message = require("../models/message-schema")
 const { cookieJwtAuth } = require("../cookieJwtAuth")
 
 
-// -----------------------------------------------
+// ---------------- get chat list  ----------------------
 // "63d0e7f3e4b088d4fb44db06",
 // "63ce96ef633bb17f1520a50b"
 
 router.get("/chatroom", cookieJwtAuth, async (req, res) => {
   const senderId = req.user.id
-  let friendData
+  const chatroomId = req.query.chatroomId
 
-  const chatroom = await Chatroom
-    .find({
-      participants: {
-        $in: [
-          senderId
-        ]
-      }
-    })
-    .populate({
-      path: "participants",
-      select: ["name", "email", "avatar_url"]
-    })
+  if (chatroomId) {
+    const chatroom = await Chatroom
+      .find({
+        _id: {
+          $eq: chatroomId
+        }
+      })
+      .populate({
+        path: "participants",
+        select: ["name", "email", "avatar_url"]
+      })
 
-  res.status(200).send({ "data": chatroom })
+    res.status(200).send({ "data": chatroom })
+  } else {
+    const chatroom = await Chatroom
+      .find({
+        participants: {
+          $in: [
+            senderId
+          ]
+        }
+      })
+      .populate({
+        path: "participants",
+        select: ["name", "email", "avatar_url"]
+      })
+
+    res.status(200).send({ "data": chatroom })
+  }
 })
 
-// ---------------- 取得聊天清單 ----------------------
-// "63d0e7f3e4b088d4fb44db06",
-// "63ce96ef633bb17f1520a50b"
-
-router.get("/chatlist", async (req, res) => {
-  const senderId = req.body.senderId
-  const receiverId = req.body.receiverId
-
-  const chatroom = await Chatroom.findOne({
-    participants: {
-      $all: [
-        senderId,
-        receiverId
-      ]
-    }
-  }).populate({
-    path: "participants",
-    select: ["name", "email", "avatar_url"]
-  })
-  res.status(200).send({ "data": chatroom })
-})
-
-
-// -----------------------------------------------
-// get chatroom ID： "/api/chatroom/63d2147931fb09bc0dd8ff9a"
-// router.get("/chatroom/:id", async (req, res) => {
-//   id = "63d2147931fb09bc0dd8ff9a"
-//   res.status(200).send({ "ok": true })
-// })
 
 // -----------------------------------------------
 // store message to database： "/api/message"
@@ -105,9 +91,16 @@ router.get("/message/:chatroomId", async (req, res) => {
         select: ["name", "email", "avatar_url"]
       })
 
-    res.status(200).send({
-      "data": message
-    })
+    if (message.length > 0) {
+      res.status(200).send({
+        "data": message
+      })
+    } else {
+      res.status(200).send({
+        "data": null
+      })
+    }
+
 
   } catch (e) {
     console.log(e.message)
