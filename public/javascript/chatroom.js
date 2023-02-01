@@ -18,12 +18,11 @@ logoutBtn.addEventListener("click", () => {
 })
 
 
-// ------------- chat list -------------
+// ------------- get chat list -------------
 
 const chatListScrollbar = document.querySelector("#chat-list-scrollbar")
 
-fetchChatListAPI()
-async function fetchChatListAPI() {
+async function fetchChatListAPI(senderId) {
   const response = await fetch("/api/chatroom", {
     method: "GET",
     headers: { "Content-Type": "application/json" }
@@ -31,9 +30,13 @@ async function fetchChatListAPI() {
 
   const jsonData = await response.json()
 
-  jsonData.data.forEach(data => {
-    const friendName = data.participants[1].name
-
+  let friendName
+  jsonData.data.forEach((data) => {
+    data.participants.forEach((value) => {
+      if (value._id !== senderId) {
+        friendName = value.name
+      }
+    })
     chatListScrollbar.innerHTML += `
       <div class="chat-list-message-box" data-id="${data._id}">
         <div class="avatar">${friendName[0]}</div>
@@ -74,6 +77,8 @@ async function fetchCurrentUserAPI() {
   console.log("目前登入的使用者名：", currentUsername)
   console.log("目前登入的使用者ID：", currentUserId)
 
+  // get current chat list
+  fetchChatListAPI(currentUserId)
   // click on a chat in the list to join the corresponding chat room
   clickChatList(currentUserId)
 
