@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
-  <link rel="stylesheet" href="chatroom.css">
+  <link rel="stylesheet" type="text/css" href="/chatroom.css">
   <title>Chatroom</title>
 </head>
 
@@ -39,35 +39,37 @@
         </div>
 
         <div class="scrollbar" id="chat-list-scrollbar">
-          <!-- <div class="chat-list-message-box">
-            <div class="avatar">S</div>
-            <div class="name-message">
-              <div class="name">Shaoyun</div>
-              <div class="message">Happy New Year!</div>
+          <!-- <a href="/chatroom/123">
+            <div class="chat-list-message-box">
+              <div class="avatar">S</div>
+              <div class="name-message">
+                <div class="name">Shaoyun</div>
+                <div class="message">Happy New Year!</div>
+              </div>
+              <div class="message-time">13:29</div>
             </div>
-            <div class="message-time">13:29</div>
-          </div> -->
-
-          <!-- <div class="message-box">
-            <div class="avatar">S</div>
-            <div class="name-message">
-              <div class="name">Shaoyun</div>
-              <div class="message">Happy New Year!</div>
+          </a>
+          <a href="/chatroom/456">
+            <div class="chat-list-message-box">
+              <div class="avatar">S</div>
+              <div class="name-message">
+                <div class="name">Shaoyun</div>
+                <div class="message">Happy New Year!</div>
+              </div>
+              <div class="message-time">13:29</div>
             </div>
-            <div class="message-time">13:29</div>
-          </div> -->
-
+          </a> -->
         </div>
       </div>
 
 
       <!-- Chatroom-->
-      <div class="chatbox">
+      <div class="chatbox" id="chatbox">
         <div class="top-bar">
           <div class="avatar" id="chatbox-top-bar-avatar">
-            <p>S</p>
+            <p></p>
           </div>
-          <div class="name" id="chatbox-top-bar-name">Shaoyun</div>
+          <div class="name" id="chatbox-top-bar-name"></div>
           <div class="icons">
             <i class="fas fa-search fa-lg"></i>
             <i class="fas fa-video fa-lg"></i>
@@ -77,7 +79,7 @@
         </div>
 
         <div class="middle-scollbar">
-          <div class="message-box" id="chat-message-box">
+          <div class="chat-message-box">
             <!-- <div class="receiver-info">
               <div class="receiver-name">Shaoyun</div>
               <div class="receiving-time">13:25</div>
@@ -122,8 +124,9 @@
 
     </div>
   </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
-  <script src="chatroom.js"></script>
+  <script type="text/javascript" src="/chatroom.js"></script>
 </body>
 
 </html>
