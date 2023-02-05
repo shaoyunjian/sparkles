@@ -35,22 +35,35 @@ app.get("/chatroom", cookieJwtAuth, (req, res) => {
   res.render("chatroom")
 })
 
+app.get("/chatroom/:chatroomId", cookieJwtAuth, (req, res) => {
+  res.render("chatroom")
+})
+
 
 // ---------------- socket io ---------------- 
 const http = require("http")
 const socketIo = require("socket.io")
 const formatMessage = require("./utils/formatMessage")
+const { userJoin, getCurrentUser } = require("./utils/users")
 
 const server = http.createServer(app)
 const io = socketIo(server)
 
-// run when client side connects
 io.on("connection", socket => {
+  // join room
+  socket.on("joinRoom", ({ currentUserId, currentUsername, currentRoomId }) => {
+    const user = userJoin(socket.id, currentUserId, currentUsername, currentRoomId)
+
+    socket.join(user.roomId)
+
+    socket.on("disconnect", () => {
+      io.emit("leaveRoom", "A user has left the chat")
+    })
+  })
+
   socket.on("chatMessages", (msg) => {
-    // my message
-    socket.emit("sendMessage", formatMessage(msg.id, msg.username, msg.text))
-    // friend's message
-    socket.broadcast.emit("getMessage", formatMessage(msg.id, msg.username, msg.text))
+    const user = getCurrentUser(socket.id)
+    io.to(user.roomId).emit("message", formatMessage(user.userId, user.username, msg.text, user.roomId))
   })
 
   // // emit msg to the client who connects
