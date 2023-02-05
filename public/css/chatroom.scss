@@ -18,6 +18,11 @@ i {
   cursor: pointer;
 }
 
+a {
+  text-decoration: none;
+  color: #000000;
+}
+
 .chat-dashboard {
   width: 1200px;
   height: 700px;
@@ -27,7 +32,7 @@ i {
   border-radius: 20px;
 
   display: grid;
-  grid-template-columns: 60px 300px 2fr;
+  grid-template-columns: 60px 300px 1fr;
 
   box-shadow: 1px 3px 3px 3px rgba(161, 161, 255, 0.2);
   // box-shadow: 0 0 5px 3px rgba(255, 255, 255, 0.8);
@@ -104,7 +109,8 @@ i {
     height: 600px;
     overflow: auto;
 
-    .message-box {
+    .chat-list-message-box {
+      cursor: pointer;
       display: flex;
       margin: 10px 0;
       padding: 10px;
@@ -176,59 +182,62 @@ i {
 
     .icons {
       margin-left: auto;
+      margin-right: 10px;
       color: #80d7ff;
-    }
 
+      i {
+        margin: 0 5px;
+      }
+
+      :hover {
+        transform: scale(1.1);
+        color: rgb(3, 136, 213);
+      }
+    }
   }
 
   // ----------- middle scrollbar -----------
   .middle-scollbar {
     overflow: auto;
 
-    .message-box {
+    .chat-message-box {
 
-      .receiver {
-        padding: 0 15px;
+      padding: 0 15px;
+      margin-top: 20px;
 
-        .receiver-info {
-          text-align: right;
-          margin: 10px 10px -5px 10px;
-          display: flex;
-          justify-content: left;
+      .receiver-info {
+        text-align: right;
+        margin: 10px 10px -5px 10px;
+        display: flex;
+        justify-content: left;
 
-          div {
-            margin: 0 5px;
-          }
-        }
-
-        .receiver-bubble {
-          background: #bbbbbb;
-          border-radius: 0 10px 10px 10px;
-          padding: 15px 10px 15px 15px;
+        div {
+          margin: 0 5px;
         }
       }
 
-      .sender {
-        padding: 0 15px;
-        margin-top: 20px;
+      .receiver-bubble {
+        background: #bbbbbb;
+        border-radius: 0 10px 10px 10px;
+        padding: 15px 10px 15px 15px;
+      }
 
-        .sender-info {
-          text-align: right;
-          margin: 10px 10px -5px 10px;
-          display: flex;
-          justify-content: right;
+      .sender-info {
+        text-align: right;
+        margin: 10px 10px -5px 10px;
+        display: flex;
+        justify-content: right;
 
-          div {
-            margin: 0 5px;
-          }
+        div {
+          margin: 0 5px;
         }
+      }
 
-        .sender-bubble {
-          background: #ffffff;
-          border-radius: 10px 0 10px 10px;
-          margin-left: auto;
-          padding: 15px 10px 15px 15px;
-        }
+      .sender-bubble {
+        background: #ffffff;
+        border-radius: 10px 0 10px 10px;
+        margin-left: auto;
+        padding: 15px 10px 15px 15px;
       }
     }
   }
@@ -258,12 +267,13 @@ i {
       grid-template-columns: 1fr 50px;
 
       input {
-        padding: 7px;
+        margin: 0 10px;
+        padding: 0 15px;
         background: #badef8;
         outline: 0;
         border: none;
         color: #000000;
-        border-radius: 10px 0 0 10px;
+        border-radius: 10px;
       }
 
       input[text] {
@@ -272,12 +282,22 @@ i {
 
       button {
         cursor: pointer;
+        width: 45px;
+        height: 45px;
         border: 0;
         color: #80d7ff;
-        background: #badef8;
-        border-radius: 0 10px 10px 0;
-        border-left: $borderLine;
+        background: #badef800;
+        border-radius: 50%;
+
+        i {
+          transform: scale(1.2);
+        }
+
+        :hover {
+          color: rgb(3, 136, 213);
+        }
       }
+
     }
   }
 
@@ -303,4 +323,16 @@ i {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(211, 211, 211);
+}
+
+
+@media screen and (max-width: 1200px) {
+  .chat-dashboard {
+    width: 95%;
+    grid-template-columns: 60px 300px 1fr;
+  }
+}
+
+.display-none {
+  display: none;
 }

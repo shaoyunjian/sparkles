@@ -14,6 +14,11 @@ i {
   cursor: pointer;
 }
 
+a {
+  text-decoration: none;
+  color: #000000;
+}
+
 .chat-dashboard {
   width: 1200px;
   height: 700px;
@@ -21,7 +26,7 @@ i {
   margin: 30px auto;
   border-radius: 20px;
   display: grid;
-  grid-template-columns: 60px 300px 2fr;
+  grid-template-columns: 60px 300px 1fr;
   box-shadow: 1px 3px 3px 3px rgba(161, 161, 255, 0.2);
 }
 
@@ -84,14 +89,15 @@ i {
   height: 600px;
   overflow: auto;
 }
-.chat-list .scrollbar .message-box {
+.chat-list .scrollbar .chat-list-message-box {
+  cursor: pointer;
   display: flex;
   margin: 10px 0;
   padding: 10px;
   background: #afdeff;
   border-radius: 10px;
 }
-.chat-list .scrollbar .message-box .avatar {
+.chat-list .scrollbar .chat-list-message-box .avatar {
   width: 40px;
   height: 40px;
   background-color: #80d7ff;
@@ -100,16 +106,16 @@ i {
   line-height: 40px;
   margin-right: 10px;
 }
-.chat-list .scrollbar .message-box .name-message {
+.chat-list .scrollbar .chat-list-message-box .name-message {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-.chat-list .scrollbar .message-box .name-message .name {
+.chat-list .scrollbar .chat-list-message-box .name-message .name {
   font-size: 18px;
   font-weight: bold;
 }
-.chat-list .scrollbar .message-box .name-message .message {
+.chat-list .scrollbar .chat-list-message-box .name-message .message {
   font-size: 14px;
 }
 .chat-list .scrollbar .message-time {
@@ -144,42 +150,47 @@ i {
 }
 .chatbox .top-bar .icons {
   margin-left: auto;
+  margin-right: 10px;
   color: #80d7ff;
+}
+.chatbox .top-bar .icons i {
+  margin: 0 5px;
+}
+.chatbox .top-bar .icons :hover {
+  transform: scale(1.1);
+  color: rgb(3, 136, 213);
 }
 .chatbox .middle-scollbar {
   overflow: auto;
 }
-.chatbox .middle-scollbar .message-box .receiver {
+.chatbox .middle-scollbar .chat-message-box {
   padding: 0 15px;
+  margin-top: 20px;
 }
-.chatbox .middle-scollbar .message-box .receiver .receiver-info {
+.chatbox .middle-scollbar .chat-message-box .receiver-info {
   text-align: right;
   margin: 10px 10px -5px 10px;
   display: flex;
   justify-content: left;
 }
-.chatbox .middle-scollbar .message-box .receiver .receiver-info div {
+.chatbox .middle-scollbar .chat-message-box .receiver-info div {
   margin: 0 5px;
 }
-.chatbox .middle-scollbar .message-box .receiver .receiver-bubble {
+.chatbox .middle-scollbar .chat-message-box .receiver-bubble {
   background: #bbbbbb;
   border-radius: 0 10px 10px 10px;
   padding: 15px 10px 15px 15px;
 }
-.chatbox .middle-scollbar .message-box .sender {
-  padding: 0 15px;
-  margin-top: 20px;
-}
-.chatbox .middle-scollbar .message-box .sender .sender-info {
+.chatbox .middle-scollbar .chat-message-box .sender-info {
   text-align: right;
   margin: 10px 10px -5px 10px;
   display: flex;
   justify-content: right;
 }
-.chatbox .middle-scollbar .message-box .sender .sender-info div {
+.chatbox .middle-scollbar .chat-message-box .sender-info div {
   margin: 0 5px;
 }
-.chatbox .middle-scollbar .message-box .sender .sender-bubble {
+.chatbox .middle-scollbar .chat-message-box .sender-bubble {
   background: #ffffff;
   border-radius: 10px 0 10px 10px;
   margin-left: auto;
@@ -205,23 +216,31 @@ i {
   grid-template-columns: 1fr 50px;
 }
 .chatbox .bottom-bar .text-area input {
-  padding: 7px;
+  margin: 0 10px;
+  padding: 0 15px;
   background: #badef8;
   outline: 0;
   border: none;
   color: #000000;
-  border-radius: 10px 0 0 10px;
+  border-radius: 10px;
 }
 .chatbox .bottom-bar .text-area input[text] {
   color: #000000;
 }
 .chatbox .bottom-bar .text-area button {
   cursor: pointer;
+  width: 45px;
+  height: 45px;
   border: 0;
   color: #80d7ff;
-  background: #badef8;
-  border-radius: 0 10px 10px 0;
-  border-left: 2px solid rgba(180, 180, 180, 0.3);
+  background: rgba(186, 222, 248, 0);
+  border-radius: 50%;
+}
+.chatbox .bottom-bar .text-area button i {
+  transform: scale(1.2);
+}
+.chatbox .bottom-bar .text-area button :hover {
+  color: rgb(3, 136, 213);
 }
 
 /* ----------- scroll bar  -------------- */
@@ -243,4 +262,14 @@ i {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(211, 211, 211);
+}
+
+@media screen and (max-width: 1200px) {
+  .chat-dashboard {
+    width: 95%;
+    grid-template-columns: 60px 300px 1fr;
+  }
+}
+.display-none {
+  display: none;
 }/*# sourceMappingURL=chatroom.css.map */
