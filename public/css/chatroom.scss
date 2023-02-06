@@ -1,11 +1,16 @@
-$gradientColor: linear-gradient(to bottom left, #80d7ff 50%, #f9fbff 100%) no-repeat;
-$borderLine: 2px solid rgba(180, 180, 180, 0.3);
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
 
+
+// $gradientColor: linear-gradient(to bottom left, #80d7ff 50%, #f9fbff 100%) no-repeat;
+$gradientColor: linear-gradient(to bottom left, rgb(222, 226, 226) 50%, #f9fbff 100%) no-repeat;
+$avatarColor: linear-gradient(to bottom left, rgb(205, 205, 205) 55%, #f9fbff 100%);
+$borderLine: 2px solid rgba(180, 180, 180, 0.3);
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: 'Rubik', 'Times New Roman';
 }
 
 body {
@@ -25,11 +30,12 @@ a {
 
 .chat-dashboard {
   width: 1200px;
-  height: 700px;
-  background-color: rgba(255, 255, 255, 0.8);
+  height: 720px;
+  background-color: rgba(255, 255, 255);
 
   margin: 30px auto;
-  border-radius: 20px;
+  border-radius: 40px;
+  border: 10px solid #b1b1b17b;
 
   display: grid;
   grid-template-columns: 60px 300px 1fr;
@@ -51,7 +57,7 @@ a {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #80d7ff;
+    background: $avatarColor;
     text-align: center;
     line-height: 40px;
 
@@ -66,7 +72,7 @@ a {
 
   .icons>i {
     margin: 10px;
-    color: #80d7ff;
+    color: rgba(180, 180, 180, 0.8);
   }
 
   .logout-btn {
@@ -102,6 +108,7 @@ a {
       padding: 7px;
       outline: none;
       margin-bottom: 10px;
+      background-color: rgb(245, 247, 247);
     }
   }
 
@@ -114,13 +121,13 @@ a {
       display: flex;
       margin: 10px 0;
       padding: 10px;
-      background: #afdeff;
+      background: rgb(245, 247, 251);
       border-radius: 10px;
 
       .avatar {
         width: 40px;
         height: 40px;
-        background-color: #80d7ff;
+        background: $avatarColor;
         border-radius: 50%;
         text-align: center;
         line-height: 40px;
@@ -133,7 +140,7 @@ a {
         justify-content: space-between;
 
         .name {
-          font-size: 18px;
+          font-size: 16px;
           font-weight: bold;
         }
 
@@ -170,7 +177,7 @@ a {
       border-radius: 50%;
       width: 40px;
       height: 40px;
-      background-color: #80d7ff;
+      background: $avatarColor;
       text-align: center;
       line-height: 40px;
       margin-right: 10px;
@@ -183,7 +190,7 @@ a {
     .icons {
       margin-left: auto;
       margin-right: 10px;
-      color: #80d7ff;
+      color: #d3d2d2;
 
       i {
         margin: 0 5px;
@@ -191,12 +198,13 @@ a {
 
       :hover {
         transform: scale(1.1);
-        color: rgb(3, 136, 213);
+        color: rgb(160, 180, 190);
       }
     }
   }
 
   // ----------- middle scrollbar -----------
+
   .middle-scollbar {
     overflow: auto;
 
@@ -205,47 +213,79 @@ a {
       padding: 0 15px;
       margin-top: 20px;
 
-      .receiver-info {
-        text-align: right;
-        margin: 10px 10px -5px 10px;
+      .receiver-message {
         display: flex;
-        justify-content: left;
+        height: auto;
 
-        div {
-          margin: 0 5px;
+        .receiver-avatar {
+          p {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: $avatarColor;
+            text-align: center;
+            line-height: 40px;
+          }
+        }
+
+        .receiver-name {
+          color: rgb(84, 84, 84);
+          margin: 5px 10px;
+        }
+
+        .receiver-bubble-box {
+          display: flex;
+          align-items: end;
+          margin-bottom: 10px;
+
+          .receiver-bubble {
+            background: rgb(245, 247, 251);
+            border-radius: 0 10px 10px 10px;
+            padding: 15px;
+          }
+
+          .receiving-time {
+            color: rgb(136, 136, 136);
+            font-size: 14px;
+            margin: auto 0 10px 5px;
+          }
         }
       }
 
-      .receiver-bubble {
-        background: #bbbbbb;
-        border-radius: 0 10px 10px 10px;
-        padding: 15px 10px 15px 15px;
-      }
 
-      .sender-info {
-        text-align: right;
-        margin: 10px 10px -5px 10px;
-        display: flex;
-        justify-content: right;
+      .sender-message {
+        .sender-bubble-box {
+          margin: 10px 15px 10px 10px;
+          display: flex;
+          justify-content: right;
+          align-items: end;
 
-        div {
-          margin: 0 5px;
+          div {
+            margin: 0 5px;
+          }
+
+          .sending-time {
+            color: rgb(136, 136, 136);
+            margin-bottom: 5px;
+            font-size: 14px;
+          }
+        }
+
+        .sender-bubble {
+          background: linear-gradient(to bottom left, rgb(134, 225, 255) 35%, #f9fbff 100%) no-repeat;
+          border-radius: 10px 0 10px 10px;
+          margin-left: auto;
+          padding: 15px;
         }
       }
 
-      .sender-bubble {
-        background: #ffffff;
-        border-radius: 10px 0 10px 10px;
-        margin-left: auto;
-        padding: 15px 10px 15px 15px;
-      }
     }
   }
 
   .bubble {
-    min-height: 40px;
+    min-height: 30px;
     max-width: 60%;
-    margin: 10px;
+    margin: 5px 5px 5px 10px;
   }
 
   /* ----------- text area -------------- */
@@ -269,7 +309,7 @@ a {
       input {
         margin: 0 10px;
         padding: 0 15px;
-        background: #badef8;
+        background: rgb(245, 247, 247);
         outline: 0;
         border: none;
         color: #000000;
