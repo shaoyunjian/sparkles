@@ -35,10 +35,7 @@ const chatListScrollbar = document.querySelector("#chat-list-scrollbar")
 fetchChatListAPI(currentUserId)
 
 async function fetchChatListAPI(senderId) {
-  const response = await fetch("/api/chatroom", {
-    method: "GET",
-    headers: { "Content-Type": "application/json" }
-  })
+  const response = await fetch("/api/chatroom", { method: "GET" })
 
   const jsonData = await response.json()
 
@@ -167,10 +164,7 @@ async function fetchChatroomAPI(roomId) {
 
 // ----- display text message history ------
 async function displayMessageHistory(roomId) {
-  const response = await fetch(`/api/message/${roomId}`, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" }
-  })
+  const response = await fetch(`/api/message/${roomId}`, { method: "GET" })
 
   const jsonData = await response.json()
 
@@ -195,23 +189,31 @@ async function displayMessageHistory(roomId) {
 
 // --------- append message bubble --------
 function appendMessage(msg) {
-  const myMessage = `              
-    <div class="sender-info">
-      <div class="sender-name">You</div>
-      <div class="sending-time">${msg.time}</div>
-    </div>
-    <div class="sender-bubble bubble">${msg.message}</div>
-  `
+  // const dateDivider = `<div class="ts-divider is-center-text ts-text is-small" style="color: var(--ts-gray-500);">2022-02-03</div>`
 
+  const myMessage = `
+    <div class="sender-message">         
+      <div class="sender-name"></div>
+      <div class="sender-bubble-box">
+        <div class="sending-time">${msg.time}</div>
+        <div class="sender-bubble bubble">${msg.message}</div>
+      </div>
+    </div>
+  `
   const friendMessage = `
-    <div class="receiver-info">
-      <div class="receiver-name">${msg.username}</div>
-      <div class="receiving-time">${msg.time}</div>
+    <div class="receiver-message"> 
+      <div class="receiver-avatar">
+        <p>${msg.username[0]}</p>
+      </div>
+      <div class="receiver-name-bubble">
+        <div class="receiver-name">${msg.username}</div>
+        <div class="receiver-bubble-box">
+          <div class="receiver-bubble bubble">${msg.message}</div>
+          <div class="receiving-time">${msg.time}</div>
+        </div>
+      </div>
     </div>
-    <div class="receiver-bubble bubble">${msg.message}</div>
   `
-
-  chatMessageBox.innerHTML = ""
 
   if (msg.userId === currentUserId) {
     chatMessageBox.innerHTML += myMessage
