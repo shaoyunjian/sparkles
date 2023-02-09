@@ -44,7 +44,7 @@ app.get("/chatroom/:chatroomId", cookieJwtAuth, (req, res) => {
 const http = require("http")
 const socketIo = require("socket.io")
 const formatMessage = require("./utils/formatMessage")
-const { userJoin, getCurrentUser } = require("./utils/users")
+const { userConnect, getCurrentUser, getUserSocketIdByUserId, userDisconnect } = require("./utils/users")
 
 const server = http.createServer(app)
 const io = socketIo(server)
@@ -52,12 +52,15 @@ const io = socketIo(server)
 io.on("connection", socket => {
   // join room
   socket.on("joinRoom", ({ currentUserId, currentUsername, currentRoomId }) => {
-    const user = userJoin(socket.id, currentUserId, currentUsername, currentRoomId)
-
+    const user = userConnect(socket.id, currentUserId, currentUsername, currentRoomId)
     socket.join(user.roomId)
 
     socket.on("disconnect", () => {
-      io.emit("leaveRoom", "A user has left the chat")
+      const user = userDisconnect(socket.id)
+
+      if (user) {
+        io.emit("leaveRoom", "A user has left the chat")
+      }
     })
   })
 
@@ -66,16 +69,24 @@ io.on("connection", socket => {
     io.to(user.roomId).emit("message", formatMessage(user.userId, user.username, msg.text, user.roomId))
   })
 
-  // // emit msg to the client who connects
-  // socket.emit("message", "哈囉我是後端")
 
-  // // broadcast when a user connects
-  // socket.broadcast.emit("message", "a user has joined the chat")
+  // incoming audio call popup
+  socket.on("audioCallPopup", (audioCallData) => {
+    const receiverId = audioCallData.receiverId
+    const userSocketId = getUserSocketIdByUserId(receiverId)
 
-  // // runs when client disconnects
-  // socket.on("disconnect", () => {
-  // io.emit("message", "A user has left the chat")
-  // })
+    const audioCallInfo = {
+      callerName: audioCallData.callerName,
+      callerAvatar: audioCallData.callerAvatar,
+      roomId: audioCallData.roomId,
+      peerId: audioCallData.callerId
+    }
+
+    userSocketId.forEach((userSocketIdData) => {
+      io.to(userSocketIdData).emit("incomingCallPopup", audioCallInfo)
+    })
+  })
+
 })
 
 // ---------------------------------------------- 
