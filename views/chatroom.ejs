@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.1.0/tocas.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.1.0/tocas.min.js"></script> -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
   <link rel="stylesheet" type="text/css" href="/chatroom.css">
   <title>Chatroom</title>
@@ -73,7 +75,7 @@
           <div class="icons">
             <i class="fas fa-search fa-lg"></i>
             <i class="fas fa-video fa-lg"></i>
-            <i class="fas fa-phone fa-lg"></i>
+            <i class="fas fa-phone fa-lg" id="audio-call-btn"></i>
             <i class="fas fa-ellipsis-v"></i>
           </div>
         </div>
@@ -123,10 +125,45 @@
 
 
     </div>
+    <!-- 
+    <div class="incoming-call-popup">
+      <audio autoplay loop>
+        <source src="https://d1gnt5bnf8w529.cloudfront.net/ringtone.wav" type="audio/wav">
+      </audio>
+      <div class="caller-avatar">
+        <img src="https://d1gnt5bnf8w529.cloudfront.net/Shiromaro.png">
+      </div>
+      <div class="caller-name">Shaoyun</div>
+      <div class="incoming-call-description">Incoming call...</div>
+      <div class="incoming-call-icons">
+        <i class="fas fa-phone" id="accept-call-btn"></i>
+        <i class="fas fa-phone" id="decline-call-btn"></i>
+      </div>
+    </div> -->
+
+    <!-- audio connecting popup -->
+    <!-- <div class="audio-connecting-popup">
+      <div class="audio-connecting-avatar">
+        <img src="https://d1gnt5bnf8w529.cloudfront.net/Shiromaro.png">
+        <i class="fas fa-microphone-slash display-none"></i>
+      </div>
+      <div class="caller-name">Shaoyun</div>
+      <div class="incoming-call-description">Audio connecting...</div>
+      <div class="incoming-call-description">0:06</div>
+      <div class="incoming-call-icons">
+        <i class="fas fa-microphone mute-unmute-toggle-btn" id="unmute-btn"></i>
+        <i class="fas fa-microphone-slash mute-unmute-toggle-btn display-none" id="mute-btn"></i>
+        <i class="fas fa-phone" id="end-call-btn"></i>
+      </div>
+    </div> -->
+
+
   </main>
+  <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="/chatroom.js"></script>
+  <script type="text/javascript" src="/audiocall.js"></script>
 </body>
 
 </html>
