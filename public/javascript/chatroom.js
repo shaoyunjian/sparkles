@@ -236,11 +236,19 @@ function appendMessage(msg) {
 
 // create a new instance of the peer object from peer.js library
 // const peer = new Peer(currentUserId) // run peerServer cloud
+
 // undefined means that the library will automatically generate an ID for the peer.
-const peer = new Peer(currentUserId, { //run our own peerServer
-  host: "/",
-  port: "8081"
+// const peer = new Peer(currentUserId, { //run our own peerServer
+//   host: "/",
+//   port: "8081"
+// })
+
+const peer = new Peer(currentUserId, {
+  secure: true,
+  host: "0.peerjs.com",
+  port: "443"
 })
+
 console.log("peerId", peer.id)
 
 const audioChatArea = document.querySelector("#audio-chat")
