@@ -9,7 +9,7 @@ const jwt = require("jsonwebtoken")
 const User = require("../models/user-schema")
 const mongoDB = require("../models/mongoose")
 
-// --------------- register ---------------
+// ----------- register -----------
 
 router.post("/user", async (req, res) => {
   const name = req.body.name
@@ -40,6 +40,50 @@ router.post("/user", async (req, res) => {
   }
 })
 
+// -------- get all users ---------
+
+router.get("/user", async (req, res) => {
+  const name = req.query.name
+  const email = req.query.email
+
+  try {
+    const user = await User
+      .find({
+        $or: [
+          { name: name },
+          { email: email }
+        ]
+      })
+
+    const userData = []
+    user.forEach((value) => {
+      const data = {
+        id: value._id,
+        name: value.name,
+        email: value.email,
+        avatar: value.avatar_url
+      }
+      userData.push(data)
+    })
+
+    if (userData) {
+      res.status(200).send({
+        "data": userData
+      })
+    } else {
+      res.status(200).send({
+        "data": null
+      })
+    }
+
+  } catch (e) {
+    console.log(e.message)
+    res.status(500).send({
+      "error": true,
+      "message": " Internal server error"
+    })
+  }
+})
 
 
 //  ----------- login -------------
