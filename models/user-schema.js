@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const { ObjectId } = require("mongodb")
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -16,7 +17,11 @@ const userSchema = new mongoose.Schema({
   avatar_url: {
     type: String,
     default: "https://d1gnt5bnf8w529.cloudfront.net/default-avatar.jpg"
-  }
+  },
+  friends: [{
+    type: ObjectId,
+    ref: "User"
+  }]
 })
 
 
