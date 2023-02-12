@@ -2,10 +2,12 @@ const registerUsername = document.querySelector("#register-username")
 const registerEmail = document.querySelector("#register-email")
 const registerPassword = document.querySelector("#register-password")
 const registerBtn = document.querySelector("#register-btn")
+const registerMessage = document.querySelector(".register-message")
 
 const loginEmail = document.querySelector("#login-email")
 const loginPassword = document.querySelector("#login-password")
 const loginBtn = document.querySelector("#login-btn")
+const loginMessage = document.querySelector(".login-message")
 
 // ------------------ register -------------------
 
@@ -26,6 +28,19 @@ registerBtn.addEventListener("click", () => {
       })
     })
     const jsonData = await response.json()
+
+    if (jsonData.ok) {
+      registerMessage.textContent = "Created successfully"
+      registerUsername.value = ""
+      registerEmail.value = ""
+      registerPassword.value = ""
+    } else {
+      if (jsonData.message === "Empty input") {
+        registerMessage.textContent = "Empty input"
+      } else if (jsonData.message === "Email already exists") {
+        registerMessage.textContent = "Email already exists"
+      }
+    }
   }
 
 })
@@ -52,8 +67,13 @@ loginBtn.addEventListener("click", () => {
     if (jsonData.ok) {
       window.location = "/chatroom"
       console.log("登入成功")
-    } else {
-      console.log("登入失敗")
+    } else if (jsonData.error) {
+      console.log(jsonData.message)
+      if (jsonData.message === "Empty input") {
+        loginMessage.textContent = "Empty input"
+      } else if (jsonData.message === "Email or password is wrong") {
+        loginMessage.textContent = "Email or password is wrong"
+      }
     }
   }
 

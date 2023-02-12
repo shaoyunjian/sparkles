@@ -17,19 +17,26 @@ router.post("/user", async (req, res) => {
   const password = req.body.password
 
   try {
-    const user = await User.exists({ email: email })
-    if (!user) {
-      User.create({
-        name: name,
-        email: email,
-        password: password
-      })
-      res.status(200).send({ "ok": true })
-    } else {
+    if (!name || !email || !password) {
       res.status(400).send({
         "error": true,
-        "message": "Email already exists"
+        "message": "Empty input"
       })
+    } else {
+      const user = await User.exists({ email: email })
+      if (!user) {
+        User.create({
+          name: name,
+          email: email,
+          password: password
+        })
+        res.status(200).send({ "ok": true })
+      } else {
+        res.status(400).send({
+          "error": true,
+          "message": "Email already exists"
+        })
+      }
     }
   } catch (e) {
     console.log(e.message)
@@ -93,23 +100,30 @@ router.put("/user/auth", async (req, res) => {
   const password = req.body.password
 
   try {
-    const userData = await User.findOne({ email: email, password: password })
-    if (userData) {
-      const payload = {
-        id: userData.id,
-        name: userData.name,
-        email: userData.email,
-        avatarUrl: userData.avatar_url
-      }
-      const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: "7d" })
-      res.cookie("token", token)
-
-      res.status(200).send({ "ok": true })
-    } else {
+    if (!email || !password) {
       res.status(400).send({
         "error": true,
-        "message": "Email or password is wrong"
+        "message": "Empty input"
       })
+    } else {
+      const userData = await User.findOne({ email: email, password: password })
+      if (userData) {
+        const payload = {
+          id: userData.id,
+          name: userData.name,
+          email: userData.email,
+          avatarUrl: userData.avatar_url
+        }
+        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: "7d" })
+        res.cookie("token", token)
+
+        res.status(200).send({ "ok": true })
+      } else {
+        res.status(400).send({
+          "error": true,
+          "message": "Email or password is wrong"
+        })
+      }
     }
   } catch (e) {
     console.log(e.message)
