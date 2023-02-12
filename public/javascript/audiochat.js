@@ -48,7 +48,6 @@ audioCallBtn.addEventListener("click", () => {
 })
 
 socket.on("incomingCallPopup", (audioCallInfo) => {
-  console.log("audioCallInfo", audioCallInfo)
   displayIncomingCallPopup(audioCallInfo.callerAvatar, audioCallInfo.callerName)
   handleIncomingCall(audioCallInfo.callerAvatar, audioCallInfo.callerName, audioCallInfo.peerId)
 })
@@ -107,15 +106,17 @@ async function getAudio(friendId) {
 
     // add my audio stream
     addAudioStream(myAudio, stream)
+    controlMicrophone(stream)
 
     // if sb tries to call us, answer their call and send them our stream
     peer.on("call", call => {
       call.answer(stream)
 
       const audio = document.createElement("audio")
-      call.on("stream", userAudioStream => {
+      call.on("stream", remoteStream => {
         // "stream" is the MediaStream of the remote peer.
-        addAudioStream(audio, userAudioStream)
+        addAudioStream(audio, remoteStream)
+        controlMicrophone(remoteStream)
       })
     })
 
@@ -149,11 +150,11 @@ function addAudioStream(audio, stream) {
 }
 
 
-// -------- mic controlling------------
-const muteBtn = document.querySelector("#mute-btn")
-const unmuteBtn = document.querySelector("#unmute-btn")
-
+// -------- mic controller ------------
 function controlMicrophone(stream) {
+  const muteBtn = document.querySelector("#mute-btn")
+  const unmuteBtn = document.querySelector("#unmute-btn")
+
   const audioTrack = stream.getAudioTracks().find(track => track.kind === "audio")
 
   // mute the mic
@@ -176,7 +177,7 @@ function controlMicrophone(stream) {
 }
 
 
-// audio connecting popup
+// ------ audio connecting popup -------
 function addAudioConnectingPopup(friendAvatar, friendName) {
   const popup = `
     <div class="audio-connecting-popup">
@@ -199,7 +200,4 @@ function addAudioConnectingPopup(friendAvatar, friendName) {
 
 }
 
-// click button to mute/unmute the mic
-// !! doesn't work now
-// controlMicrophone(stream)
 
