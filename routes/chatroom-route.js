@@ -6,9 +6,7 @@ const Message = require("../models/message-schema")
 const { cookieJwtAuth } = require("../cookieJwtAuth")
 
 
-// ---------------- get chat list  ----------------------
-// "63d0e7f3e4b088d4fb44db06",
-// "63ce96ef633bb17f1520a50b"
+// ------------ get chat list  ------------
 
 router.get("/chatroom", cookieJwtAuth, async (req, res) => {
   const senderId = req.user.id
@@ -45,9 +43,50 @@ router.get("/chatroom", cookieJwtAuth, async (req, res) => {
   }
 })
 
+// ---- add participants to chatroom -------
 
-// -----------------------------------------------
-// store message to database： "/api/message"
+router.post("/chatroom", async (req, res) => {
+  const participants = req.body.participants
+
+  try {
+    const chatroomExists = await Chatroom
+      .exists({
+        $or: [{
+          participants: [participants[0], participants[1]]
+        },
+        {
+          participants: [participants[1], participants[0]]
+        }
+        ]
+      })
+
+    if (!chatroomExists) {
+      await Chatroom.create({
+        participants: participants
+      })
+
+      res.status(200).send({
+        "ok": true
+      })
+    } else {
+      res.status(400).send({
+        "error": true,
+        "message": "Chatroom already exists"
+      })
+    }
+
+  } catch (e) {
+    console.log(e.message)
+    res.status(500).send({
+      "error": true,
+      "message": "Internal server error"
+    })
+  }
+
+})
+
+
+// ------- store message to database -------
 
 router.post("/message", async (req, res) => {
   const senderId = req.body.senderId
@@ -76,8 +115,7 @@ router.post("/message", async (req, res) => {
 
 })
 
-// -----------------------------------------------
-// get chat history："/api/message"
+// --------- get chat history -------------
 
 router.get("/message/:chatroomId", async (req, res) => {
   const chatroomId = req.params.chatroomId
