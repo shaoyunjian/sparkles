@@ -42,9 +42,11 @@ async function fetchChatListAPI(senderId) {
   const response = await fetch("/api/chatroom", { method: "GET" })
 
   const jsonData = await response.json()
+
   let roomId
   let friendName
   let avatarUrl
+
   jsonData.data.forEach((data) => {
     roomId = data._id
     data.participants.forEach((value) => {
@@ -55,8 +57,8 @@ async function fetchChatListAPI(senderId) {
     })
 
     chatListScrollbar.innerHTML += `
-      <a href="/" id="${roomId}" class="chat-list-items">
-        <div class="ts-content is-dense chat-list-item event-none">
+      <div id="${roomId}" class="chat-list-items">
+        <div class="ts-content is-dense chat-list-item">
           <div class="ts-row is-middle-aligned">
             <div class="column avatar">
               <div class="ts-avatar is-circular is-large">
@@ -75,9 +77,11 @@ async function fetchChatListAPI(senderId) {
             </div>
           </div>
         </div>
-      </a>
+      </div>
     `
   })
+
+  clickListToDisplayChatroom()
 
 }
 
@@ -88,16 +92,20 @@ const topBar = document.querySelector(".top-bar")
 const chatBoxTopBarAvatar = document.querySelector("#chatbox-top-bar-avatar")
 const chatBoxTopBarName = document.querySelector("#chatbox-top-bar-name")
 
-chatListScrollbar.addEventListener("click", (event) => {
-  event.preventDefault()
+// click chat list to display chatroom
+const clickListToDisplayChatroom = () => {
+  const chatListItems = document.querySelectorAll("#chat-list-scrollbar .chat-list-items")
 
-  currentRoomId = event.target.id
+  chatListItems.forEach((chatListItem, index) => {
+    chatListItem.addEventListener("click", () => {
+      currentRoomId = chatListItems[index].id
 
-  socket.emit("joinRoom", { currentUserId, currentUsername, currentRoomId })
-  fetchChatroomAPI(currentRoomId)
-  displayMessageHistory(currentRoomId)
-
-})
+      socket.emit("joinRoom", { currentUserId, currentUsername, currentRoomId })
+      fetchChatroomAPI(currentRoomId)
+      displayMessageHistory(currentRoomId)
+    })
+  })
+}
 
 
 // //------ 1 to 1 real-time chatroom --------
