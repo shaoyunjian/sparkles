@@ -1,3 +1,8 @@
+let currentFriendName
+let currentFriendId
+let currentFriendAvatar
+let currentRoomId
+
 // ------- get user's info from JWT -------
 const jwt = document.cookie
 const parts = jwt.split(".");
@@ -7,26 +12,24 @@ const currentUsername = payload.name
 const currentUserEmail = payload.email
 const currentUserAvatar = payload.avatarUrl
 
-//--------- get current room id -----------
-const currentRoomId = window.location.href.split("/")[4]
-
 // --------------- logout -----------------
-const logoutBtn = document.querySelector(".logout-btn")
+//(unfinished)
+// const logoutBtn = document.querySelector(".logout-btn")
 
-logoutBtn.addEventListener("click", () => {
+// logoutBtn.addEventListener("click", () => {
 
-  fetchLogoutAPI()
-  async function fetchLogoutAPI() {
-    const response = await fetch("/api/user/auth", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" }
-    })
-    const jsonData = await response.json()
-    if (jsonData.ok) {
-      window.location = "/login"
-    }
-  }
-})
+//   fetchLogoutAPI()
+//   async function fetchLogoutAPI() {
+//     const response = await fetch("/api/user/auth", {
+//       method: "DELETE",
+//       headers: { "Content-Type": "application/json" }
+//     })
+//     const jsonData = await response.json()
+//     if (jsonData.ok) {
+//       window.location = "/login"
+//     }
+//   }
+// })
 
 
 // ------------- get chat list ------------
@@ -39,23 +42,38 @@ async function fetchChatListAPI(senderId) {
   const response = await fetch("/api/chatroom", { method: "GET" })
 
   const jsonData = await response.json()
-
+  let roomId
   let friendName
+  let avatarUrl
   jsonData.data.forEach((data) => {
+    roomId = data._id
     data.participants.forEach((value) => {
       if (value._id !== senderId) {
         friendName = value.name
+        avatarUrl = value.avatar_url
       }
     })
+
     chatListScrollbar.innerHTML += `
-      <a href="/chatroom/${data._id}">
-        <div class="chat-list-message-box" data-id="${data._id}">
-          <div class="avatar">${friendName[0]}</div>
-          <div class="name-message">
-            <div class="name">${friendName}</div>
-            <div class="message">${data.last_message}</div>
+      <a href="/" id="${roomId}" class="chat-list-items">
+        <div class="ts-content is-dense chat-list-item event-none">
+          <div class="ts-row is-middle-aligned">
+            <div class="column avatar">
+              <div class="ts-avatar is-circular is-large">
+                <img src="${avatarUrl}" />
+              </div>
+              <div class="avatar-badge online"></div>
+            </div>
+            <div class="chat-list-middle-item column">
+              <div class="ts-text is-bold">${friendName}</div>
+              <div class="ts-text is-description chat-list-last-message">${data.last_message}
+              </div>
+            </div>
+            <div class="chat-list-right-item column">
+              <div class="ts-text is-description is-tiny">${data.last_message_time}</div>
+              <div class="chat-list-time">9+</div>
+            </div>
           </div>
-          <div class="message-time">${data.last_message_time}</div>
         </div>
       </a>
     `
@@ -65,34 +83,40 @@ async function fetchChatListAPI(senderId) {
 
 // ---------- render chatroom -------------
 
+const chatBox = document.querySelector("#chatbox")
+const topBar = document.querySelector(".top-bar")
 const chatBoxTopBarAvatar = document.querySelector("#chatbox-top-bar-avatar")
 const chatBoxTopBarName = document.querySelector("#chatbox-top-bar-name")
 
-if (currentRoomId) {
+chatListScrollbar.addEventListener("click", (event) => {
+  event.preventDefault()
+
+  currentRoomId = event.target.id
+
+  socket.emit("joinRoom", { currentUserId, currentUsername, currentRoomId })
   fetchChatroomAPI(currentRoomId)
   displayMessageHistory(currentRoomId)
-} else {
-  document.querySelector("#chatbox").classList.add("display-none")
-}
 
-//------ 1 to 1 real-time chatroom --------
+})
+
+
+// //------ 1 to 1 real-time chatroom --------
 
 const socket = io()
-
-const chatScrollBar = document.querySelector(".middle-scollbar")
 const chatMessageBox = document.querySelector(".chat-message-box")
+const chatScrollBar = document.querySelector(".middle-scollbar")
 const sendMessageBtn = document.querySelector("#send-message-btn")
 const inputMessage = document.querySelector("#input-message")
-chatScrollBar.scrollTop = chatScrollBar.scrollHeight
 
-// join room 
-socket.emit("joinRoom", { currentUserId, currentUsername, currentRoomId })
+socket.emit("newUser", currentUserId)
 
 // socket on event
 socket.on("message", message => {
-  appendMessage(message)
-  if (message.userId === currentUserId) {
-    storeMessageToDB(message)
+  if (message.roomId === currentRoomId) {
+    appendMessage(message)
+    if (message.userId === currentUserId) {
+      storeMessageToDB(message)
+    }
   }
 })
 
@@ -101,9 +125,12 @@ socket.on("leaveRoom", (msg) => {
   console.log(msg)
 })
 
+
 // ------- emit message to server ----------
 
-emitMessageToServer(currentUsername, currentUserId)
+if (inputMessage) {
+  emitMessageToServer(currentUsername, currentUserId)
+}
 
 function emitMessageToServer(currentUsername, currentUserId) {
   inputMessage.addEventListener("keypress", (event) => {
@@ -112,7 +139,9 @@ function emitMessageToServer(currentUsername, currentUserId) {
       text: inputMessageValue,
       username: currentUsername,
       id: currentUserId,
-      roomId: currentRoomId
+      avatarUrl: currentUserAvatar,
+      roomId: currentRoomId,
+      receiverId: currentFriendId,
     }
     if (event.key === "Enter") {
       if (inputMessageValue) {
@@ -127,7 +156,9 @@ function emitMessageToServer(currentUsername, currentUserId) {
       text: inputMessageValue,
       username: currentUsername,
       id: currentUserId,
-      roomId: currentRoomId
+      avatarUrl: currentUserAvatar,
+      roomId: currentRoomId,
+      receiverId: currentFriendId,
     }
     if (inputMessageValue) {
       socket.emit("chatMessages", msgData)
@@ -150,9 +181,7 @@ async function storeMessageToDB(message) {
 }
 
 // ------ get chatroom information ---------
-let currentFriendName
-let currentFriendId
-let currentFriendAvatar
+
 async function fetchChatroomAPI(roomId) {
   const response = await fetch(`/api/chatroom?chatroomId=${roomId}`)
 
@@ -165,7 +194,7 @@ async function fetchChatroomAPI(roomId) {
       currentFriendAvatar = value.avatar_url
     }
   })
-  chatBoxTopBarAvatar.innerHTML = `<p>${currentFriendName[0]}</p>`
+  chatBoxTopBarAvatar.innerHTML = `<img src="${currentFriendAvatar}" />`
   chatBoxTopBarName.textContent = currentFriendName
 }
 
@@ -180,6 +209,7 @@ async function displayMessageHistory(roomId) {
 
     jsonData.data.forEach((data) => {
       const historyMessage = {
+        avatarUrl: data.sender.avatar_url,
         userId: data.sender._id,
         username: data.sender.name,
         message: data.message_text,
@@ -197,9 +227,9 @@ async function displayMessageHistory(roomId) {
 // --------- append message bubble --------
 function appendMessage(msg) {
   // const dateDivider = `<div class="ts-divider is-center-text ts-text is-small" style="color: var(--ts-gray-500);">2022-02-03</div>`
-
+  // console.log(msg)
   const myMessage = `
-    <div class="sender-message">         
+    <div class="sender-message">
       <div class="sender-name"></div>
       <div class="sender-bubble-box">
         <div class="sending-time">${msg.time}</div>
@@ -208,9 +238,11 @@ function appendMessage(msg) {
     </div>
   `
   const friendMessage = `
-    <div class="receiver-message"> 
+    <div class="receiver-message">
       <div class="receiver-avatar">
-        <p>${msg.username[0]}</p>
+        <div class="ts-avatar is-circular">
+          <img src="${msg.avatarUrl}">
+        </div>
       </div>
       <div class="receiver-name-bubble">
         <div class="receiver-name">${msg.username}</div>

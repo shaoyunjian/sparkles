@@ -37,10 +37,6 @@ app.get("/chatroom", cookieJwtAuth, (req, res) => {
   res.render("chatroom")
 })
 
-app.get("/chatroom/:chatroomId", cookieJwtAuth, (req, res) => {
-  res.render("chatroom")
-})
-
 app.get("/friendlist", cookieJwtAuth, (req, res) => {
   res.render("friendlist")
 })
@@ -55,24 +51,35 @@ const { userConnect, getCurrentUser, getUserSocketIdByUserId, userDisconnect } =
 const server = http.createServer(app)
 const io = socketIo(server)
 
+const onlineUsers = new Set()
 io.on("connection", socket => {
+
+  socket.on("newUser", (data) => {
+    socket.userId = data
+    onlineUsers.add(data)
+    io.emit("newUser", [...onlineUsers]) //emit to all online users
+
+    console.log(onlineUsers)
+  })
+
   // join room
   socket.on("joinRoom", ({ currentUserId, currentUsername, currentRoomId }) => {
     const user = userConnect(socket.id, currentUserId, currentUsername, currentRoomId)
-    socket.join(user.roomId)
+    // socket.join(user.roomId)
+  })
 
-    socket.on("disconnect", () => {
-      const user = userDisconnect(socket.id)
-
-      if (user) {
-        io.emit("leaveRoom", "A user has left the chat")
-      }
-    })
+  socket.on("disconnect", () => {
+    onlineUsers.delete(socket.userId)
+    console.log(socket.userId)
+    io.emit("user disconnected", socket.userId)
   })
 
   socket.on("chatMessages", (msg) => {
     const user = getCurrentUser(socket.id)
-    io.to(user.roomId).emit("message", formatMessage(user.userId, user.username, msg.text, user.roomId))
+    const friendSocketId = getUserSocketIdByUserId(msg.receiverId)
+    const mySocketId = getUserSocketIdByUserId(user.userId)
+
+    io.to(mySocketId).to(friendSocketId).emit("message", formatMessage(user.userId, user.username, msg.avatarUrl, msg.text, msg.roomId))
   })
 
 
@@ -90,6 +97,26 @@ io.on("connection", socket => {
 
     userSocketId.forEach((userSocketIdData) => {
       io.to(userSocketIdData).emit("incomingCallPopup", audioCallInfo)
+    })
+  })
+
+  // end call
+  socket.on("endCall", (endCallData) => {
+    // console.log(endCallData)
+    socket.emit("endCallReceived", "Close Popup")
+
+    const receiverId = endCallData.receiverId
+    const userSocketId = getUserSocketIdByUserId(receiverId)
+
+    // const endCallInfo = {
+    //   callerName: endCallData.callerName,
+    //   callerAvatar: endCallData.callerAvatar,
+    //   roomId: endCallData.roomId,
+    //   peerId: endCallData.callerId
+    // }
+
+    userSocketId.forEach((userSocketIdData) => {
+      io.to(userSocketIdData).emit("endCallReceived", "Close Popup1")
     })
   })
 
