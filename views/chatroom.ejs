@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.1.0/tocas.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
   <link rel="stylesheet" type="text/css" href="/chatroom.css">
-
+  <link rel="stylesheet" type="text/css" href="/audiochat.css">
   <title>Chatroom</title>
 </head>
 
@@ -38,7 +38,7 @@
               <div class="avatar-badge online"></div>
             </div>
             <div class="column is-fluid">
-              <div class="ts-text is-heavy is-large" id="my-name"></div>
+              <div class="ts-text is-heavy is-large my-name"></div>
               <div class="ts-text is-tiny" style="color: var(--ts-gray-500)">Good day!</div>
             </div>
             <div class="column">
@@ -122,10 +122,13 @@
         </div>
       </div>
     </div>
-
+    <!-- additional box on the right side -->
+    <!-- <div class="cell" style="width:300px">
+      <div class="ts-content">additional box</div>
+    </div> -->
     <!-- right box -->
     <!-- right box: default -->
-    <!-- <div class="cell is-fluid is-vertical right-box">
+    <div class="cell is-fluid is-vertical right-box" id="welcome-box">
       <div class="cell">
         <div class="ts-content">
           <div class="column is-fluid">
@@ -133,14 +136,16 @@
           </div>
         </div>
       </div>
-      <div>Welcome, USERNAME!</div>
-      <div>Click to start chatting with friends!</div>
-      <img src="/Work-chat-cuate.png" style="height:650px; width: 700px; margin: auto; opacity: 65%;">
-      <img src="/Work-chat-pana.png" style="width: 600px; margin: auto; opacity: 30%;">
-    </div> -->
+      <div class="greeting">
+        <div class="greeting-one">Welcome, <span class="my-name"></span> !</div>
+        <div class="greeting-two">Click to start chatting with friends !</div>
+      </div>
+      <img src="/Work-chat-cuate.png" style="height:550px; width: 650px; margin: auto; opacity: 65%;">
+      <!-- <img src="/Work-chat-pana.png" style="width: 600px; margin: auto; opacity: 30%;"> -->
+    </div>
 
     <!-- right box: chatroom -->
-    <div class="cell is-fluid is-vertical right-box" id="chatbox">
+    <div class="cell is-fluid is-vertical right-box display-none" id="chatbox">
       <div class="cell">
         <div class="ts-content">
           <div class="column is-fluid">
@@ -174,7 +179,7 @@
               <button class="ts-button is-circular is-icon is-ghost">
                 <span class="ts-icon  is-magnifying-glass-icon"></span>
               </button>
-              <button class="ts-button is-circular is-icon is-ghost">
+              <button class="ts-button is-circular is-icon is-ghost" id="audio-call-btn">
                 <span class="ts-icon is-phone-icon"></span>
               </button>
               <button class="ts-button is-circular is-icon is-ghost">
@@ -263,7 +268,7 @@
     </div>
 
     <!-- additional box on the right side -->
-    <!-- <div class="cell" style="width:300px">
+    <!-- <div class="cell" style="width:330px">
       <div class="ts-content">additional box</div>
     </div> -->
   </div>
@@ -291,9 +296,9 @@
       <img src="https://d1gnt5bnf8w529.cloudfront.net/Shiromaro.png" id="audio-connecting-avatar-url">
       <i class="fas fa-microphone-slash display-none"></i>
     </div>
-    <div class="caller-name">Shaoyun</div>
+    <div class="caller-name"></div>
     <div class="incoming-call-description">Audio connecting...</div>
-    <div class="incoming-call-description">0:06</div>
+    <div class="incoming-call-time">0:06</div>
     <div class="incoming-call-icons">
       <i class="fas fa-microphone mute-unmute-toggle-btn" id="unmute-btn"></i>
       <i class="fas fa-microphone-slash mute-unmute-toggle-btn display-none" id="mute-btn"></i>
