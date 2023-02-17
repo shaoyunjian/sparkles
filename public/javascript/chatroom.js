@@ -12,6 +12,12 @@ const currentUsername = payload.name
 const currentUserEmail = payload.email
 const currentUserAvatar = payload.avatarUrl
 
+// --------------- profile ----------------
+const myAvatarUrl = document.querySelector("#my-avatar-url")
+const myName = document.querySelector("#my-name")
+myAvatarUrl.src = currentUserAvatar
+myName.textContent = currentUsername
+
 // --------------- logout -----------------
 //(unfinished)
 // const logoutBtn = document.querySelector(".logout-btn")
