@@ -54,12 +54,11 @@ const io = socketIo(server)
 const onlineUsers = new Set()
 io.on("connection", socket => {
 
-  socket.on("newUser", (data) => {
-    socket.userId = data
-    onlineUsers.add(data)
+  socket.on("newUser", ({ currentUserId, currentUsername }) => {
+    socket.userId = currentUserId
+    onlineUsers.add(currentUserId)
+    const user = userConnect(socket.id, currentUserId, currentUsername)
     io.emit("newUser", [...onlineUsers]) //emit to all online users
-
-    console.log(onlineUsers)
   })
 
   // join room
@@ -68,18 +67,18 @@ io.on("connection", socket => {
     // socket.join(user.roomId)
   })
 
-  socket.on("disconnect", () => {
-    onlineUsers.delete(socket.userId)
-    console.log(socket.userId)
-    io.emit("user disconnected", socket.userId)
-  })
-
   socket.on("chatMessages", (msg) => {
     const user = getCurrentUser(socket.id)
     const friendSocketId = getUserSocketIdByUserId(msg.receiverId)
     const mySocketId = getUserSocketIdByUserId(user.userId)
 
     io.to(mySocketId).to(friendSocketId).emit("message", formatMessage(user.userId, user.username, msg.avatarUrl, msg.text, msg.roomId))
+  })
+
+  socket.on("typing", (data) => {
+    const friendSocketId = getUserSocketIdByUserId(data.receiverId)
+
+    socket.broadcast.to(friendSocketId).emit("isTyping", data)
   })
 
 

@@ -2,6 +2,7 @@ let currentFriendName
 let currentFriendId
 let currentFriendAvatar
 let currentRoomId
+const isTypingMessage = document.querySelector(".typing")
 
 // ------- get user's info from JWT -------
 const jwt = document.cookie
@@ -14,9 +15,12 @@ const currentUserAvatar = payload.avatarUrl
 
 // --------------- profile ----------------
 const myAvatarUrl = document.querySelector("#my-avatar-url")
-const myName = document.querySelector("#my-name")
+const myName = document.querySelectorAll(".my-name")
 myAvatarUrl.src = currentUserAvatar
-myName.textContent = currentUsername
+
+myName.forEach((name) => {
+  name.textContent = currentUsername
+})
 
 // --------------- logout -----------------
 //(unfinished)
@@ -63,14 +67,14 @@ async function fetchChatListAPI(senderId) {
     })
 
     chatListScrollbar.innerHTML += `
-      <div id="${roomId}" class="chat-list-items">
+      <div id="${roomId}" class="chat-list-items" >
         <div class="ts-content is-dense chat-list-item">
           <div class="ts-row is-middle-aligned">
             <div class="column avatar">
               <div class="ts-avatar is-circular is-large">
                 <img src="${avatarUrl}" />
               </div>
-              <div class="avatar-badge online"></div>
+              <div class="avatar-badge" id="${friendId}"></div>
             </div>
             <div class="chat-list-middle-item column">
               <div class="ts-text is-bold">${friendName}</div>
@@ -93,6 +97,7 @@ async function fetchChatListAPI(senderId) {
 
 // ---------- render chatroom -------------
 
+const welcomeBox = document.querySelector("#welcome-box")
 const chatBox = document.querySelector("#chatbox")
 const topBar = document.querySelector(".top-bar")
 const chatBoxTopBarAvatar = document.querySelector("#chatbox-top-bar-avatar")
@@ -104,6 +109,9 @@ const clickListToDisplayChatroom = () => {
 
   chatListItems.forEach((chatListItem, index) => {
     chatListItem.addEventListener("click", () => {
+      welcomeBox.style.display = "none"
+      chatBox.style.display = "flex"
+
       currentRoomId = chatListItems[index].id
 
       socket.emit("joinRoom", { currentUserId, currentUsername, currentRoomId })
@@ -122,7 +130,7 @@ const chatScrollBar = document.querySelector(".middle-scollbar")
 const sendMessageBtn = document.querySelector("#send-message-btn")
 const inputMessage = document.querySelector("#input-message")
 
-socket.emit("newUser", currentUserId)
+socket.emit("newUser", { currentUserId, currentUsername })
 
 // socket on event
 socket.on("message", message => {
@@ -160,6 +168,7 @@ function emitMessageToServer(currentUsername, currentUserId) {
     if (event.key === "Enter") {
       if (inputMessageValue) {
         socket.emit("chatMessages", msgData)
+        socket.emit("typing", "not typing")
       }
     }
   })
@@ -174,10 +183,13 @@ function emitMessageToServer(currentUsername, currentUserId) {
       roomId: currentRoomId,
       receiverId: currentFriendId,
     }
+
     if (inputMessageValue) {
       socket.emit("chatMessages", msgData)
+      socket.emit("typing", "not typing")
     }
   })
+
 }
 
 // ---- store my message into database -----
@@ -210,6 +222,8 @@ async function fetchChatroomAPI(roomId) {
   })
   chatBoxTopBarAvatar.innerHTML = `<img src="${currentFriendAvatar}" />`
   chatBoxTopBarName.textContent = currentFriendName
+
+  checkTypingStatus(currentFriendId)
 }
 
 // ----- display text message history ------
@@ -278,3 +292,39 @@ function appendMessage(msg) {
   inputMessage.value = ""
 }
 
+
+// ---------- typing status -----------
+
+function checkTypingStatus(currentFriendId) {
+
+  inputMessage.addEventListener("input", () => {
+    if (!inputMessage.value) {
+      socket.emit("typing", "not typing")
+    } else {
+      const typingData = {
+        userId: currentUserId,
+        username: currentUsername,
+        receiverId: currentFriendId,
+        roomId: currentRoomId
+      }
+      socket.emit("typing", typingData)
+    }
+  })
+
+  socket.on("isTyping", (data) => {
+    if (data === "not typing") {
+      isTypingMessage.style.display = "none"
+    } else {
+      isTypingMessage.style.display = "block"
+      const typingDescription = document.querySelector(".typing-description")
+      typingDescription.innerHTML = `${data.username} is typing`
+    }
+
+    // check if the user currently typing is in the same chatroom
+    if (data.roomId !== currentRoomId) {
+      isTypingMessage.style.display = "none"
+    }
+
+  })
+
+}
