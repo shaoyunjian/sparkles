@@ -113,6 +113,7 @@ const clickListToDisplayChatroom = () => {
     chatListItem.addEventListener("click", () => {
       welcomeBox.style.display = "none"
       chatBox.style.display = "flex"
+      isTypingMessage.style.display = "none"
 
       currentRoomId = chatListItems[index].id
 
