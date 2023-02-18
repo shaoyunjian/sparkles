@@ -1,12 +1,9 @@
 const users = []
 
-
-function userConnect(id, userId, username, roomId) {
-  const user = { id, userId, username, roomId }
+function userConnect(id, userId, username) {
+  const user = { id, userId, username }
 
   users.push(user)
-
-  getUserSocketIdByUserId(user.userId)
 
   return user
 }

@@ -59,12 +59,7 @@ io.on("connection", socket => {
     onlineUsers.add(currentUserId)
     const user = userConnect(socket.id, currentUserId, currentUsername)
     io.emit("newUser", [...onlineUsers]) //emit to all online users
-  })
 
-  // join room
-  socket.on("joinRoom", ({ currentUserId, currentUsername, currentRoomId }) => {
-    const user = userConnect(socket.id, currentUserId, currentUsername, currentRoomId)
-    // socket.join(user.roomId)
   })
 
   socket.on("chatMessages", (msg) => {
@@ -117,6 +112,13 @@ io.on("connection", socket => {
     userSocketId.forEach((userSocketIdData) => {
       io.to(userSocketIdData).emit("endCallReceived", "Close Popup1")
     })
+  })
+
+  socket.on("disconnect", () => {
+    userDisconnect(socket.id)
+    onlineUsers.delete(socket.userId)
+
+    io.emit("user disconnected", socket.userId)
   })
 
 })

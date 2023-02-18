@@ -54,6 +54,7 @@ async function fetchChatListAPI(senderId) {
   const jsonData = await response.json()
 
   let roomId
+  let friendId
   let friendName
   let avatarUrl
 
@@ -61,6 +62,7 @@ async function fetchChatListAPI(senderId) {
     roomId = data._id
     data.participants.forEach((value) => {
       if (value._id !== senderId) {
+        friendId = value._id
         friendName = value.name
         avatarUrl = value.avatar_url
       }
@@ -114,7 +116,6 @@ const clickListToDisplayChatroom = () => {
 
       currentRoomId = chatListItems[index].id
 
-      socket.emit("joinRoom", { currentUserId, currentUsername, currentRoomId })
       fetchChatroomAPI(currentRoomId)
       displayMessageHistory(currentRoomId)
     })
