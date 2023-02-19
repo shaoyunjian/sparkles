@@ -1,10 +1,6 @@
 const express = require("express")
 const router = express.Router()
-// const bodyParser = require('body-parser')
-// router.use(bodyParser.urlencoded({ extended: false }))
-// router.use(bodyParser.json())
 const jwt = require("jsonwebtoken")
-// const { cookieJwtAuth } = require("../cookieJwtAuth")
 
 const User = require("../models/user-schema")
 const mongoDB = require("../models/mongoose")
@@ -50,15 +46,16 @@ router.post("/user", async (req, res) => {
 // -------- get all users ---------
 
 router.get("/user", async (req, res) => {
-  const name = req.query.name
-  const email = req.query.email
+  const keyword = req.query.keyword
+  const reg = new RegExp(keyword, "i")
 
+  if (!keyword) return
   try {
-    const user = await User
-      .find({
+    const user = await User.find(
+      {
         $or: [
-          { name: name },
-          { email: email }
+          { name: { $regex: reg } },
+          { email: { $regex: reg } }
         ]
       })
 
