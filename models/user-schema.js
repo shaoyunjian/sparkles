@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
   },
   avatar_url: {
     type: String,
-    default: "https://d1gnt5bnf8w529.cloudfront.net/default-avatar.jpg"
+    default: "https://d1gnt5bnf8w529.cloudfront.net/user.png"
   },
   friends: [{
     type: ObjectId,
