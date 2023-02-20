@@ -15,10 +15,10 @@ app.set("view engine", "ejs")
 // routes 
 const userRouter = require("./routes/user-route.js")
 const chatroomRouter = require("./routes/chatroom-route.js")
-const friendlistRouter = require("./routes/friendlist-route.js")
+const friendRouter = require("./routes/friend-route.js")
 app.use("/api/", userRouter)
 app.use("/api/", chatroomRouter)
-app.use("/api/", friendlistRouter)
+app.use("/api/", friendRouter)
 
 // middleware
 const { cookieJwtAuth } = require("./cookieJwtAuth")
@@ -35,10 +35,6 @@ app.get("/login", (req, res) => {
 
 app.get("/chatroom", cookieJwtAuth, (req, res) => {
   res.render("chatroom")
-})
-
-app.get("/friendlist", cookieJwtAuth, (req, res) => {
-  res.render("friendlist")
 })
 
 
