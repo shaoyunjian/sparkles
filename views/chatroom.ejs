@@ -35,7 +35,7 @@
               <div class="ts-avatar is-circular is-large">
                 <img src="https://v4.tocas-ui.com/zh-tw/assets/images/user.png" id="my-avatar-url" />
               </div>
-              <div class="avatar-badge online"></div>
+              <div class="avatar-badge"></div>
             </div>
             <div class="column is-fluid">
               <div class="ts-text is-heavy is-large my-name"></div>
@@ -46,7 +46,7 @@
                 <button class="ts-button is-circular is-small is-icon is-secondary">
                   <span class="ts-icon is-ellipsis-icon"></span>
                 </button>
-                <div class="notification-btns">
+                <div class="notification-btns" id="user-search-btn">
                   <button class="ts-button is-circular is-small is-icon is-secondary">
                     <span class="ts-icon is-user-group-icon"></span>
                   </button>
@@ -75,13 +75,24 @@
       <div class="cell is-fluid is-scrollable" style="border: 0px;">
         <!-- chat list -->
         <div class="scrollbar cell" id="chat-list-scrollbar">
+
+          <!-- default -->
+          <div class="ts-content is-dense display-none">
+            <img src="/Texting-rafiki-2.png" style="width:300px; opacity: 60%;">
+            <div style="text-align: center; font-size: 18px;font-weight: 600;">Start chatting on Sparkles Chat.</div>
+            <div style="text-align: center; font-size: 16px;font-weight: 400;">
+              <span class="ts-icon is-user-group-icon"></span>
+              <span class="ts-icon is-magnifying-glass-icon"></span>
+              Use Search to find anyone.
+            </div>
+          </div>
           <!-- <div class="ts-content is-dense chat-list-item">
             <div class="ts-row is-middle-aligned">
               <div class="column avatar">
                 <div class="ts-avatar is-circular is-large">
                   <img src="https://v4.tocas-ui.com/zh-tw/assets/images/user.png" />
                 </div>
-                <div class="avatar-badge online"></div>
+                <div class="avatar-badge"></div>
               </div>
               <div class="chat-list-middle-item column">
                 <div class="ts-text is-bold">Hinata</div>
@@ -122,10 +133,63 @@
         </div>
       </div>
     </div>
-    <!-- additional box on the right side -->
+    <!-- additional box for contacts and notification -->
     <!-- <div class="cell" style="width:300px">
-      <div class="ts-content">additional box</div>
-    </div> -->
+      <div class="cell">
+        <div class="ts-content">
+          <div class="column is-fluid">
+            <div class="ts-text is-bold">Sparkles</div>
+          </div>
+        </div>
+      </div> -->
+
+    <!-- contact -->
+    <!-- <div class="cell ts-content">
+        <div class="ts-row">
+          <div class="column is-fluid">
+            <div class="ts-header is-heavy">Contacts</div>
+          </div>
+          <div class="column">
+            <button class="ts-close"></button>
+          </div>
+        </div>
+        <div class="ts-space"></div>
+        <div class="ts-input is-solid is-fluid is-start-icon">
+          <span class="ts-icon is-magnifying-glass-icon"></span>
+          <input type="text" placeholder="Enter a name or email..." />
+        </div>
+
+        <div class="ts-space"></div>
+        <div class="friend-list">
+          <div class="ts-content is-dense">
+            <div class="ts-row is-middle-aligned is-evenly-divided">
+              <div class="column">
+                <div class="ts-avatar is-circular is-large">
+                  <img src="https://d1gnt5bnf8w529.cloudfront.net/Shiromaro.png" />
+                </div>
+              </div>
+              <div class="column">
+                <div class="ts-text is-bold is-large is-center-aligned">Shaoyun</div>
+              </div>
+              <div class="column">
+                <div class="column">
+                  <button class="friend-request-btn add">
+                    Chat
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ts-divider"></div>
+      </div> -->
+
+    <!-- notification -->
+    <!-- <div class="cell ts-content">
+        additional box
+      </div> -->
+    <!-- </div> -->
+
     <!-- right box -->
     <!-- right box: default -->
     <div class="cell is-fluid is-vertical right-box" id="welcome-box">
@@ -165,10 +229,10 @@
               <div class="ts-avatar is-circular is-large" id="chatbox-top-bar-avatar">
                 <img src="https://v4.tocas-ui.com/zh-tw/assets/images/user.png" />
               </div>
-              <div class="avatar-badge online"></div>
+              <div class="avatar-badge"></div>
             </div>
             <div class="column is-fluid">
-              <div class="ts-text is-big" id="chatbox-top-bar-name">Hinata</div>
+              <div class="ts-text is-big" id="chatbox-top-bar-name"></div>
             </div>
             <!-- <div class="column">
               <div class="ts-input is-solid is-fluid">
@@ -194,7 +258,7 @@
         <div class="ts-content">
           <div class="chat-message-box">
 
-            <div class="receiver-message">
+            <!-- <div class="receiver-message">
               <div class="receiver-avatar">
                 <div class="ts-avatar is-circular">
                   <img src="https://v4.tocas-ui.com/zh-tw/assets/images/user.png">
@@ -223,15 +287,15 @@
                 <div class="sending-time">20:50</div>
                 <div class="sender-bubble bubble">Good morning.</div>
               </div>
-            </div>
+            </div> -->
 
           </div>
         </div>
       </div>
 
-      <div class="typing cell">
+      <div class="typing cell display-none">
         <div class="typing-loading">
-          <div class="typing-description">Hinata is typing</div>
+          <div class="typing-description"></div>
           <div class="loading-data three-bounce">
             <div class="bounce1"></div>
             <div class="bounce2"></div>
@@ -273,9 +337,95 @@
     </div> -->
   </div>
 
+  <!-- contact modal -->
+  <!-- test -->
+  <div class="ts-modal" id="user-search-modal">
+    <div class="content" id="user-search-modal-content">
+      <div class="ts-content">
+        <div class="ts-row">
+          <div class="column is-fluid">
+            <div class="ts-header is-heavy">User Search</div>
+          </div>
+          <div class="column">
+            <button class="ts-close" id="user-search-modal-close-btn"></button>
+          </div>
+        </div>
+        <!-- </div> -->
+        <div class="ts-space"></div>
+        <!-- <div class="ts-divider"></div> -->
+        <!-- <div class="ts-content"> -->
+        <div class="ts-input is-solid is-fluid is-start-icon">
+          <span class="ts-icon is-magnifying-glass-icon"></span>
+          <input type="text" placeholder="Enter a name or email..." id="user-search-bar" />
+        </div>
+      </div>
+      <div class="ts-divider"></div>
+      <!-- <div class="ts-content"> -->
+      <!-- <div class="ts-space"></div> -->
+      <div style="height: 250px; overflow-y: auto;">
+        <div class="user-list ts-content is-dense is-center-aligned">
+          <img src="/people-search2.png" style="height: 220px; opacity: 40%;">
+          <!-- <div class="ts-content is-dense">
+            <div class="ts-row is-middle-aligned">
+              <div class="column">
+                <div class="ts-avatar is-circular is-large">
+                  <img src="https://v4.tocas-ui.com/zh-tw/assets/images/user.png" />
+                </div>
+              </div>
+              <div class="column">
+                <div class="ts-text is-bold is-large is-start-aligned"
+                  style="width: 150px; overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
+                  Hinata</div>
+              </div>
+              <div class="column friend-request-btns">
+
+                <button class="friend-request-btn request-confirm-btn">
+                  Accept
+                </button>
+                <button class="friend-request-btn request-decline-btn">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="ts-divider"></div>
+          <div class="ts-content is-dense">
+            <div class="ts-row is-middle-aligned">
+              <div class="column">
+                <div class="ts-avatar is-circular is-large">
+                  <img src="https://v4.tocas-ui.com/zh-tw/assets/images/user.png" />
+                </div>
+              </div>
+              <div class="column">
+                <div class="ts-text is-bold is-large  is-start-aligned"
+                  style="width: 150px; overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
+                  Shaoyun Jian</div>
+              </div>
+              <div class="column friend-request-btns">
+                <button class="friend-request-btn add">
+                  Add Friend
+                </button>
+                <button class="friend-request-btn request-confirm-btn">
+                  Accept
+                </button>
+                <button class="friend-request-btn request-decline-btn">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="ts-divider"></div> -->
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
 
   <!-- incoming call popup -->
-  <div class="incoming-call-popup display-none">
+  <div class=" incoming-call-popup display-none">
     <audio loop id="ringtone">
       <source src="https://d1gnt5bnf8w529.cloudfront.net/ringtone.wav" type="audio/wav">
     </audio>
@@ -296,9 +446,9 @@
       <img src="https://d1gnt5bnf8w529.cloudfront.net/Shiromaro.png" id="audio-connecting-avatar-url">
       <i class="fas fa-microphone-slash display-none"></i>
     </div>
-    <div class="caller-name"></div>
-    <div class="incoming-call-description">Audio connecting...</div>
-    <div class="incoming-call-time">0:06</div>
+    <div class="connecting-name"></div>
+    <div class="connecting-description">Audio connecting...</div>
+    <div class="connecting-time">0:06</div>
     <div class="incoming-call-icons">
       <i class="fas fa-microphone mute-unmute-toggle-btn" id="unmute-btn"></i>
       <i class="fas fa-microphone-slash mute-unmute-toggle-btn display-none" id="mute-btn"></i>
@@ -313,6 +463,7 @@
   <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="/chatroom.js"></script>
   <script type="text/javascript" src="/audiochat.js"></script>
+  <script type="text/javascript" src="/friend.js"></script>
 </body>
 
 </html>

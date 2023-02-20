@@ -170,25 +170,20 @@ header .header-logo {
   position: relative;
   display: flex;
 }
-.avatar .avatar-badge.online {
+.avatar .avatar-badge {
   width: 13px;
   height: 13px;
   position: absolute;
   bottom: 0px;
   right: 1px;
   border-radius: 50%;
-  background-color: var(--ts-positive-400);
   border: 2px solid white;
 }
-.avatar .avatar-badge.offline {
-  width: 13px;
-  height: 13px;
-  position: absolute;
-  bottom: 0px;
-  right: 1px;
-  border-radius: 50%;
+.avatar .online {
+  background-color: var(--ts-positive-400);
+}
+.avatar .offline {
   background-color: var(--ts-gray-400);
-  border: 2px solid white;
 }
 
 .notification-btns {
@@ -250,8 +245,69 @@ header .header-logo {
     transform: scale(1);
   }
 }
-.event-none {
-  pointer-events: none;
+.friend-request-btns {
+  display: flex;
+}
+
+.friend-request-btn {
+  width: 90px;
+  height: 34px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 100rem;
+  font-weight: 600;
+}
+
+.friend-request-btn.add {
+  background: #FFC100;
+  color: white;
+}
+
+.friend-request-btn.add:hover {
+  background: #f1b500;
+  color: white;
+}
+
+.friend-request-btn.requested {
+  background: var(--ts-gray-400);
+  color: white;
+}
+
+.friend-request-btn.friend {
+  background: var(--ts-gray-400);
+  color: var(--ts-gray-500);
+}
+
+.friend-request-btn.you {
+  background: var(--ts-gray-400);
+  color: white;
+  cursor: no-drop;
+}
+
+.friend-request-btn.request-confirm-btn {
+  background: var(--ts-positive-500);
+  color: white;
+  width: 42.5px;
+  height: 34px;
+  font-size: 11px;
+  margin: 0 2.5px;
+}
+
+.friend-request-btn.request-confirm-btn:hover {
+  background: var(--ts-positive-600);
+}
+
+.friend-request-btn.request-decline-btn {
+  background: var(--ts-gray-500);
+  color: white;
+  width: 42.5px;
+  height: 34px;
+  font-size: 11px;
+  margin: 0 2.5px;
+}
+
+.friend-request-btn.request-decline-btn:hover {
+  background: var(--ts-gray-600);
 }
 
 #chatbox,
