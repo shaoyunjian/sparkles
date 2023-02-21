@@ -115,6 +115,12 @@ const clickListToDisplayChatroom = () => {
       chatBox.style.display = "flex"
       isTypingMessage.style.display = "none"
 
+      const activeChatroom = document.querySelector("#chat-list-scrollbar .active")
+      if (activeChatroom) {
+        activeChatroom.classList.remove("active")
+      }
+
+      chatListItems[index].classList.add("active")
       currentRoomId = chatListItems[index].id
 
       fetchChatroomAPI(currentRoomId)
