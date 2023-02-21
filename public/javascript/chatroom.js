@@ -3,6 +3,10 @@ let currentFriendId
 let currentFriendAvatar
 let currentRoomId
 const isTypingMessage = document.querySelector(".typing")
+const emojiSelectorBtn = document.querySelector("#emoji-selector-btn")
+const emojiSelector = document.querySelector(".emoji-selector")
+const allEmojis = document.querySelectorAll(".emoji")
+const emojiIcon = document.querySelector("#emoji-icon")
 
 // ------- get user's info from JWT -------
 const jwt = document.cookie
@@ -114,6 +118,7 @@ const clickListToDisplayChatroom = () => {
       welcomeBox.style.display = "none"
       chatBox.style.display = "flex"
       isTypingMessage.style.display = "none"
+      emojiSelector.classList.remove("is-visible")
 
       const activeChatroom = document.querySelector("#chat-list-scrollbar .active")
       if (activeChatroom) {
@@ -173,12 +178,15 @@ function emitMessageToServer(currentUsername, currentUserId) {
       roomId: currentRoomId,
       receiverId: currentFriendId,
     }
+
     if (event.key === "Enter") {
       if (inputMessageValue) {
         socket.emit("chatMessages", msgData)
         socket.emit("typing", "not typing")
       }
     }
+
+    toggleEmojiIcon()
   })
 
   sendMessageBtn.addEventListener("click", () => {
@@ -196,6 +204,8 @@ function emitMessageToServer(currentUsername, currentUserId) {
       socket.emit("chatMessages", msgData)
       socket.emit("typing", "not typing")
     }
+
+    toggleEmojiIcon()
   })
 
 }
@@ -335,4 +345,22 @@ function checkTypingStatus(currentFriendId) {
 
   })
 
+}
+
+// -------------- emoji selector --------------
+
+emojiSelectorBtn.addEventListener("click", () => {
+  toggleEmojiIcon()
+})
+
+allEmojis.forEach((emoji, index) => {
+  emoji.addEventListener("click", () => {
+    inputMessage.value += allEmojis[index].textContent
+  })
+})
+
+function toggleEmojiIcon() {
+  emojiSelector.classList.toggle("is-visible")
+  emojiIcon.classList.toggle("is-face-smile-icon")
+  emojiIcon.classList.toggle("is-chevron-down-icon")
 }
