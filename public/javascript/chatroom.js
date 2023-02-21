@@ -119,6 +119,8 @@ const clickListToDisplayChatroom = () => {
       chatBox.style.display = "flex"
       isTypingMessage.style.display = "none"
       emojiSelector.classList.remove("is-visible")
+      emojiIcon.classList.add("is-face-smile-icon")
+      emojiIcon.classList.remove("is-chevron-down-icon")
 
       const activeChatroom = document.querySelector("#chat-list-scrollbar .active")
       if (activeChatroom) {
@@ -183,10 +185,10 @@ function emitMessageToServer(currentUsername, currentUserId) {
       if (inputMessageValue) {
         socket.emit("chatMessages", msgData)
         socket.emit("typing", "not typing")
+        toggleEmojiIcon()
       }
     }
 
-    toggleEmojiIcon()
   })
 
   sendMessageBtn.addEventListener("click", () => {
