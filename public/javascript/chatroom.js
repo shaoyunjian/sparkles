@@ -77,7 +77,7 @@ async function fetchChatListAPI(senderId) {
         <div class="ts-content is-dense chat-list-item">
           <div class="ts-row is-middle-aligned">
             <div class="column avatar">
-              <div class="ts-avatar is-circular is-large">
+              <div class="ts-avatar is-circular is-large is-bordered">
                 <img src="${avatarUrl}" />
               </div>
               <div class="avatar-badge" id="${friendId}"></div>
@@ -169,57 +169,162 @@ if (inputMessage) {
   emitMessageToServer(currentUsername, currentUserId)
 }
 
+// --------- upload images to s3 and display it ---------
+
+const inputFile = document.querySelector("#input-file")
+const imagePreloadArea = document.querySelector("#image-preload-area")
+const imagePreloadImage = document.querySelector("#image-preload-image")
+const inputFileResetBtn = document.querySelector("#input-file-reset-btn")
+
+inputFile.addEventListener("change", (event) => {
+
+  imagePreloadArea.style.display = "flex"
+  imagePreloadImage.src = URL.createObjectURL(event.target.files[0])
+  imagePreloadImage.onload = function () {
+    URL.revokeObjectURL(imagePreloadImage.src) // free memory
+  }
+
+  inputFileResetBtn.addEventListener("click", () => {
+    closeImagePreloadArea()
+  })
+
+  const chatListItem = document.querySelectorAll(".chat-list-item")
+  chatListItem.forEach((chatList) => {
+    chatList.addEventListener("click", () => {
+      closeImagePreloadArea()
+    })
+  })
+
+})
+
+function closeImagePreloadArea() {
+  inputFile.value = ""
+  imagePreloadArea.style.display = "none"
+}
+
 function emitMessageToServer(currentUsername, currentUserId) {
+
   inputMessage.addEventListener("keypress", (event) => {
     const inputMessageValue = inputMessage.value
-    const msgData = {
-      text: inputMessageValue,
-      username: currentUsername,
-      id: currentUserId,
-      avatarUrl: currentUserAvatar,
-      roomId: currentRoomId,
-      receiverId: currentFriendId,
+    const image = inputFile.files[0]
+    if (image) {
+      getUploadedImageUrl()
+
+      async function getUploadedImageUrl() {
+        let formData = new FormData()
+        formData.append("image", image)
+
+        const response = await fetch("/api/file", {
+          method: "POST",
+          body: formData
+        })
+
+        const jsonData = await response.json()
+        const messageImageUrl = jsonData.data
+
+        const msgData = {
+          text: null,
+          imageUrlMessage: messageImageUrl,
+          username: currentUsername,
+          id: currentUserId,
+          avatarUrl: currentUserAvatar,
+          roomId: currentRoomId,
+          receiverId: currentFriendId,
+        }
+
+        if (event.key === "Enter") {
+          socket.emit("chatMessages", msgData)
+          socket.emit("typing", "not typing")
+        }
+      }
+
+
     }
 
-    if (event.key === "Enter") {
-      if (inputMessageValue) {
+    if (inputMessageValue) {
+      const msgData = {
+        text: inputMessageValue,
+        imageUrlMessage: null,
+        username: currentUsername,
+        id: currentUserId,
+        avatarUrl: currentUserAvatar,
+        roomId: currentRoomId,
+        receiverId: currentFriendId,
+      }
+      if (event.key === "Enter") {
         socket.emit("chatMessages", msgData)
         socket.emit("typing", "not typing")
-        toggleEmojiIcon()
       }
     }
 
+    handleEmojiSelector("close")
+    closeImagePreloadArea()
   })
 
   sendMessageBtn.addEventListener("click", () => {
     const inputMessageValue = inputMessage.value
-    const msgData = {
-      text: inputMessageValue,
-      username: currentUsername,
-      id: currentUserId,
-      avatarUrl: currentUserAvatar,
-      roomId: currentRoomId,
-      receiverId: currentFriendId,
+    const image = inputFile.files[0]
+    if (image) {
+      getUploadedImageUrl()
+
+      async function getUploadedImageUrl() {
+        let formData = new FormData()
+        formData.append("image", image)
+
+        const response = await fetch("/api/file", {
+          method: "POST",
+          body: formData
+        })
+
+        const jsonData = await response.json()
+        const messageImageUrl = jsonData.data
+
+        const msgData = {
+          text: null,
+          imageUrlMessage: messageImageUrl,
+          username: currentUsername,
+          id: currentUserId,
+          avatarUrl: currentUserAvatar,
+          roomId: currentRoomId,
+          receiverId: currentFriendId,
+        }
+
+        socket.emit("chatMessages", msgData)
+        socket.emit("typing", "not typing")
+      }
     }
 
     if (inputMessageValue) {
+      const msgData = {
+        text: inputMessageValue,
+        imageUrlMessage: null,
+        username: currentUsername,
+        id: currentUserId,
+        avatarUrl: currentUserAvatar,
+        roomId: currentRoomId,
+        receiverId: currentFriendId,
+      }
+
       socket.emit("chatMessages", msgData)
       socket.emit("typing", "not typing")
     }
 
-    toggleEmojiIcon()
+    handleEmojiSelector("close")
+    closeImagePreloadArea()
   })
 
 }
 
 // ---- store my message into database -----
 async function storeMessageToDB(message) {
+  console.log("storeMessage", message)
   const response = await fetch("/api/message", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       senderId: message.userId,
       messageText: message.message,
+      messageImageUrl: message.messageImageUrl,
       chatroomId: message.roomId,
       sentTime: message.time
     })
@@ -261,6 +366,7 @@ async function displayMessageHistory(roomId) {
         userId: data.sender._id,
         username: data.sender.name,
         message: data.message_text,
+        messageImageUrl: data.image_url,
         time: data.sent_time
       }
 
@@ -275,8 +381,8 @@ async function displayMessageHistory(roomId) {
 // --------- append message bubble --------
 function appendMessage(msg) {
   // const dateDivider = `<div class="ts-divider is-center-text ts-text is-small" style="color: var(--ts-gray-500);">2022-02-03</div>`
-  // console.log(msg)
-  const myMessage = `
+
+  const myTextMessage = `
     <div class="sender-message">
       <div class="sender-name"></div>
       <div class="sender-bubble-box">
@@ -285,7 +391,7 @@ function appendMessage(msg) {
       </div>
     </div>
   `
-  const friendMessage = `
+  const friendTextMessage = `
     <div class="receiver-message">
       <div class="receiver-avatar">
         <div class="ts-avatar is-circular">
@@ -302,10 +408,48 @@ function appendMessage(msg) {
     </div>
   `
 
+  const myImageMessage = `
+    <div class="sender-message">
+      <div class="sender-name"></div>
+      <div class="sender-bubble-box">
+        <div class="sending-time">${msg.time}</div>
+        <div class="ts-image is-rounded is-medium is-bordered">
+          <img src="${msg.messageImageUrl}" /> 
+        </div>
+      </div>
+    </div>
+  `
+  const friendImageMessage = `
+    <div class="receiver-message">
+      <div class="receiver-avatar">
+        <div class="ts-avatar is-circular">
+          <img src="${msg.avatarUrl}">
+        </div>
+      </div>
+      <div class="receiver-name-bubble">
+        <div class="receiver-name">${msg.username}</div>
+        <div class="receiver-bubble-box">
+          <div class="ts-image is-rounded is-medium is-bordered">
+            <img src="${msg.messageImageUrl}" /> 
+          </div>
+          <div class="receiving-time">${msg.time}</div>
+        </div>
+      </div>
+    </div>
+  `
+
   if (msg.userId === currentUserId) {
-    chatMessageBox.innerHTML += myMessage
+    if (msg.message) {
+      chatMessageBox.innerHTML += myTextMessage
+    } else {
+      chatMessageBox.innerHTML += myImageMessage
+    }
   } else {
-    chatMessageBox.innerHTML += friendMessage
+    if (msg.message) {
+      chatMessageBox.innerHTML += friendTextMessage
+    } else {
+      chatMessageBox.innerHTML += friendImageMessage
+    }
   }
 
   chatScrollBar.scrollTop = chatScrollBar.scrollHeight
@@ -365,4 +509,16 @@ function toggleEmojiIcon() {
   emojiSelector.classList.toggle("is-visible")
   emojiIcon.classList.toggle("is-face-smile-icon")
   emojiIcon.classList.toggle("is-chevron-down-icon")
+}
+
+function handleEmojiSelector(action) {
+  if (action === "open") {
+    emojiSelector.classList.add("is-visible")
+    emojiIcon.classList.remove("is-face-smile-icon")
+    emojiIcon.classList.add("is-chevron-down-icon")
+  } else if (action === "close") {
+    emojiSelector.classList.remove("is-visible")
+    emojiIcon.classList.add("is-face-smile-icon")
+    emojiIcon.classList.remove("is-chevron-down-icon")
+  }
 }
