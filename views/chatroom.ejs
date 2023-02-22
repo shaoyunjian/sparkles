@@ -32,7 +32,7 @@
         <div class="ts-content">
           <div class="ts-row is-middle-aligned">
             <div class="column avatar">
-              <div class="ts-avatar is-circular is-large">
+              <div class="ts-avatar is-circular is-large is-bordered">
                 <img src="https://v4.tocas-ui.com/zh-tw/assets/images/user.png" id="my-avatar-url" />
               </div>
               <div class="avatar-badge"></div>
@@ -226,7 +226,7 @@
         <div class="ts-content">
           <div class="ts-row is-middle-aligned">
             <div class="column avatar">
-              <div class="ts-avatar is-circular is-large" id="chatbox-top-bar-avatar">
+              <div class="ts-avatar is-circular is-large is-bordered" id="chatbox-top-bar-avatar">
                 <img src="https://v4.tocas-ui.com/zh-tw/assets/images/user.png" />
               </div>
               <div class="avatar-badge"></div>
@@ -290,6 +290,12 @@
             </div> -->
 
           </div>
+        </div>
+      </div>
+      <div id="image-preload-area">
+        <div id="image-preload-box">
+          <img id="image-preload-image" />
+          <button class="ts-close" id="input-file-reset-btn"></button>
         </div>
       </div>
 
@@ -413,7 +419,12 @@
                 <span class="ts-icon is-face-smile-icon" id="emoji-icon"></span>
               </button>
               <button class="ts-button is-circular is-icon is-ghost">
-                <span class="ts-icon is-image-icon"></span>
+                <label for="input-file" style="width: 40.7px; cursor: pointer;">
+                  <span class="ts-icon is-image-icon" style="cursor: pointer;">
+                    <input type="file" id="input-file" accept=".jpg, .jpeg, .png"
+                      style="display:none; visibility: none; cursor: pointer;">
+                  </span>
+                </label>
               </button>
             </div>
             <div class="column is-fluid">
@@ -439,7 +450,6 @@
   </div>
 
   <!-- contact modal -->
-  <!-- test -->
   <div class="ts-modal" id="user-search-modal">
     <div class="content" id="user-search-modal-content">
       <div class="ts-content">
