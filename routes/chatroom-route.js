@@ -1,8 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const mongoDB = require("../models/mongoose")
 const Chatroom = require("../models/chatroom-schema")
-const Message = require("../models/message-schema")
 const { cookieJwtAuth } = require("../cookieJwtAuth")
 
 
@@ -85,70 +83,6 @@ router.post("/chatroom", async (req, res) => {
 
 })
 
-
-// ------- store message to database -------
-
-router.post("/message", async (req, res) => {
-  const senderId = req.body.senderId
-  const messageText = req.body.messageText
-  const chatroomId = req.body.chatroomId
-  const sentTime = req.body.sentTime
-
-  try {
-    const createMessage = await Message.create({
-      sender: senderId,
-      message_text: messageText,
-      chatroom_id: chatroomId,
-      sent_time: sentTime
-    })
-
-    res.status(200).send({
-      "ok": true
-    })
-  } catch (e) {
-    console.log(e.message)
-    res.status(500).send({
-      "error": true,
-      "message": "Internal server error"
-    })
-  }
-
-})
-
-// --------- get chat history -------------
-
-router.get("/message/:chatroomId", async (req, res) => {
-  const chatroomId = req.params.chatroomId
-  try {
-    const message = await Message
-      .find({
-        chatroom_id: chatroomId
-      })
-      .populate({
-        path: "sender",
-        select: ["name", "email", "avatar_url"]
-      })
-
-    if (message.length > 0) {
-      res.status(200).send({
-        "data": message
-      })
-    } else {
-      res.status(200).send({
-        "data": null
-      })
-    }
-
-
-  } catch (e) {
-    console.log(e.message)
-    res.status(500).send({
-      "error": true,
-      "message": "Internal server error"
-    })
-  }
-
-})
 
 
 module.exports = router
