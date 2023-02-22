@@ -16,9 +16,11 @@ app.set("view engine", "ejs")
 const userRouter = require("./routes/user-route.js")
 const chatroomRouter = require("./routes/chatroom-route.js")
 const friendRouter = require("./routes/friend-route.js")
+const messageRouter = require("./routes/message-route.js")
 app.use("/api/", userRouter)
 app.use("/api/", chatroomRouter)
 app.use("/api/", friendRouter)
+app.use("/api/", messageRouter)
 
 // middleware
 const { cookieJwtAuth } = require("./cookieJwtAuth")
@@ -63,7 +65,7 @@ io.on("connection", socket => {
     const friendSocketId = getUserSocketIdByUserId(msg.receiverId)
     const mySocketId = getUserSocketIdByUserId(user.userId)
 
-    io.to(mySocketId).to(friendSocketId).emit("message", formatMessage(user.userId, user.username, msg.avatarUrl, msg.text, msg.roomId))
+    io.to(mySocketId).to(friendSocketId).emit("message", formatMessage(user.userId, user.username, msg.avatarUrl, msg.text, msg.imageUrlMessage, msg.roomId))
   })
 
   socket.on("typing", (data) => {

@@ -14,7 +14,12 @@ const messageSchema = new mongoose.Schema({
     type: String
   },
   message_text: {
-    type: String
+    type: String,
+    default: null
+  },
+  image_url: {
+    type: String,
+    default: null
   },
   chatroom_id: {
     type: ObjectId,
