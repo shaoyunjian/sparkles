@@ -116,7 +116,7 @@ io.on("connection", socket => {
     userDisconnect(socket.id)
     onlineUsers.delete(socket.userId)
 
-    io.emit("user disconnected", socket.userId)
+    io.emit("userDisconnected", socket.userId)
   })
 
 })

@@ -1,3 +1,4 @@
+const socket = io()
 let currentFriendName
 let currentFriendId
 let currentFriendAvatar
@@ -73,7 +74,7 @@ async function fetchChatListAPI(senderId) {
     })
 
     chatListScrollbar.innerHTML += `
-      <div id="${roomId}" class="chat-list-items" >
+      <div id="${roomId}" data-id="${friendId}" class="chat-list-items" >
         <div class="ts-content is-dense chat-list-item">
           <div class="ts-row is-middle-aligned">
             <div class="column avatar">
@@ -95,6 +96,9 @@ async function fetchChatListAPI(senderId) {
         </div>
       </div>
     `
+    socket.emit("newUser", { currentUserId, currentUsername })
+    checkOnlineStatus(friendId)
+
   })
 
   clickListToDisplayChatroom()
@@ -108,6 +112,7 @@ const chatBox = document.querySelector("#chatbox")
 const topBar = document.querySelector(".top-bar")
 const chatBoxTopBarAvatar = document.querySelector("#chatbox-top-bar-avatar")
 const chatBoxTopBarName = document.querySelector("#chatbox-top-bar-name")
+const chatBoxAvatarBadge = document.querySelector(".chatbox-avatar-badge")
 
 // click chat list to display chatroom
 const clickListToDisplayChatroom = () => {
@@ -122,6 +127,7 @@ const clickListToDisplayChatroom = () => {
       emojiIcon.classList.add("is-face-smile-icon")
       emojiIcon.classList.remove("is-chevron-down-icon")
 
+      // active item
       const activeChatroom = document.querySelector("#chat-list-scrollbar .active")
       if (activeChatroom) {
         activeChatroom.classList.remove("active")
@@ -129,6 +135,15 @@ const clickListToDisplayChatroom = () => {
 
       chatListItems[index].classList.add("active")
       currentRoomId = chatListItems[index].id
+
+      // check online status
+      const chatboxAvatarBadge = document.querySelector(".chatbox-avatar-badge")
+      if (chatboxAvatarBadge) { chatboxAvatarBadge.classList.remove("online") }
+      const friendId = chatListItems[index].dataset.id
+      const avatarBadgeId = document.getElementById(`${friendId}`)
+      if (avatarBadgeId.classList.value.includes("online")) {
+        document.querySelector(".chatbox-avatar-badge").classList.add("online")
+      }
 
       fetchChatroomAPI(currentRoomId)
       displayMessageHistory(currentRoomId)
@@ -139,13 +154,12 @@ const clickListToDisplayChatroom = () => {
 
 // //------ 1 to 1 real-time chatroom --------
 
-const socket = io()
 const chatMessageBox = document.querySelector(".chat-message-box")
 const chatScrollBar = document.querySelector(".middle-scollbar")
 const sendMessageBtn = document.querySelector("#send-message-btn")
 const inputMessage = document.querySelector("#input-message")
 
-socket.emit("newUser", { currentUserId, currentUsername })
+// socket.emit("newUser", { currentUserId, currentUsername })
 
 // socket on event
 socket.on("message", message => {
@@ -347,6 +361,7 @@ async function fetchChatroomAPI(roomId) {
   })
   chatBoxTopBarAvatar.innerHTML = `<img src="${currentFriendAvatar}" />`
   chatBoxTopBarName.textContent = currentFriendName
+  chatBoxAvatarBadge.id = `status${currentFriendId}`
 
   checkTypingStatus(currentFriendId)
 }
@@ -429,7 +444,7 @@ function appendMessage(msg) {
       <div class="receiver-name-bubble">
         <div class="receiver-name">${msg.username}</div>
         <div class="receiver-bubble-box">
-          <div class="ts-image is-rounded is-medium is-bordered">
+          <div class="ts-image is-rounded is-medium is-bordered message-image">
             <img src="${msg.messageImageUrl}" /> 
           </div>
           <div class="receiving-time">${msg.time}</div>
@@ -522,3 +537,39 @@ function handleEmojiSelector(action) {
     emojiIcon.classList.remove("is-chevron-down-icon")
   }
 }
+
+// ---------- online/offline status -----------
+
+const avatarBadge = document.querySelector(".avatar-badge")
+avatarBadge.classList.add("online")
+
+function checkOnlineStatus(friendId) {
+  socket.on("newUser", (onlineUsersId) => {
+    onlineUsersId.forEach((onlineUserId) => {
+      const friendOnlineStatus = document.getElementById(`${friendId}`)
+
+      if (onlineUserId === friendId) {
+        friendOnlineStatus.classList.add("online")
+
+        const chatroomAvatarBadge = document.getElementById(`status${friendId}`)
+        if (chatroomAvatarBadge) {
+          chatroomAvatarBadge.classList.add("online")
+        }
+      }
+
+    })
+  })
+
+}
+
+socket.on("userDisconnected", (id) => {
+  const friendOnlineStatus = document.getElementById(`${id}`)
+  if (friendOnlineStatus) {
+    friendOnlineStatus.classList.remove("online")
+  }
+
+  const chatroomAvatarBadge = document.getElementById(`status${id}`)
+  if (chatroomAvatarBadge) {
+    chatroomAvatarBadge.classList.remove("online")
+  }
+})
