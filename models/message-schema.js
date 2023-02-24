@@ -4,12 +4,8 @@ const mongoose = require("mongoose")
 const messageSchema = new mongoose.Schema({
   sender: {
     type: ObjectId,
-    ref: 'User'
+    ref: "User"
   },
-  // sent_datetime: {
-  //   type: Date,
-  //   default: Date.now
-  // },
   sent_time: {
     type: String
   },
@@ -23,7 +19,7 @@ const messageSchema = new mongoose.Schema({
   },
   chatroom_id: {
     type: ObjectId,
-    ref: 'Classroom'
+    ref: "Classroom"
   }
 })
 

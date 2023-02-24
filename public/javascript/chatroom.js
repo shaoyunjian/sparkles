@@ -11,12 +11,16 @@ const emojiIcon = document.querySelector("#emoji-icon")
 
 // ------- get user's info from JWT -------
 const jwt = document.cookie
-const parts = jwt.split(".");
+const parts = jwt.split(".")
 const payload = JSON.parse(atob(parts[1]))
 const currentUserId = payload.id
 const currentUsername = payload.name
 const currentUserEmail = payload.email
 const currentUserAvatar = payload.avatarUrl
+
+// ------- current local date & time ------
+const localDateTime = new Date()
+const currentDateTime = localDateTime.toISOString()
 
 // --------------- profile ----------------
 const myAvatarUrl = document.querySelector("#my-avatar-url")
@@ -132,7 +136,7 @@ const clickListToDisplayChatroom = () => {
 }
 
 
-// //------ 1 to 1 real-time chatroom --------
+// ------ 1 to 1 real-time chatroom --------
 
 const chatMessageBox = document.querySelector(".chat-message-box")
 const chatScrollBar = document.querySelector(".middle-scollbar")
@@ -218,9 +222,10 @@ function emitMessageToServer(currentUsername, currentUserId) {
 
         const msgData = {
           text: null,
+          dateTime: currentDateTime,
           imageUrlMessage: messageImageUrl,
           username: currentUsername,
-          id: currentUserId,
+          userId: currentUserId,
           avatarUrl: currentUserAvatar,
           roomId: currentRoomId,
           receiverId: currentFriendId,
@@ -238,9 +243,10 @@ function emitMessageToServer(currentUsername, currentUserId) {
     if (inputMessageValue) {
       const msgData = {
         text: inputMessageValue,
+        dateTime: currentDateTime,
         imageUrlMessage: null,
         username: currentUsername,
-        id: currentUserId,
+        userId: currentUserId,
         avatarUrl: currentUserAvatar,
         roomId: currentRoomId,
         receiverId: currentFriendId,
@@ -275,9 +281,10 @@ function emitMessageToServer(currentUsername, currentUserId) {
 
         const msgData = {
           text: null,
+          dateTime: currentDateTime,
           imageUrlMessage: messageImageUrl,
           username: currentUsername,
-          id: currentUserId,
+          userId: currentUserId,
           avatarUrl: currentUserAvatar,
           roomId: currentRoomId,
           receiverId: currentFriendId,
@@ -291,9 +298,10 @@ function emitMessageToServer(currentUsername, currentUserId) {
     if (inputMessageValue) {
       const msgData = {
         text: inputMessageValue,
+        dateTime: currentDateTime,
         imageUrlMessage: null,
         username: currentUsername,
-        id: currentUserId,
+        userId: currentUserId,
         avatarUrl: currentUserAvatar,
         roomId: currentRoomId,
         receiverId: currentFriendId,
@@ -311,16 +319,16 @@ function emitMessageToServer(currentUsername, currentUserId) {
 
 // ---- store my message into database -----
 async function storeMessageToDB(message) {
-  console.log("storeMessage", message)
+
   const response = await fetch("/api/message", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       senderId: message.userId,
-      messageText: message.message,
-      messageImageUrl: message.messageImageUrl,
+      messageText: message.text,
+      messageImageUrl: message.imageUrlMessage,
       chatroomId: message.roomId,
-      sentTime: message.time
+      sentTime: message.dateTime
     })
   })
 }
@@ -360,29 +368,37 @@ async function displayMessageHistory(roomId) {
         avatarUrl: data.sender.avatar_url,
         userId: data.sender._id,
         username: data.sender.name,
-        message: data.message_text,
-        messageImageUrl: data.image_url,
-        time: data.sent_time
+        text: data.message_text,
+        imageUrlMessage: data.image_url,
+        dateTime: data.sent_time
       }
 
       appendMessage(historyMessage)
     })
   } else {
-    chatMessageBox.innerHTML = "沒有任何訊息"
+    chatMessageBox.innerHTML = `
+      <div style="display:flex; justify-content: center; align-items: center;">
+        <img src="./Connected-world-pana.png" style="width:500px; opacity:50%"/>
+      </div>
+    `
   }
-
 }
 
 // --------- append message bubble --------
+
 function appendMessage(msg) {
-  // const dateDivider = `<div class="ts-divider is-center-text ts-text is-small" style="color: var(--ts-gray-500);">2022-02-03</div>`
+  const dateTime = new Date(msg.dateTime)
+  const hour = dateTime.getHours()
+  const minutes = dateTime.getMinutes()
+
+  const currentLocalTime = (hour < 10 ? "0" + hour : hour) + ":" + (minutes < 10 ? "0" + minutes : minutes)
 
   const myTextMessage = `
     <div class="sender-message">
       <div class="sender-name"></div>
       <div class="sender-bubble-box">
-        <div class="sending-time">${msg.time}</div>
-        <div class="sender-bubble bubble">${msg.message}</div>
+        <div class="sending-time">${currentLocalTime}</div>
+        <div class="sender-bubble bubble">${msg.text}</div>
       </div>
     </div>
   `
@@ -396,8 +412,8 @@ function appendMessage(msg) {
       <div class="receiver-name-bubble">
         <div class="receiver-name">${msg.username}</div>
         <div class="receiver-bubble-box">
-          <div class="receiver-bubble bubble">${msg.message}</div>
-          <div class="receiving-time">${msg.time}</div>
+          <div class="receiver-bubble bubble">${msg.text}</div>
+          <div class="receiving-time">${currentLocalTime}</div>
         </div>
       </div>
     </div>
@@ -407,9 +423,9 @@ function appendMessage(msg) {
     <div class="sender-message">
       <div class="sender-name"></div>
       <div class="sender-bubble-box">
-        <div class="sending-time">${msg.time}</div>
+        <div class="sending-time">${currentLocalTime}</div>
         <div class="ts-image is-rounded is-medium is-bordered">
-          <img src="${msg.messageImageUrl}" /> 
+          <img src="${msg.imageUrlMessage}" /> 
         </div>
       </div>
     </div>
@@ -425,22 +441,22 @@ function appendMessage(msg) {
         <div class="receiver-name">${msg.username}</div>
         <div class="receiver-bubble-box">
           <div class="ts-image is-rounded is-medium is-bordered message-image">
-            <img src="${msg.messageImageUrl}" /> 
+            <img src="${msg.imageUrlMessage}" /> 
           </div>
-          <div class="receiving-time">${msg.time}</div>
+          <div class="receiving-time">${currentLocalTime}</div>
         </div>
       </div>
     </div>
   `
 
   if (msg.userId === currentUserId) {
-    if (msg.message) {
+    if (msg.text) {
       chatMessageBox.innerHTML += myTextMessage
     } else {
       chatMessageBox.innerHTML += myImageMessage
     }
   } else {
-    if (msg.message) {
+    if (msg.text) {
       chatMessageBox.innerHTML += friendTextMessage
     } else {
       chatMessageBox.innerHTML += friendImageMessage

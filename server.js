@@ -43,7 +43,6 @@ app.get("/chatroom", cookieJwtAuth, (req, res) => {
 // ---------------- socket io ---------------- 
 const http = require("http")
 const socketIo = require("socket.io")
-const formatMessage = require("./utils/formatMessage")
 const { userConnect, getCurrentUser, getUserSocketIdByUserId, userDisconnect } = require("./utils/users")
 
 const server = http.createServer(app)
@@ -65,7 +64,7 @@ io.on("connection", socket => {
     const friendSocketId = getUserSocketIdByUserId(msg.receiverId)
     const mySocketId = getUserSocketIdByUserId(user.userId)
 
-    io.to(mySocketId).to(friendSocketId).emit("message", formatMessage(user.userId, user.username, msg.avatarUrl, msg.text, msg.imageUrlMessage, msg.roomId))
+    io.to(mySocketId).to(friendSocketId).emit("message", msg)
   })
 
   socket.on("typing", (data) => {
