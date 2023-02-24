@@ -46,11 +46,12 @@ router.post("/user", async (req, res) => {
 // -------- get all users ---------
 
 router.get("/user", async (req, res) => {
-  const keyword = req.query.keyword
-  const reg = new RegExp(keyword, "i")
-
-  if (!keyword) return
   try {
+    const keyword = req.query.keyword
+    const reg = new RegExp(keyword, "i")
+
+    if (!keyword) return
+
     const user = await User.find(
       {
         $or: [
@@ -85,6 +86,44 @@ router.get("/user", async (req, res) => {
     res.status(500).send({
       "error": true,
       "message": " Internal server error"
+    })
+  }
+})
+
+// ------- edit user info --------
+
+router.patch("/user", async (req, res) => {
+  const email = req.body.email
+  const name = req.body.name
+  const password = req.body.password
+  const avatarUrl = req.body.avatarUrl
+  const profileStatus = req.body.profileStatus
+
+  try {
+    const user = await User.exists({ email: email })
+
+    if (user) {
+      await User.findOneAndUpdate({
+        email: email,
+      }, {
+        name: name,
+        password: password,
+        avatar_url: avatarUrl,
+        profile_status: profileStatus
+      })
+
+      res.status(200).send({ "ok": true })
+    } else {
+      res.status(400).send({
+        "error": true,
+        "message": "Email/user not exists"
+      })
+    }
+  } catch (e) {
+    console.log(e.message)
+    res.status(500).send({
+      "error": true,
+      "message": "Internal server error"
     })
   }
 })

@@ -43,7 +43,7 @@
             </div>
             <div class="column">
               <div class="ts-wrap is-compact">
-                <button class="ts-button is-circular is-small is-icon is-secondary">
+                <button class="ts-button is-circular is-small is-icon is-secondary" id="member-settings-btn">
                   <span class="ts-icon is-ellipsis-icon"></span>
                 </button>
                 <div class="notification-btns" id="user-search-btn">
@@ -229,7 +229,7 @@
               <div class="ts-avatar is-circular is-large is-bordered" id="chatbox-top-bar-avatar">
                 <img src="https://v4.tocas-ui.com/zh-tw/assets/images/user.png" />
               </div>
-              <div class="avatar-badge"></div>
+              <div class="chatbox-avatar-badge avatar-badge"></div>
             </div>
             <div class="column is-fluid">
               <div class="ts-text is-big" id="chatbox-top-bar-name"></div>
@@ -255,7 +255,7 @@
       </div>
 
       <div class="middle-scollbar cell is-fluid is-scrollable">
-        <div class="ts-content">
+        <div class="ts-content" style="padding: 15px 20px 10px 30px;">
           <div class="chat-message-box">
 
             <!-- <div class="receiver-message">
@@ -533,7 +533,78 @@
     </div>
   </div>
 
+  <!-- member center modal -->
+  <div class="ts-modal" id="member-settings-modal">
+    <div class="content">
+      <div class="ts-content">
+        <div class="ts-row">
+          <div class="column is-fluid">
+            <div class="ts-header is-heavy">Settings</div>
+          </div>
+          <div class="column">
+            <button class="ts-close" id="member-settings-modal-close-btn"></button>
+          </div>
+        </div>
+      </div>
+      <div class="ts-divider"></div>
+      <div class="ts-space"></div>
+      <div class="">
+        <div style="padding: 0 115px; position: relative;">
+          <div class="ts-image is-small is-1-by-1 is-covered is-circular is-centered is-bordered">
+            <img src="https://d1gnt5bnf8w529.cloudfront.net/user2.png" id="settings-my-avatar" />
+          </div>
+          <label for="settings-input-file" style="width: 40.7px; cursor: pointer; position: absolute;">
+            <div class="avatar-edited-btn ts-icon is-user-pen-icon is-huge">
+            </div>
+            <input id="settings-input-file" type="file" accept=".jpg, .jpeg, .png"
+              style="display:none; visibility: none; cursor: pointer;">
+          </label>
+        </div>
+        <div class="ts-space"></div>
+        <!-- <div class="ts-text is-heavy is-big is-center-aligned" id="settings-my-name">Shaoyun</div> -->
+        <!-- <div class="ts-text is-center-aligned" id="settings-my-email">sparkles@sparkles.com</div> -->
+        <!-- <div class="ts-text is-center-aligned">
+          <span class="ts-icon is-pen-to-square-icon"></span>
+        </div> -->
+        <div class="profile" style="padding:0 60px">
+          <div class="ts-input is-start-icon is-disabled" style="margin:5px 0; cursor: no-drop;">
+            <span class="ts-icon is-envelope-icon"></span>
+            <input type="text" placeholder="email address" value="" id="settings-my-email">
+          </div>
+          <div class="ts-input is-start-icon" style="margin:5px 0">
+            <span class="ts-icon is-user-icon"></span>
+            <input type="text" placeholder="Edit username" value="" id="settings-my-name">
+          </div>
+          <!-- password -->
+          <!-- <div class="ts-input is-start-icon" style="margin:5px 0">
+            <span class="ts-icon is-key-icon"></span>
+            <input type="password" placeholder="Password" value="">
+          </div>
+          <div class="ts-input is-start-icon" style="margin:5px 0">
+            <span class="ts-icon is-key-icon"></span>
+            <input type="password" placeholder="Password confirm" value="">
+          </div> -->
+          <!-- <div class="ts-space"></div> -->
+          <!-- <div class="ts-input is-start-icon" style="margin:5px 0">
+            <span class="ts-icon is-message-icon"></span>
+            <input type="text" placeholder="Status message" value="">
+          </div> -->
+        </div>
 
+      </div>
+      <!-- <div class="ts-space"></div> -->
+      <div class="ts-content" style="padding: 10px 80px 30px 80px">
+        <button class="ts-button is-circular is-outlined is-fluid" id="save-btn">
+          <span class="ts-text is-heavy" id="save-btn">Save</span>
+        </button>
+        <div class="ts-space"></div>
+        <button class="ts-button is-circular is-negative is-outlined is-fluid" id="sign-out-btn">
+          <span class="ts-text is-heavy">Sign out</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  </div>
 
   <!-- incoming call popup -->
   <div class=" incoming-call-popup display-none">
@@ -575,6 +646,7 @@
   <script type="text/javascript" src="/chatroom.js"></script>
   <script type="text/javascript" src="/audiochat.js"></script>
   <script type="text/javascript" src="/friend.js"></script>
+  <script type="text/javascript" src="/member-settings.js"></script>
 </body>
 
 </html>
