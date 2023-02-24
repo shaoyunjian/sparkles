@@ -388,8 +388,13 @@ async function displayMessageHistory(roomId) {
 
 function appendMessage(msg) {
   const dateTime = new Date(msg.dateTime)
+  const day = dateTime.getDate()
+  const month = dateTime.getMonth() + 1
+  const year = dateTime.getFullYear()
   const hour = dateTime.getHours()
   const minutes = dateTime.getMinutes()
+
+  const currentLocalDate = year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day)
 
   const currentLocalTime = (hour < 10 ? "0" + hour : hour) + ":" + (minutes < 10 ? "0" + minutes : minutes)
 
@@ -448,6 +453,11 @@ function appendMessage(msg) {
       </div>
     </div>
   `
+  const dateDivider = `<div class="ts-divider is-center-text ts-text is-small" style="color: var(--ts-gray-500);" id="${currentLocalDate}">${currentLocalDate}</div>`
+  const dateExists = document.getElementById(`${currentLocalDate}`)
+  if (!dateExists) {
+    chatMessageBox.innerHTML += dateDivider
+  }
 
   if (msg.userId === currentUserId) {
     if (msg.text) {
