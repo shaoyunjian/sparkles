@@ -25,7 +25,7 @@ header {
   background: #f9fbff;
   text-align: center;
   display: flex;
-  border-bottom: 3px solid rgba(180, 180, 180, 0.3);
+  border-bottom: 2px solid rgba(180, 180, 180, 0.3);
   width: 100vw;
 }
 header .header-logo {
@@ -95,7 +95,7 @@ header .header-logo {
 
 .right-box .middle-scollbar {
   overflow: auto;
-  background: rgba(239, 239, 239, 0.6784313725);
+  background: #f1f1f1;
 }
 .right-box .middle-scollbar .ts-content .chat-message-box .receiver-message {
   display: flex;
@@ -111,14 +111,17 @@ header .header-logo {
   margin-bottom: 10px;
 }
 .right-box .middle-scollbar .ts-content .chat-message-box .receiver-message .receiver-bubble-box .receiver-bubble {
-  background: rgb(245, 247, 251);
+  background: white;
   border-radius: 0 10px 10px 10px;
   padding: 15px;
 }
 .right-box .middle-scollbar .ts-content .chat-message-box .receiver-message .receiver-bubble-box .receiving-time {
   color: rgb(136, 136, 136);
-  font-size: 14px;
-  margin: auto 0 10px 5px;
+  font-size: 12px;
+  margin: auto 0 2px 5px;
+}
+.right-box .middle-scollbar .ts-content .chat-message-box .receiver-message .receiver-bubble-box .message-image {
+  margin: 5px 5px 0 10px;
 }
 .right-box .middle-scollbar .ts-content .chat-message-box .sender-message .sender-bubble-box {
   margin: 10px 15px 10px 10px;
@@ -131,8 +134,8 @@ header .header-logo {
 }
 .right-box .middle-scollbar .ts-content .chat-message-box .sender-message .sender-bubble-box .sending-time {
   color: rgb(136, 136, 136);
-  margin-bottom: 5px;
-  font-size: 14px;
+  margin-bottom: 2px;
+  font-size: 12px;
 }
 .right-box .middle-scollbar .ts-content .chat-message-box .sender-message .sender-bubble {
   background: linear-gradient(to bottom left, rgb(134, 225, 255) 35%, #f9fbff 100%) no-repeat;
@@ -179,12 +182,10 @@ header .header-logo {
   right: 1px;
   border-radius: 50%;
   border: 2px solid white;
+  background-color: var(--ts-gray-400);
 }
 .avatar .online {
   background-color: var(--ts-positive-400);
-}
-.avatar .offline {
-  background-color: var(--ts-gray-400);
 }
 
 .notification-btns {
@@ -349,6 +350,23 @@ header .header-logo {
 
 .emoji {
   font-size: 20px;
+}
+
+.avatar-edited-btn {
+  position: absolute;
+  top: -150px;
+  width: 150px;
+  height: 150px;
+  color: rgba(0, 0, 0, 0);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-edited-btn:hover {
+  background: rgba(69, 69, 69, 0.5);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 #chatbox,
