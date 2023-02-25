@@ -151,6 +151,14 @@ header {
     .ts-content {
       .chat-message-box {
 
+        .chat-image {
+          cursor: pointer;
+        }
+
+        .chat-image:hover {
+          filter: brightness(0.80);
+        }
+
         .receiver-message {
           display: flex;
           height: auto;

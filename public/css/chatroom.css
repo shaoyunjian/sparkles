@@ -97,6 +97,12 @@ header .header-logo {
   overflow: auto;
   background: #f1f1f1;
 }
+.right-box .middle-scollbar .ts-content .chat-message-box .chat-image {
+  cursor: pointer;
+}
+.right-box .middle-scollbar .ts-content .chat-message-box .chat-image:hover {
+  filter: brightness(0.8);
+}
 .right-box .middle-scollbar .ts-content .chat-message-box .receiver-message {
   display: flex;
   height: auto;

@@ -53,7 +53,7 @@
                   <div class="notification-badge"></div>
                 </div>
                 <div class="notification-btns">
-                  <button class="ts-button is-circular is-small is-icon is-secondary">
+                  <button class="ts-button is-circular is-small is-icon is-secondary" id="notification-btn">
                     <span class="ts-icon is-bell-icon"></span>
                   </button>
                   <div class="notification-badge"></div>
@@ -606,6 +606,31 @@
   </div>
   </div>
 
+  <!-- notification modal -->
+  <div class="ts-modal" id="notification-modal">
+    <div class="content">
+      <div class="ts-content">
+        <div class="ts-row">
+          <div class="column is-fluid">
+            <div class="ts-header is-heavy">Notification</div>
+          </div>
+          <div class="column">
+            <button class="ts-close" id="notification-modal-close-btn"></button>
+          </div>
+        </div>
+      </div>
+      <div class="ts-divider"></div>
+
+      <div style="height: 250px; overflow-y: auto;">
+        <div class="user-list ts-content is-dense is-center-aligned">
+          <!-- <img src="/notification.png" style="height: 220px; opacity: 40%;"> -->
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- incoming call popup -->
   <div class=" incoming-call-popup display-none">
     <audio loop id="ringtone">
@@ -637,7 +662,9 @@
       <i class="fas fa-phone" id="end-call-btn"></i>
     </div>
   </div>
-
+  <div class="ts-modal is-big" id="chat-image-display-area" style="cursor:pointer">
+    <img style="max-height: 500px;">
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.1.0/tocas.min.js"></script>
   <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
@@ -647,6 +674,7 @@
   <script type="text/javascript" src="/audiochat.js"></script>
   <script type="text/javascript" src="/friend.js"></script>
   <script type="text/javascript" src="/member-settings.js"></script>
+  <script type="text/javascript" src="/notification.js"></script>
 </body>
 
 </html>

@@ -430,7 +430,7 @@ function appendMessage(msg) {
       <div class="sender-bubble-box">
         <div class="sending-time">${currentLocalTime}</div>
         <div class="ts-image is-rounded is-medium is-bordered">
-          <img src="${msg.imageUrlMessage}" /> 
+          <img src="${msg.imageUrlMessage}" class="chat-image"/> 
         </div>
       </div>
     </div>
@@ -446,14 +446,15 @@ function appendMessage(msg) {
         <div class="receiver-name">${msg.username}</div>
         <div class="receiver-bubble-box">
           <div class="ts-image is-rounded is-medium is-bordered message-image">
-            <img src="${msg.imageUrlMessage}" /> 
+            <img src="${msg.imageUrlMessage}" class="chat-image"/> 
           </div>
           <div class="receiving-time">${currentLocalTime}</div>
         </div>
       </div>
     </div>
   `
-  const dateDivider = `<div class="ts-divider is-center-text ts-text is-small" style="color: var(--ts-gray-500);" id="${currentLocalDate}">${currentLocalDate}</div>`
+  const dateDivider = `<div class="ts-divider is-center-text ts-text is-small is-bold" style="color: var(--ts-gray-500); line-height:50px" id="${currentLocalDate}">${currentLocalDate}</div>`
+
   const dateExists = document.getElementById(`${currentLocalDate}`)
   if (!dateExists) {
     chatMessageBox.innerHTML += dateDivider
@@ -475,6 +476,7 @@ function appendMessage(msg) {
 
   chatScrollBar.scrollTop = chatScrollBar.scrollHeight
   inputMessage.value = ""
+  clickToDisplayChatImage()
 }
 
 
@@ -579,3 +581,24 @@ socket.on("userDisconnected", (id) => {
     chatroomAvatarBadge.classList.remove("online")
   }
 })
+
+
+// -------- display image after clicking --------
+
+function clickToDisplayChatImage() {
+  const chatImageDisplayArea = document.querySelector("#chat-image-display-area")
+  const chatImage = document.querySelector("#chat-image-display-area img")
+  const chatImages = document.querySelectorAll(".chat-image")
+
+  chatImages.forEach((image) => {
+    image.onclick = () => {
+      chatImageDisplayArea.classList.add("is-visible")
+      chatImage.src = image.src
+
+      chatImageDisplayArea.onclick = () => {
+        chatImageDisplayArea.classList.remove("is-visible")
+      }
+    }
+  })
+
+}
