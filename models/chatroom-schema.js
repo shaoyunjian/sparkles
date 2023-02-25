@@ -6,8 +6,8 @@ const chatroomSchema = new mongoose.Schema({
     type: ObjectId,
     ref: 'User'
   }],
-  last_message: { type: String, default: null }, //test 
-  last_message_time: { type: String, default: null } //test
+  last_message: { type: String, default: "" },
+  last_message_time: { type: Date, default: "" }
 })
 
 module.exports = mongoose.model("Chatroom", chatroomSchema)

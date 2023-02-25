@@ -8,6 +8,7 @@ const emojiSelectorBtn = document.querySelector("#emoji-selector-btn")
 const emojiSelector = document.querySelector(".emoji-selector")
 const allEmojis = document.querySelectorAll(".emoji")
 const emojiIcon = document.querySelector("#emoji-icon")
+const chatListScrollbar = document.querySelector("#chat-list-scrollbar")
 
 // ------- get user's info from JWT -------
 const jwt = document.cookie
@@ -21,6 +22,8 @@ const currentUserAvatar = payload.avatarUrl
 // ------- current local date & time ------
 const localDateTime = new Date()
 const currentDateTime = localDateTime.toISOString()
+const currentDate = changeTimeFormat(currentDateTime)[0]
+const currentTime = changeTimeFormat(currentDateTime)[1]
 
 // --------------- profile ----------------
 const myAvatarUrl = document.querySelector("#my-avatar-url")
@@ -32,8 +35,6 @@ myName.forEach((name) => {
 })
 
 // ------------- get chat list ------------
-
-const chatListScrollbar = document.querySelector("#chat-list-scrollbar")
 
 fetchChatListAPI(currentUserId)
 
@@ -57,6 +58,11 @@ async function fetchChatListAPI(senderId) {
       }
     })
 
+    const lastMessageDateTime = changeTimeFormat(data.last_message_time)
+    const lastMessageDate = lastMessageDateTime[0]
+    const date = lastMessageDate.split("-")[1] + "/" + lastMessageDate.split("-")[2]
+    const lastMessageTime = lastMessageDateTime[1]
+
     chatListScrollbar.innerHTML += `
       <div id="${roomId}" data-id="${friendId}" class="chat-list-items" >
         <div class="ts-content is-dense chat-list-item">
@@ -68,18 +74,35 @@ async function fetchChatListAPI(senderId) {
               <div class="avatar-badge" id="${friendId}"></div>
             </div>
             <div class="chat-list-middle-item column">
-              <div class="ts-text is-bold">${friendName}</div>
+              <div class="ts-text is-bold chat-list-friend-name">${friendName}</div>
               <div class="ts-text is-description chat-list-last-message">${data.last_message}
               </div>
             </div>
             <div class="chat-list-right-item column">
-              <div class="ts-text is-description is-tiny">${data.last_message_time}</div>
-              <div class="chat-list-time">9+</div>
+              <div class="ts-text is-description is-tiny chat-list-last-message-time">${lastMessageTime}</div>
+               <div class="unread-count-btn">
+                  <p>9+</p>
+                </div>
             </div>
           </div>
         </div>
       </div>
     `
+
+    if (lastMessageDate !== currentDate) {
+      if (!data.last_message_time) {
+        document.querySelector(`[id="${roomId}"] .chat-list-last-message`).textContent = ""
+
+        document.querySelector(`[id="${roomId}"] .chat-list-last-message-time`).textContent = ""
+      } else {
+        document.querySelector(`[id="${roomId}"] .chat-list-last-message-time`).textContent = `${date}`
+      }
+    }
+
+    if (data.last_message === "photo") {
+      document.querySelector(`[id="${roomId}"] .chat-list-last-message`).innerHTML = `<span class="ts-icon is-image-icon"></span> Photo`
+    }
+
     socket.emit("newUser", { currentUserId, currentUsername })
     checkOnlineStatus(friendId)
 
@@ -147,17 +170,14 @@ const inputMessage = document.querySelector("#input-message")
 
 // socket on event
 socket.on("message", message => {
+  handleMessageList(message)
   if (message.roomId === currentRoomId) {
     appendMessage(message)
     if (message.userId === currentUserId) {
       storeMessageToDB(message)
+      storeLatestMessage(message)
     }
   }
-})
-
-// leave room
-socket.on("leaveRoom", (msg) => {
-  console.log(msg)
 })
 
 
@@ -331,6 +351,33 @@ async function storeMessageToDB(message) {
       sentTime: message.dateTime
     })
   })
+}
+
+// --------- store latest message ---------
+async function storeLatestMessage(message) {
+
+  if (message.text) {
+    await fetch("/api/chatroom", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chatroomId: message.roomId,
+        lastMessage: message.text,
+        lastMessageDateTime: message.dateTime,
+      })
+    })
+  } else {
+    await fetch("/api/chatroom", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chatroomId: message.roomId,
+        lastMessage: "photo",
+        lastMessageDateTime: message.dateTime,
+      })
+    })
+  }
+
 }
 
 // ------ get chatroom information ---------
@@ -601,4 +648,52 @@ function clickToDisplayChatImage() {
     }
   })
 
+}
+
+// handle message list
+function handleMessageList(message) {
+
+  const messageText = message.text
+  const roomId = message.roomId
+  const messageDateTime = changeTimeFormat(message.dateTime)
+  // const messageImageUrl = message.imageUrlMessage
+  // const messageUserId = message.userId
+  // const messageUserName = message.username
+
+  // message list
+  const lastMessage = document.querySelector(`[id=
+    "${roomId}"] .chat-list-last-message`)
+
+  const lastMessageTime = document.querySelector(`[id=
+    "${roomId}"] .chat-list-last-message-time`)
+
+  if (messageText) {
+    lastMessage.textContent = messageText
+  } else {
+    lastMessage.innerHTML = `<span class="ts-icon is-image-icon"></span> Photo`
+  }
+
+  lastMessageTime.textContent = messageDateTime[1]
+
+  //move chat list box to the top one
+  const chatListBox = document.querySelector(`[id="${roomId}"]`)
+  chatListBox.remove()
+  chatListScrollbar.prepend(chatListBox)
+
+}
+
+
+function changeTimeFormat(messageDateTime) {
+  const dateTime = new Date(messageDateTime)
+  const day = dateTime.getDate()
+  const month = dateTime.getMonth() + 1
+  const year = dateTime.getFullYear()
+  const hour = dateTime.getHours()
+  const minutes = dateTime.getMinutes()
+
+  const currentLocalDate = year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day)
+
+  const currentLocalTime = (hour < 10 ? "0" + hour : hour) + ":" + (minutes < 10 ? "0" + minutes : minutes)
+
+  return [currentLocalDate, currentLocalTime]
 }
