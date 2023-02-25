@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const Chatroom = require("../models/chatroom-schema")
 const { cookieJwtAuth } = require("../cookieJwtAuth")
-
+const { ObjectId } = require("mongodb")
 
 // ------------ get chat list  ------------
 
@@ -83,6 +83,36 @@ router.post("/chatroom", async (req, res) => {
 
 })
 
+// ---- store latest message info -------
+
+router.patch("/chatroom", async (req, res) => {
+  const roomId = req.body.chatroomId
+  const lastMessage = req.body.lastMessage
+  const lastMessageTime = req.body.lastMessageDateTime
+
+  try {
+    await Chatroom
+      .findOneAndUpdate(
+        { _id: ObjectId(roomId) },
+        {
+          last_message: lastMessage,
+          last_message_time: lastMessageTime
+        }
+      )
+
+    res.status(200).send({
+      "ok": true
+    })
+
+  } catch (e) {
+    console.log(e.message)
+    res.status(500).send({
+      "error": true,
+      "message": "Internal server error"
+    })
+  }
+
+})
 
 
 module.exports = router
