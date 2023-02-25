@@ -12,7 +12,7 @@ router.get("/chatroom", cookieJwtAuth, async (req, res) => {
 
   if (chatroomId) {
     const chatroom = await Chatroom
-      .find({
+      .findOne({
         _id: {
           $eq: chatroomId
         }
@@ -31,6 +31,9 @@ router.get("/chatroom", cookieJwtAuth, async (req, res) => {
             senderId
           ]
         }
+      })
+      .sort({
+        last_message_time: -1
       })
       .populate({
         path: "participants",
