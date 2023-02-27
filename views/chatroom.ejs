@@ -34,12 +34,13 @@
           <div class="ts-row is-middle-aligned">
             <div class="column avatar">
               <div class="ts-avatar is-circular is-large is-bordered">
-                <img src="https://v4.tocas-ui.com/zh-tw/assets/images/user.png" id="my-avatar-url" />
+                <img src="https://v4.tocas-ui.com/zh-tw/assets/images/user.png" id="home-my-avatar-url" />
               </div>
               <div class="avatar-badge"></div>
             </div>
             <div class="column is-fluid">
-              <div class="ts-text is-heavy is-large my-name"></div>
+              <div class="ts-text is-heavy is-large" id="home-my-name">
+              </div>
               <div class="ts-text is-tiny" style="color: var(--ts-gray-500)">Good day!</div>
             </div>
             <div class="column">
@@ -188,7 +189,9 @@
         </div>
       </div>
       <div class="greeting">
-        <div class="greeting-one">Welcome, <span class="my-name"></span> !</div>
+        <div class="greeting-one">Welcome,
+          <span id="greeting-my-name"></span> !
+        </div>
         <div class="greeting-two">Click to start chatting with friends !</div>
       </div>
       <img src="/Work-chat-cuate.png" style="height:550px; width: 650px; margin: auto; opacity: 65%;">
