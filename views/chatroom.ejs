@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.1.0/tocas.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   <link rel="stylesheet" type="text/css" href="/chatroom.css">
   <link rel="stylesheet" type="text/css" href="/audiochat.css">
   <title>Chatroom</title>
@@ -50,13 +51,13 @@
                   <button class="ts-button is-circular is-small is-icon is-secondary">
                     <span class="ts-icon is-user-group-icon"></span>
                   </button>
-                  <div class="notification-badge"></div>
+                  <div class="notification-badge display-none"></div>
                 </div>
-                <div class="notification-btns">
+                <div class="notification-btns" id="notification-btn">
                   <button class="ts-button is-circular is-small is-icon is-secondary" id="notification-btn">
                     <span class="ts-icon is-bell-icon"></span>
                   </button>
-                  <div class="notification-badge"></div>
+                  <div class="notification-badge display-none"></div>
                 </div>
               </div>
             </div>
@@ -86,44 +87,30 @@
               Use Search to find anyone.
             </div>
           </div>
-          <!-- <div class="ts-content is-dense chat-list-item">
-            <div class="ts-row is-middle-aligned">
-              <div class="column avatar">
-                <div class="ts-avatar is-circular is-large">
-                  <img src="https://v4.tocas-ui.com/zh-tw/assets/images/user.png" />
+          <!-- <div id="${roomId}" data-id="${friendId}" class="chat-list-items">
+            <div class="ts-content is-dense chat-list-item">
+              <div class="ts-row is-middle-aligned">
+                <div class="column avatar">
+                  <div class="ts-avatar is-circular is-large is-bordered">
+                    <img src="${avatarUrl}" />
+                  </div>
+                  <div class="avatar-badge" id="${friendId}"></div>
                 </div>
-                <div class="avatar-badge"></div>
-              </div>
-              <div class="chat-list-middle-item column">
-                <div class="ts-text is-bold">Hinata</div>
-                <div class="ts-text is-description">Hi, this is progress update...</div>
-              </div>
-              <div class="chat-list-right-item column">
-                <div class="ts-text is-description is-tiny">13:29</div>
-                <div class="chat-list-time">2</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="ts-content is-dense chat-list-item active">
-            <div class="ts-row is-middle-aligned">
-              <div class="column avatar">
-                <div class="ts-avatar is-circular is-large">
-                  <img src="https://v4.tocas-ui.com/zh-tw/assets/images/user.png" />
+                <div class="chat-list-middle-item column">
+                  <div class="ts-text chat-list-friend-name">This people</div>
+                  <div class="ts-text is-description chat-list-last-message">helllollllll
+                  </div>
                 </div>
-                <div class="avatar-badge offline"></div>
-              </div>
-              <div class="chat-list-middle-item column">
-                <div class="ts-text is-bold">Hiyori</div>
-                <div class="ts-text is-description chat-list-last-message">Thanks!! It's awesome!Thanks!! It's awesome!
+                <div class="chat-list-right-item column">
+                  <div class="ts-text is-description is-tiny chat-list-last-message-time">11:32</div>
+                  <div class="unread-count-btn">
+                    <p>9+</p>
+                  </div>
                 </div>
-              </div>
-              <div class="chat-list-right-item column">
-                <div class="ts-text is-description is-tiny">13:29</div>
-                <div class="chat-list-time">10</div>
               </div>
             </div>
           </div> -->
+
         </div>
       </div>
 
@@ -622,11 +609,10 @@
       <div class="ts-divider"></div>
 
       <div style="height: 250px; overflow-y: auto;">
-        <div class="user-list ts-content is-dense is-center-aligned">
+        <div class="user-list ts-content is-dense is-center-aligned" id="notification-list">
           <!-- <img src="/notification.png" style="height: 220px; opacity: 40%;"> -->
 
         </div>
-
       </div>
     </div>
   </div>
@@ -667,6 +653,8 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.1.0/tocas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
   <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
