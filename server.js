@@ -73,6 +73,17 @@ io.on("connection", socket => {
     socket.broadcast.to(friendSocketId).emit("isTyping", data)
   })
 
+  // friend request notification
+  socket.on("friendRequest", (request) => {
+    console.log(request)
+    const friendSocketId = getUserSocketIdByUserId(request.receiverId)
+
+    if (request.type === "request-sent") {
+      io.to(friendSocketId).emit("requestSended", `${request.requesterName}`)
+    } else if (request.type === "request-accepted") {
+      io.to(friendSocketId).emit("requestAccepted", `${request.requesterName}`)
+    }
+  })
 
   // incoming audio call popup
   socket.on("audioCallPopup", (audioCallData) => {

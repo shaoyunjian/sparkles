@@ -99,3 +99,36 @@ function handleFriendRequestForNotification(friendId) {
   })
 }
 
+socket.on("requestSended", (name) => {
+  notificationBadge.style.display = "block"
+  getMyFriendRequest(currentUserId)
+  toastr.info("sent you a friend request!", `${name}`)
+})
+
+socket.on("requestAccepted", (name) => {
+  notificationBadge.style.display = "block"
+  toastr.info("accepted your friend request!", `${name}`)
+})
+
+
+// ---------- toast message ---------- 
+
+toastr.options = {
+  "closeButton": true,
+  "debug": false,
+  "newestOnTop": true,
+  "progressBar": true,
+  "positionClass": "toast-top-right",
+  // "preventDuplicates": true,
+  "onclick": null,
+  "showDuration": "500",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut",
+  "rtl": false
+}
+

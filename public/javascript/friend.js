@@ -2,7 +2,6 @@ const userSearchBtn = document.querySelector("#user-search-btn")
 const userSearchModal = document.querySelector("#user-search-modal")
 const userSearchModalCloseBtn = document.querySelector("#user-search-modal-close-btn")
 const content = document.querySelector(".content")
-const userSearchModalContent = document.querySelector("#user-search-modal-content")
 const userSearchList = document.querySelector(".user-list")
 
 
@@ -55,9 +54,7 @@ async function searchUsersByKeyword(data) {
                   style="width: 150px; overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
                   ${user.name}</div>
               </div>
-              <div class="column friend-request-btns">
-                <button class="friend-request-btn" id="friendRequest${user.id}">
-                </button>
+              <div class="column friend-request-btns" id="friendRequest${user.id}">
               </div>
             </div>
           </div>
@@ -67,11 +64,12 @@ async function searchUsersByKeyword(data) {
       userSearchList.innerHTML += userList
 
       const friendRequestBtn = document.getElementById(`friendRequest${user.id}`)
-      if (friendRequestBtn) {
 
+      if (friendRequestBtn) {
         if (user.id === currentUserId) {// myself
-          friendRequestBtn.innerText = "You"
-          friendRequestBtn.classList.add("you")
+          friendRequestBtn.innerHTML = `
+            <button class="friend-request-btn you">You</button>
+          `
         } else {
           fetchRequestStatusAPI(user.id)
         }
@@ -94,7 +92,7 @@ async function fetchRequestStatusAPI(friendId) {
   const jsonData = await response.json()
 
   if (!jsonData.data.length) {
-    // console.log("尚未加好友")
+    // console.log("not friend yet")
     let data = { statusCode: 0 }
     checkRequestStatus(data, friendId)
   } else {
@@ -106,82 +104,86 @@ async function fetchRequestStatusAPI(friendId) {
 }
 
 function checkRequestStatus(data, friendId) {
-  const friendRequestBtns = document.querySelector(".friend-request-btns")
   const friendRequestBtn = document.getElementById(`friendRequest${friendId}`)
 
-  // request sent, waiting for reply.
-  if (data.requesterId === currentUserId && data.statusCode === 1) {
-    friendRequestBtn.innerText = "Requested"
-    friendRequestBtn.classList.add("requested")
-  }
+  if (data.statusCode === 1) {
+    if (data.requesterId._id === currentUserId) {
+      // request sent, waiting for reply.
 
-  // request received, not replied yet.
-  if (data.receiverId === currentUserId && data.statusCode === 1) {
-    friendRequestBtns.innerHTML = `
+      friendRequestBtn.innerHTML = `
+      <button class="friend-request-btn requested">Requested</button>`
+
+    } else if (data.receiverId._id === currentUserId) {
+      // request received, not replied yet.
+
+      friendRequestBtn.innerHTML = `
       <button class="friend-request-btn request-confirm-btn" id="friendRequestConfirm${friendId}">Accept</button>
       <button class="friend-request-btn request-decline-btn" id="friendRequestDecline${friendId}">Delete</button>`
 
-    handleFriendRequest(friendId)
+      handleFriendRequest(friendId)
+    }
   }
+
 
   // not friends
   if (data.statusCode === 0) {
-    friendRequestBtn.innerText = "Add Friend"
-    friendRequestBtn.classList.add("add")
+    friendRequestBtn.innerHTML = `
+      <button class="friend-request-btn add" id="friendRequestAdd${friendId}">Add Friend</button>`
 
     handleFriendRequest(friendId)
   }
 
   // are friends
   if (data.statusCode === 2) {
-    friendRequestBtn.innerText = "Friend"
-    friendRequestBtn.classList.add("friend")
+    friendRequestBtn.innerHTML = `
+      <button class="friend-request-btn friend">Friend</button>`
   }
 
 }
 
 function handleFriendRequest(friendId) {
-  const friendRequestBtns = document.querySelector(".friend-request-btns")
   const friendRequestBtn = document.getElementById(`friendRequest${friendId}`)
+  const friendRequestAddBtn = document.getElementById(`friendRequestAdd${friendId}`)
   const friendRequestConfirmBtn = document.getElementById(`friendRequestConfirm${friendId}`)
   const friendRequestDeclineBtn = document.getElementById(`friendRequestDecline${friendId}`)
 
-  userSearchList.addEventListener("click", (event) => {
-    if (event.target === friendRequestBtn) {
-      // click the add button to send friend request
+  friendRequestBtn.addEventListener("click", (event) => {
 
-      sendFriendRequest(currentUserId, friendId, 1)
-      friendRequestBtn.classList.remove("add")
-      friendRequestBtn.innerText = "Requested"
-      friendRequestBtn.classList.add("requested")
+    if (event.target === friendRequestAddBtn) {
+      // click the add button to send friend request
+      console.log("send request")
+      sendFriendRequest(currentUserId, currentUsername, friendId, 1)
+      friendRequestBtn.innerHTML = `
+        <button class="friend-request-btn requested">Requested</button>`
 
     } else if (event.target === friendRequestConfirmBtn) {
       // click the accept button to accept request
-
+      console.log("friendRequestConfirm")
       acceptFriendRequest(friendId, currentUserId, 2)
       addFriendToDB(currentUserId, friendId)
       addFriendToDB(friendId, currentUserId)
       create1to1Chatroom(currentUserId, friendId)
 
-      friendRequestBtns.innerHTML = `
+      friendRequestBtn.innerHTML = `
         <button class="friend-request-btn friend">Friend</button>`
 
     } else if (event.target === friendRequestDeclineBtn) {
       // click the delete button to decline and delete request
-
+      console.log("friendRequestDecline")
       deleteFriendRequest(friendId, currentUserId)
-      friendRequestBtns.innerHTML = `
+      friendRequestBtn.innerHTML = `
         <button class="friend-request-btn add" id="friendRequest${friendId}">Add Friend</button>`
     }
   })
 }
 
-async function sendFriendRequest(requesterId, receiverId, statusCode) {
+async function sendFriendRequest(requesterId, requesterName, receiverId, statusCode) {
   const response = await fetch("/api/friendRequest", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       requesterId: requesterId,
+      requesterName: requesterName,
       receiverId: receiverId,
       friendRequestCode: statusCode
     })
@@ -189,6 +191,14 @@ async function sendFriendRequest(requesterId, receiverId, statusCode) {
 
   // const jsonData = await response.json()
   // console.log(jsonData)
+
+  const request = {
+    requesterId: requesterId,
+    requesterName: requesterName,
+    receiverId: receiverId,
+    type: "request-sent"
+  }
+  socket.emit("friendRequest", request)
 }
 
 async function acceptFriendRequest(friendId, myId, statusCode) {
@@ -204,6 +214,14 @@ async function acceptFriendRequest(friendId, myId, statusCode) {
 
   //   const jsonData = await response.json()
   //   console.log(jsonData)
+
+  const request = {
+    requesterId: myId,
+    requesterName: currentUsername,
+    receiverId: friendId,
+    type: "request-accepted"
+  }
+  socket.emit("friendRequest", request)
 }
 
 async function deleteFriendRequest(friendId, myId, statusCode) {
@@ -288,5 +306,3 @@ async function getFriendList() {
     `
   })
 }
-
-
