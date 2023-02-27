@@ -179,18 +179,22 @@ router.get("/user/auth", async (req, res) => {
     const token = req.cookies.token
     if (token) {
       const jwtData = jwt.verify(token, process.env.JWT_SECRET_KEY)
-      res.status(200).send({
-        "data": {
-          "id": jwtData.id,
-          "name": jwtData.name,
-          "email": jwtData.email,
-          "avatar_url": jwtData.avatarUrl
-        }
-      })
-    } else {
-      res.status(200).send({
-        "data": null
-      })
+      const userData = await User.findOne({ _id: jwtData.id })
+
+      if (userData) {
+        res.status(200).send({
+          "data": {
+            "id": userData.id,
+            "name": userData.name,
+            "email": userData.email,
+            "avatar_url": userData.avatar_url
+          }
+        })
+      } else {
+        res.status(200).send({
+          "data": null
+        })
+      }
     }
 
   } catch (e) {
