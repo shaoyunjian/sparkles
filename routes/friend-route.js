@@ -4,6 +4,7 @@ const User = require("../models/user-schema")
 const FriendRequest = require("../models/friendRequest-schema")
 const { ObjectId } = require("mongodb")
 const { cookieJwtAuth } = require("../cookieJwtAuth")
+const mongoDB = require("../models/mongoose")
 
 // -------- get friend list -----------
 
@@ -36,7 +37,7 @@ router.get("/friend", cookieJwtAuth, async (req, res) => {
 })
 
 
-// ----------- add friend ------------
+// ----------- add friend to db ------------
 
 router.patch("/friend", async (req, res) => {
   const currentUserId = req.body.userId
@@ -81,7 +82,7 @@ router.patch("/friend", async (req, res) => {
 })
 
 
-// ---------- friend request ----------
+// ------- add friend request ----------
 
 router.post("/friendRequest", async (req, res) => {
   const requesterId = req.body.requesterId
@@ -152,33 +153,67 @@ router.patch("/friendRequest", async (req, res) => {
   }
 })
 
-// ---------- get request -------------
+// ---------- get request info -------------
 
 router.get("/friendRequest", cookieJwtAuth, async (req, res) => {
   const receiverId = req.query.friendId
   const userId = req.user.id
+  const findMyRequest = req.query.currentUserId
 
   try {
-    const friendRequest = await FriendRequest.find({
-      $or: [
-        {
-          requesterId: userId,
-          receiverId: receiverId
-        }, {
-          requesterId: receiverId,
-          receiverId: userId
-        }
-      ]
-    })
+    // for user search
+    if (!findMyRequest) {
+      const friendRequest = await FriendRequest.find({
+        $or: [
+          {
+            requesterId: userId,
+            receiverId: receiverId
+          },
+          {
+            requesterId: receiverId,
+            receiverId: userId
+          }
+        ]
+      })
+        .populate({
+          path: "requesterId",
+          select: ["name", "email", "avatar_url"]
+        })
+        .populate({
+          path: "receiverId",
+          select: ["name", "email", "avatar_url"]
+        })
 
-    if (friendRequest) {
-      res.status(200).send({
-        "data": friendRequest
-      })
-    } else {
-      res.status(200).send({
-        "data": null
-      })
+      if (friendRequest) {
+        res.status(200).send({
+          "data": friendRequest
+        })
+      } else {
+        res.status(200).send({
+          "data": null
+        })
+      }
+
+    } else { // for friend request notification
+      const friendRequest = await FriendRequest
+        .find({
+          receiverId: findMyRequest,
+          statusCode: 1 // request sent
+        })
+        .populate({
+          path: "requesterId",
+          select: ["name", "email", "avatar_url"]
+        })
+
+      if (friendRequest) {
+        res.status(200).send({
+          "data": friendRequest
+        })
+      } else {
+        res.status(200).send({
+          "data": null
+        })
+      }
     }
 
   } catch (e) {
@@ -190,7 +225,7 @@ router.get("/friendRequest", cookieJwtAuth, async (req, res) => {
   }
 })
 
-// --------- delete request ------------
+// --------- delete friend request -----------
 
 router.delete("/friendRequest", cookieJwtAuth, async (req, res) => {
   const requesterId = req.body.requesterId
