@@ -51,12 +51,12 @@ const io = socketIo(server)
 const onlineUsers = new Set()
 io.on("connection", socket => {
 
-  socket.on("newUser", ({ currentUserId, currentUsername }) => {
-    socket.userId = currentUserId
-    onlineUsers.add(currentUserId)
-    const user = userConnect(socket.id, currentUserId, currentUsername)
-    io.emit("newUser", [...onlineUsers]) //emit to all online users
+  socket.on("newUser", ({ currentId, currentName }) => {
+    socket.userId = currentId
+    onlineUsers.add(currentId)
+    const user = userConnect(socket.id, currentId, currentName)
 
+    io.emit("newUser", [...onlineUsers]) //emit to all online users
   })
 
   socket.on("chatMessages", (msg) => {
@@ -75,7 +75,6 @@ io.on("connection", socket => {
 
   // friend request notification
   socket.on("friendRequest", (request) => {
-    console.log(request)
     const friendSocketId = getUserSocketIdByUserId(request.receiverId)
 
     if (request.type === "request-sent") {

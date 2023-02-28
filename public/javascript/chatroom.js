@@ -3,6 +3,12 @@ let currentFriendName
 let currentFriendId
 let currentFriendAvatar
 let currentRoomId
+const greetingMyName = document.querySelector("#greeting-my-name")
+const homeMyName = document.querySelector("#home-my-name")
+const homeMyAvatar = document.querySelector("#home-my-avatar-url")
+const settingsMyName = document.querySelector("#settings-my-name")
+const settingsMyEmail = document.querySelector("#settings-my-email")
+const settingsMyAvatar = document.querySelector("#settings-my-avatar")
 const isTypingMessage = document.querySelector(".typing")
 const emojiSelectorBtn = document.querySelector("#emoji-selector-btn")
 const emojiSelector = document.querySelector(".emoji-selector")
@@ -15,9 +21,46 @@ const jwt = document.cookie
 const parts = jwt.split(".")
 const payload = JSON.parse(atob(parts[1]))
 const currentUserId = payload.id
-const currentUsername = payload.name
 const currentUserEmail = payload.email
+const currentUsername = payload.name
 const currentUserAvatar = payload.avatarUrl
+
+//  get user's info from db
+
+getMyInfo()
+async function getMyInfo() {
+  const response = await fetch("/api/user/auth")
+  const jsonData = await response.json()
+
+  const currentId = jsonData.data.id
+  const currentName = jsonData.data.name
+  const currentEmail = jsonData.data.email
+  const currentAvatar = jsonData.data.avatar_url
+  const currentUserInfo = {
+    currentId: jsonData.data.id,
+    currentName: jsonData.data.name,
+    currentEmail: jsonData.data.email,
+    currentAvatar: jsonData.data.avatar_url
+  }
+
+  // current profile
+  settingsMyName.value = currentName
+  settingsMyEmail.value = currentEmail
+  settingsMyAvatar.src = currentAvatar
+  greetingMyName.textContent = currentName
+  homeMyName.textContent = currentName
+  homeMyAvatar.src = currentAvatar
+
+  fetchChatListAPI(currentUserInfo)
+
+  // ------- emit message to server ----------
+  if (inputMessage) {
+    emitMessageToServer(currentName, currentId)
+  }
+
+  getMyFriendRequest(currentId)
+}
+
 
 // ------- current local date & time ------
 const localDateTime = new Date()
@@ -25,22 +68,13 @@ const currentDateTime = localDateTime.toISOString()
 const currentDate = changeTimeFormat(currentDateTime)[0]
 const currentTime = changeTimeFormat(currentDateTime)[1]
 
-// --------------- profile ----------------
-const myAvatarUrl = document.querySelector("#my-avatar-url")
-const myName = document.querySelectorAll(".my-name")
-myAvatarUrl.src = currentUserAvatar
-
-myName.forEach((name) => {
-  name.textContent = currentUsername
-})
-
 // ------------- get chat list ------------
 
-fetchChatListAPI(currentUserId)
+async function fetchChatListAPI(senderInfo) {
+  const currentId = senderInfo.currentId
+  const currentName = senderInfo.currentName
 
-async function fetchChatListAPI(senderId) {
   const response = await fetch("/api/chatroom", { method: "GET" })
-
   const jsonData = await response.json()
 
   let roomId
@@ -51,7 +85,7 @@ async function fetchChatListAPI(senderId) {
   jsonData.data.forEach((data) => {
     roomId = data._id
     data.participants.forEach((value) => {
-      if (value._id !== senderId) {
+      if (value._id !== currentId) {
         friendId = value._id
         friendName = value.name
         avatarUrl = value.avatar_url
@@ -103,7 +137,7 @@ async function fetchChatListAPI(senderId) {
       document.querySelector(`[id="${roomId}"] .chat-list-last-message`).innerHTML = `<span class="ts-icon is-image-icon"></span> Photo`
     }
 
-    socket.emit("newUser", { currentUserId, currentUsername })
+    socket.emit("newUser", { currentId, currentName })
     checkOnlineStatus(friendId)
 
   })
@@ -179,13 +213,6 @@ socket.on("message", message => {
     }
   }
 })
-
-
-// ------- emit message to server ----------
-
-if (inputMessage) {
-  emitMessageToServer(currentUsername, currentUserId)
-}
 
 // --------- upload images to s3 and display it ---------
 
@@ -387,7 +414,7 @@ async function fetchChatroomAPI(roomId) {
 
   const jsonData = await response.json()
 
-  jsonData.data[0].participants.forEach((value) => {
+  jsonData.data.participants.forEach((value) => {
     if (value._id !== currentUserId) {
       currentFriendId = value._id
       currentFriendName = value.name

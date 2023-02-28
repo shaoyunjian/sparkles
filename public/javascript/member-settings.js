@@ -1,7 +1,7 @@
 const memberSettingsModal = document.querySelector("#member-settings-modal")
 const memberSettingsBtn = document.querySelector("#member-settings-btn")
 const memberSettingsModalCloseBtn = document.querySelector("#member-settings-modal-close-btn")
-const memberSettingsAvatar = document.querySelector("#settings-my-avatar")
+const settingsInputFile = document.querySelector("#settings-input-file")
 const saveBtn = document.querySelector("#save-btn")
 const signOutBtn = document.querySelector("#sign-out-btn")
 
@@ -40,30 +40,19 @@ signOutBtn.addEventListener("click", () => {
   }
 })
 
-// ----------- profile -----------------
-
-const settingsInputFile = document.querySelector("#settings-input-file")
-const settingsMyName = document.querySelector("#settings-my-name")
-const settingsMyEmail = document.querySelector("#settings-my-email")
-
-// current profile
-memberSettingsAvatar.src = currentUserAvatar
-settingsMyName.value = currentUsername
-settingsMyEmail.value = currentUserEmail
-
-// ---------- avatar changing ----------
+// ----------- profile edit -----------------
 
 // avatar preload
 settingsInputFile.addEventListener("change", (event) => {
 
-  memberSettingsAvatar.src = URL.createObjectURL(event.target.files[0])
-  memberSettingsAvatar.onload = function () {
-    URL.revokeObjectURL(memberSettingsAvatar.src)
+  settingsMyAvatar.src = URL.createObjectURL(event.target.files[0])
+  settingsMyAvatar.onload = function () {
+    URL.revokeObjectURL(settingsMyAvatar.src)
   }
 
 })
 
-// save
+// save 
 saveBtn.addEventListener("click", () => {
 
   let editedAvatarUrl
@@ -104,14 +93,23 @@ saveBtn.addEventListener("click", () => {
       editedProfile.avatarUrl = uploadedImageUrl
       console.log("image updated：", editedProfile)
       editProfile(editedProfile)
+
+      settingsInputFile.value = ""
+      homeMyName.textContent = editedName
+      settingsMyName.value = editedName
+      settingsMyAvatar.src = uploadedImageUrl
+      homeMyAvatar.src = uploadedImageUrl
     }
   } else {
     console.log("no image updated：", editedProfile)
     editProfile(editedProfile)
+
+    homeMyName.textContent = editedName
+    settingsMyName.value = editedName
+    greetingMyName.textContent = editedName
   }
 
   memberSettingsModal.classList.remove("is-visible")
-
 })
 
 
