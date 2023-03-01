@@ -1,9 +1,11 @@
 const express = require("express")
 const router = express.Router()
 const jwt = require("jsonwebtoken")
-
 const User = require("../models/user-schema")
 const mongoDB = require("../models/mongoose")
+const { userDataValidation } = require("../utils/auth")
+const { profileEditValidation } = require("../utils/profile")
+
 
 // ----------- register -----------
 
@@ -13,12 +15,29 @@ router.post("/user", async (req, res) => {
   const password = req.body.password
 
   try {
+    const userValidationResult = userDataValidation(name, email, password)
+
     if (!name || !email || !password) {
       res.status(400).send({
         "error": true,
         "message": "Empty input"
       })
-    } else {
+    } else if (userValidationResult === "invalid name") {
+      res.status(400).send({
+        "error": true,
+        "message": "invalid name format"
+      })
+    } else if (userValidationResult === "invalid email") {
+      res.status(400).send({
+        "error": true,
+        "message": "invalid email format"
+      })
+    } else if (userValidationResult === "invalid password") {
+      res.status(400).send({
+        "error": true,
+        "message": "invalid password format"
+      })
+    } else if (userValidationResult === "valid") {
       const user = await User.exists({ email: email })
       if (!user) {
         User.create({
@@ -100,24 +119,56 @@ router.patch("/user", async (req, res) => {
   const profileStatus = req.body.profileStatus
 
   try {
-    const user = await User.exists({ email: email })
-
-    if (user) {
-      await User.findOneAndUpdate({
-        email: email,
-      }, {
-        name: name,
-        password: password,
-        avatar_url: avatarUrl,
-        profile_status: profileStatus
-      })
-
-      res.status(200).send({ "ok": true })
-    } else {
+    // "": request for editing exists, but empty input.
+    // undefined: request for editing doesn't exist, so the value is undefined.
+    if (name === "" || password === "") {
       res.status(400).send({
         "error": true,
-        "message": "Email/user not exists"
+        "message": "Empty input"
       })
+    } else {
+      const token = req.cookies.token
+      if (token) {
+        const jwtData = jwt.verify(token, process.env.JWT_SECRET_KEY)
+        const userExist = await User.findOne({ email: email })
+
+        if (userExist.email === jwtData.email) {
+          const result = profileEditValidation(name, password)
+
+          if (result === "invalid username") {
+            res.status(400).send({
+              "error": true,
+              "message": "invalid name format"
+            })
+          } else if (result === "invalid password") {
+            res.status(400).send({
+              "error": true,
+              "message": "invalid password format"
+            })
+          } else {
+            await User.findOneAndUpdate({
+              email: email,
+            }, {
+              name: name,
+              password: password,
+              avatar_url: avatarUrl,
+              profile_status: profileStatus
+            })
+
+            res.status(200).send({ "ok": true })
+          }
+        } else {
+          res.status(400).send({
+            "error": true,
+            "message": "wrong user"
+          })
+        }
+      } else {
+        res.status(400).send({
+          "error": true,
+          "message": "token error"
+        })
+      }
     }
   } catch (e) {
     console.log(e.message)
