@@ -61,13 +61,6 @@ async function getMyInfo() {
   getMyFriendRequest(currentId)
 }
 
-
-// ------- current local date & time ------
-const localDateTime = new Date()
-const currentDateTime = localDateTime.toISOString()
-const currentDate = changeTimeFormat(currentDateTime)[0]
-const currentTime = changeTimeFormat(currentDateTime)[1]
-
 // ------------- get chat list ------------
 
 async function fetchChatListAPI(senderInfo) {
@@ -123,7 +116,11 @@ async function fetchChatListAPI(senderInfo) {
       </div>
     `
 
-    if (lastMessageDate !== currentDate) {
+    const localDateTime = new Date()
+    const currentDateTime = localDateTime.toISOString()
+    const currentLocalDate = changeTimeFormat(currentDateTime)[0]
+
+    if (lastMessageDate !== currentLocalDate) {
       if (!data.last_message_time) {
         document.querySelector(`[id="${roomId}"] .chat-list-last-message`).textContent = ""
 
@@ -167,6 +164,7 @@ const clickListToDisplayChatroom = () => {
       emojiSelector.classList.remove("is-visible")
       emojiIcon.classList.add("is-face-smile-icon")
       emojiIcon.classList.remove("is-chevron-down-icon")
+      document.querySelector("#message-search-box").style.display = "none"
 
       // active item
       const activeChatroom = document.querySelector("#chat-list-scrollbar .active")
@@ -266,6 +264,8 @@ function emitMessageToServer(currentUsername, currentUserId) {
 
         const jsonData = await response.json()
         const messageImageUrl = jsonData.data
+        const localDateTime = new Date()
+        const currentDateTime = localDateTime.toISOString()
 
         const msgData = {
           text: null,
@@ -279,6 +279,7 @@ function emitMessageToServer(currentUsername, currentUserId) {
         }
 
         if (event.key === "Enter") {
+          // ------- current local date & time ------
           socket.emit("chatMessages", msgData)
           socket.emit("typing", "not typing")
         }
@@ -288,6 +289,9 @@ function emitMessageToServer(currentUsername, currentUserId) {
     }
 
     if (inputMessageValue) {
+      const localDateTime = new Date()
+      const currentDateTime = localDateTime.toISOString()
+
       const msgData = {
         text: inputMessageValue,
         dateTime: currentDateTime,
@@ -325,6 +329,8 @@ function emitMessageToServer(currentUsername, currentUserId) {
 
         const jsonData = await response.json()
         const messageImageUrl = jsonData.data
+        const localDateTime = new Date()
+        const currentDateTime = localDateTime.toISOString()
 
         const msgData = {
           text: null,
@@ -343,6 +349,9 @@ function emitMessageToServer(currentUsername, currentUserId) {
     }
 
     if (inputMessageValue) {
+      const localDateTime = new Date()
+      const currentDateTime = localDateTime.toISOString()
+
       const msgData = {
         text: inputMessageValue,
         dateTime: currentDateTime,
@@ -473,16 +482,16 @@ function appendMessage(msg) {
   const currentLocalTime = (hour < 10 ? "0" + hour : hour) + ":" + (minutes < 10 ? "0" + minutes : minutes)
 
   const myTextMessage = `
-    <div class="sender-message">
+    <div class="sender-message" id="${msg.dateTime}">
       <div class="sender-name"></div>
       <div class="sender-bubble-box">
-        <div class="sending-time">${currentLocalTime}</div>
+        <div class="sending-time message-arrived-time">${currentLocalTime}</div>
         <div class="sender-bubble bubble">${msg.text}</div>
       </div>
     </div>
   `
   const friendTextMessage = `
-    <div class="receiver-message">
+    <div class="receiver-message" id="${msg.dateTime}">
       <div class="receiver-avatar">
         <div class="ts-avatar is-circular">
           <img src="${msg.avatarUrl}">
@@ -492,7 +501,7 @@ function appendMessage(msg) {
         <div class="receiver-name">${msg.username}</div>
         <div class="receiver-bubble-box">
           <div class="receiver-bubble bubble">${msg.text}</div>
-          <div class="receiving-time">${currentLocalTime}</div>
+          <div class="receiving-time message-arrived-time">${currentLocalTime}</div>
         </div>
       </div>
     </div>
@@ -683,9 +692,6 @@ function handleMessageList(message) {
   const messageText = message.text
   const roomId = message.roomId
   const messageDateTime = changeTimeFormat(message.dateTime)
-  // const messageImageUrl = message.imageUrlMessage
-  // const messageUserId = message.userId
-  // const messageUserName = message.username
 
   // message list
   const lastMessage = document.querySelector(`[id=
