@@ -43,28 +43,62 @@ router.post("/message", async (req, res) => {
 // --------- get chat history -------------
 
 router.get("/message/:chatroomId", async (req, res) => {
-  const chatroomId = req.params.chatroomId
   try {
-    const message = await Message
-      .find({
-        chatroom_id: chatroomId
-      })
-      .populate({
-        path: "sender",
-        select: ["name", "email", "avatar_url"]
-      })
+    const chatroomId = req.params.chatroomId
+    const messageKeyword = req.query.messageKeyword
+    const reg = new RegExp(messageKeyword, "i")
 
-    if (message.length > 0) {
-      res.status(200).send({
-        "data": message
-      })
+    if (messageKeyword) {
+
+      const messageText = await Message
+        .find(
+          {
+            $and: [{
+              chatroom_id: chatroomId,
+              message_text: { $regex: reg }
+            }]
+          })
+        .sort({
+          sent_time: -1
+        })
+        .populate({
+          path: "sender",
+          select: ["name", "email", "avatar_url"]
+        })
+
+      if (messageText) {
+        res.status(200).send({
+          "data": messageText
+        })
+      } else {
+        res.status(200).send({
+          "data": null
+        })
+      }
+
     } else {
-      res.status(200).send({
-        "data": null
-      })
+
+
+      const message = await Message
+        .find({
+          chatroom_id: chatroomId
+        })
+        .populate({
+          path: "sender",
+          select: ["name", "email", "avatar_url"]
+        })
+
+      if (message.length > 0) {
+        res.status(200).send({
+          "data": message
+        })
+      } else {
+        res.status(200).send({
+          "data": null
+        })
+      }
+
     }
-
-
   } catch (e) {
     console.log(e.message)
     res.status(500).send({
