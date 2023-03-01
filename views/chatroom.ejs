@@ -50,7 +50,7 @@
                 </button>
                 <div class="notification-btns" id="user-search-btn">
                   <button class="ts-button is-circular is-small is-icon is-secondary">
-                    <span class="ts-icon is-user-group-icon"></span>
+                    <span class="ts-icon is-user-plus-icon"></span>
                   </button>
                   <div class="notification-badge display-none"></div>
                 </div>
@@ -79,15 +79,20 @@
         <div class="scrollbar cell" id="chat-list-scrollbar">
 
           <!-- default -->
-          <div class="ts-content is-dense display-none">
-            <img src="/Texting-rafiki-2.png" style="width:300px; opacity: 60%;">
-            <div style="text-align: center; font-size: 18px;font-weight: 600;">Start chatting on Sparkles Chat.</div>
-            <div style="text-align: center; font-size: 16px;font-weight: 400;">
-              <span class="ts-icon is-user-group-icon"></span>
-              <span class="ts-icon is-magnifying-glass-icon"></span>
-              Use Search to find anyone.
-            </div>
+          <!-- <div class="ts-content is-dense"> -->
+          <!-- <div style="text-align: center; font-size: 18px;font-weight: 600; color: gray;">Start chatting on Sparkles Chat.</div> -->
+
+          <div style="text-align: center; font-size: 18px;font-weight: 400; color: gray;">
+            <!-- <span class="ts-icon is-user-group-icon"></span> -->
+            <!-- <span class="ts-icon is-magnifying-glass-icon"></span> -->
+            <!-- Use search to find anyone. -->
+            <!-- Click <span class="ts-icon is-user-group-icon"></span> to search friends! <span
+                class="ts-icon is-turn-up-icon"></span> -->
           </div>
+          <!-- <img src="/people-search2.png" style="width:300px; opacity: 60%;"> -->
+          <!-- <img src="/Texting-rafiki-2.png" style="width:300px; opacity: 60%;"> -->
+          <!-- <img src="/people-search2.png" style="width:300px; opacity: 60%;"> -->
+          <!-- </div> -->
           <!-- <div id="${roomId}" data-id="${friendId}" class="chat-list-items">
             <div class="ts-content is-dense chat-list-item">
               <div class="ts-row is-middle-aligned">
@@ -116,8 +121,8 @@
       </div>
 
       <div class="cell" style="border: 0px; text-align: center;">
-        <div class="ts-content">
-          COPYRIGHT © 2023 SHAOYUNJIAN
+        <div class="ts-content ts-text is-tiny">
+          COPYRIGHT © 2023 SPARKLES CHAT
         </div>
       </div>
     </div>
@@ -195,7 +200,6 @@
         <div class="greeting-two">Click to start chatting with friends !</div>
       </div>
       <img src="/Work-chat-cuate.png" style="height:550px; width: 650px; margin: auto; opacity: 65%;">
-      <!-- <img src="/Work-chat-pana.png" style="width: 600px; margin: auto; opacity: 30%;"> -->
     </div>
 
     <!-- right box: chatroom -->
@@ -224,13 +228,15 @@
             <div class="column is-fluid">
               <div class="ts-text is-big" id="chatbox-top-bar-name"></div>
             </div>
-            <!-- <div class="column">
-              <div class="ts-input is-solid is-fluid">
-                <input type="text" placeholder="Search for messages..." />
+            <!-- <div class="column" style="width:40%;">
+              <div class="ts-input is-solid is-fluid is-icon" id="message-search-input-field">
+                <span class="ts-icon is-magnifying-glass-icon"></span>
+                <input type="text" placeholder="Search messages in current conversation..." id="message-search-input" />
+                <button class="ts-icon is-xmark-icon is-small " id="message-search-close-btn"></button>
               </div>
             </div> -->
             <div class="column">
-              <button class="ts-button is-circular is-icon is-ghost">
+              <button class="ts-button is-circular is-icon is-ghost" id="message-search-btn">
                 <span class="ts-icon  is-magnifying-glass-icon"></span>
               </button>
               <button class="ts-button is-circular is-icon is-ghost" id="audio-call-btn">
@@ -246,6 +252,31 @@
 
       <div class="middle-scollbar cell is-fluid is-scrollable">
         <div class="ts-content" style="padding: 15px 20px 10px 30px;">
+          <!-- history message -->
+          <!-- <div id="history-message-diplay-box">
+            <div class="ts-content is-dense history-message-item">
+              <div class="ts-row">
+                <div class="column">
+                  <div class="ts-avatar is-circular is-large is-bordered">
+                    <img src="https://d1gnt5bnf8w529.cloudfront.net/202302240900389914a0be0"
+                      id="history-message-avatar-url">
+                  </div>
+                </div>
+                <div class="history-message-middle-item column">
+                  <div class="ts-text is-bold chat-list-friend-name">柒柒柒</div>
+                  <div class="ts-text is-description history-message-content">Aut deserunt corrupti in quia
+                    temporibus.Aut deserunt corrupti in quia temporibus.
+                  </div>
+                </div>
+                <div class="history-message-right-item column">
+                  <div class="ts-text is-description is-tiny history-message-date-time">2023/02/27 15:30</div>
+                </div>
+              </div>
+            </div>
+            <div class="ts-divider"></div>
+          </div> -->
+
+          <!-- chat -->
           <div class="chat-message-box">
 
             <!-- <div class="receiver-message">
@@ -433,10 +464,61 @@
 
     </div>
 
+
     <!-- additional box on the right side -->
-    <!-- <div class="cell" style="width:330px">
-      <div class="ts-content">additional box</div>
-    </div> -->
+    <div class="cell is-vertical" style="width:400px; display:none;" id="message-search-box">
+
+      <div class="cell" style="border: 0px;">
+        <div class="ts-content">
+          <div class="column is-fluid">
+            <div class="ts-text is-bold">Sparkles</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cell ts-content" style="border: 0px;">
+        <div class="ts-row">
+          <div class="column is-fluid">
+            <div class="ts-header is-heavy">Message Search</div>
+          </div>
+          <div class="column">
+            <button class="ts-close" id="message-search-close-btn"></button>
+          </div>
+        </div>
+        <div class="ts-space"></div>
+        <div class="column">
+          <div class="ts-input is-solid is-fluid is-start-icon" id="message-search-input-field">
+            <span class="ts-icon is-magnifying-glass-icon"></span>
+            <input type="text" placeholder="Search for messages..." id="message-search-input" />
+            <div class="ts-dropdown is-bottom" id="message-search-dropdown">
+              <div class="item" style="display:flex;">
+                <div>Search:</div>
+                <div id="message-search-copy"></div>
+                <div style="margin-left: auto;">
+                  <img src="/enter-key.jpg" width="50px" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- default -->
+      <div class="ts-content is-dense is-center-aligned" id="message-history-default-box">
+        <br><br>
+        <div>
+          <img src="/Texting-rafiki-2.png" style="width:300px; opacity: 60%;margin: 0 auto;">
+        </div>
+        <div style="text-align: center; font-size: 18px;font-weight: 400; color: gray;">
+          Use <span class="ts-icon is-magnifying-glass-icon"></span> Search to find messages!</span>
+        </div>
+      </div>
+
+      <div id="message-history-display-box" class="cell ts-content is-dense is-fluid is-scrollable">
+
+      </div>
+    </div>
+
   </div>
 
   <!-- contact modal -->
@@ -594,7 +676,6 @@
       </div>
     </div>
   </div>
-  </div>
 
   <!-- notification modal -->
   <div class="ts-modal" id="notification-modal">
@@ -651,9 +732,13 @@
       <i class="fas fa-phone" id="end-call-btn"></i>
     </div>
   </div>
+
+  <!-- image display in chatroom-->
   <div class="ts-modal is-big" id="chat-image-display-area" style="cursor:pointer">
     <img style="max-height: 500px;">
   </div>
+
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.1.0/tocas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -666,6 +751,7 @@
   <script type="text/javascript" src="/friend.js"></script>
   <script type="text/javascript" src="/member-settings.js"></script>
   <script type="text/javascript" src="/notification.js"></script>
+  <script type="text/javascript" src="/message.js"></script>
 </body>
 
 </html>

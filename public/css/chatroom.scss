@@ -623,6 +623,40 @@ header {
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAvVBMVEUAAABERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERETBzRBMAAAAPnRSTlMAAQIDBAUICQwNDg8QERIUHiAoKSotLi8wMTg8QEZHSUpMT1lbaWtvcHFzdHV3fH6Cg52io6XIztHz9ff7/SDZBm4AAAD7SURBVBgZZcEJUsJAAEXBn5AogiGgCAIi2yjEXcKOvPsfy2EmhVTZrUI6WWGtJqnOJTkneaKTPuymjTgI4sZsD30VMphFKsQZZHKGHFo60z4wkFWFeznlspwOXEla8CqnBz0578ylCrtYzhjGcuI9ZY35lBd2u6G8b0Zacqt/muTakOgoxDLyaqy140JHwcMCjLxLttqQyDNg5NVYa8mNPANGXpNcYz7kGTDyvhipwjaSY8DIifeUpQUvskKcUNYbc0lVaMu6dmR1oCJryM+dzrQODORkMI1UiGaQqfAI26d6HARx/XkHfZ3UFpzkNZ1LzQprZVL9Vyrpzy9Z0CqxeFol7gAAAABJRU5ErkJggg==") !important;
 }
 
+// --------- message search box ---------------
+#message-search-box {
+
+  #message-history-display-box {
+
+    .history-message-middle-item {
+      .history-message-content {
+        width: 160px; //right side
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .history-message-right-item.column {
+      margin-left: auto;
+      width: 80px;
+    }
+  }
+
+  .history-message-item:hover {
+    cursor: pointer;
+    border-radius: 10px;
+    background: var(--ts-gray-100)
+  }
+
+  #message-search-copy {
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 
 // display-none
 
