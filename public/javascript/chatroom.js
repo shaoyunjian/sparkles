@@ -90,31 +90,17 @@ async function fetchChatListAPI(senderInfo) {
     const date = lastMessageDate.split("-")[1] + "/" + lastMessageDate.split("-")[2]
     const lastMessageTime = lastMessageDateTime[1]
 
-    chatListScrollbar.innerHTML += `
-      <div id="${roomId}" data-id="${friendId}" class="chat-list-items" >
-        <div class="ts-content is-dense chat-list-item">
-          <div class="ts-row is-middle-aligned">
-            <div class="column avatar">
-              <div class="ts-avatar is-circular is-large is-bordered">
-                <img src="${avatarUrl}" />
-              </div>
-              <div class="avatar-badge" id="${friendId}"></div>
-            </div>
-            <div class="chat-list-middle-item column">
-              <div class="ts-text is-bold chat-list-friend-name">${friendName}</div>
-              <div class="ts-text is-description chat-list-last-message">${data.last_message}
-              </div>
-            </div>
-            <div class="chat-list-right-item column">
-              <div class="ts-text is-description is-tiny chat-list-last-message-time">${lastMessageTime}</div>
-               <div class="unread-count-btn">
-                  <p>9+</p>
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `
+    const chatListData = {
+      roomId: roomId,
+      friendId: friendId,
+      avatarUrl: avatarUrl,
+      friendName: friendName,
+      lastMessage: data.last_message,
+      lastMessageTime, lastMessageTime
+    }
+
+    const result = chatListLayout(chatListData)
+    chatListScrollbar.appendChild(result)
 
     const localDateTime = new Date()
     const currentDateTime = localDateTime.toISOString()
@@ -131,7 +117,8 @@ async function fetchChatListAPI(senderInfo) {
     }
 
     if (data.last_message === "photo") {
-      document.querySelector(`[id="${roomId}"] .chat-list-last-message`).innerHTML = `<span class="ts-icon is-image-icon"></span> Photo`
+      document.querySelector(`[id="${roomId}"] .chat-list-last-message`).innerHTML = `
+      <span class="ts-icon is-image-icon"></span> Photo`
     }
 
     socket.emit("newUser", { currentId, currentName })
@@ -481,61 +468,6 @@ function appendMessage(msg) {
 
   const currentLocalTime = (hour < 10 ? "0" + hour : hour) + ":" + (minutes < 10 ? "0" + minutes : minutes)
 
-  const myTextMessage = `
-    <div class="sender-message" id="${msg.dateTime}">
-      <div class="sender-name"></div>
-      <div class="sender-bubble-box">
-        <div class="sending-time message-arrived-time">${currentLocalTime}</div>
-        <div class="sender-bubble bubble">${msg.text}</div>
-      </div>
-    </div>
-  `
-  const friendTextMessage = `
-    <div class="receiver-message" id="${msg.dateTime}">
-      <div class="receiver-avatar">
-        <div class="ts-avatar is-circular">
-          <img src="${msg.avatarUrl}">
-        </div>
-      </div>
-      <div class="receiver-name-bubble">
-        <div class="receiver-name">${msg.username}</div>
-        <div class="receiver-bubble-box">
-          <div class="receiver-bubble bubble">${msg.text}</div>
-          <div class="receiving-time message-arrived-time">${currentLocalTime}</div>
-        </div>
-      </div>
-    </div>
-  `
-
-  const myImageMessage = `
-    <div class="sender-message">
-      <div class="sender-name"></div>
-      <div class="sender-bubble-box">
-        <div class="sending-time">${currentLocalTime}</div>
-        <div class="ts-image is-rounded is-medium is-bordered">
-          <img src="${msg.imageUrlMessage}" class="chat-image"/> 
-        </div>
-      </div>
-    </div>
-  `
-  const friendImageMessage = `
-    <div class="receiver-message">
-      <div class="receiver-avatar">
-        <div class="ts-avatar is-circular">
-          <img src="${msg.avatarUrl}">
-        </div>
-      </div>
-      <div class="receiver-name-bubble">
-        <div class="receiver-name">${msg.username}</div>
-        <div class="receiver-bubble-box">
-          <div class="ts-image is-rounded is-medium is-bordered message-image">
-            <img src="${msg.imageUrlMessage}" class="chat-image"/> 
-          </div>
-          <div class="receiving-time">${currentLocalTime}</div>
-        </div>
-      </div>
-    </div>
-  `
   const dateDivider = `<div class="ts-divider is-center-text ts-text is-small is-bold" style="color: var(--ts-gray-500); line-height:50px" id="${currentLocalDate}">${currentLocalDate}</div>`
 
   const dateExists = document.getElementById(`${currentLocalDate}`)
@@ -545,15 +477,20 @@ function appendMessage(msg) {
 
   if (msg.userId === currentUserId) {
     if (msg.text) {
-      chatMessageBox.innerHTML += myTextMessage
+      const myTextMessage = getMyTextMessage(msg, currentLocalTime)
+      chatMessageBox.appendChild(myTextMessage)
     } else {
-      chatMessageBox.innerHTML += myImageMessage
+      const myImageMessage = getMyImageMessage(msg, currentLocalTime)
+      chatMessageBox.appendChild(myImageMessage)
     }
   } else {
     if (msg.text) {
-      chatMessageBox.innerHTML += friendTextMessage
+      const friendTextMessage = getFriendTextMessage(msg, currentLocalTime)
+      chatMessageBox.appendChild(friendTextMessage)
     } else {
-      chatMessageBox.innerHTML += friendImageMessage
+      const friendImageMessage = getFriendImageMessage(msg, currentLocalTime)
+      console.log(friendImageMessage)
+      chatMessageBox.appendChild(friendImageMessage)
     }
   }
 

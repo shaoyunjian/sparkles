@@ -66,7 +66,7 @@
           <div class="ts-space"></div>
           <div class="ts-input is-solid is-fluid is-start-icon">
             <span class="ts-icon is-magnifying-glass-icon"></span>
-            <input type="text" placeholder="Search for messages..." />
+            <input type="text" placeholder="Search for messages..." maxlength="1000" />
           </div>
           <!-- <div class="ts-space"></div> -->
 
@@ -450,7 +450,7 @@
             </div>
             <div class="column is-fluid">
               <div class="ts-input is-solid is-fluid">
-                <input type="text" placeholder="Send a message..." id="input-message" />
+                <input type="text" placeholder="Send a message..." id="input-message" maxlength="1000" />
               </div>
             </div>
             <div class="column">
@@ -489,7 +489,7 @@
         <div class="column">
           <div class="ts-input is-solid is-fluid is-start-icon" id="message-search-input-field">
             <span class="ts-icon is-magnifying-glass-icon"></span>
-            <input type="text" placeholder="Search for messages..." id="message-search-input" />
+            <input type="text" placeholder="Search for messages..." id="message-search-input" maxlength="1000" />
             <div class="ts-dropdown is-bottom" id="message-search-dropdown">
               <div class="item" style="display:flex;">
                 <div>Search:</div>
@@ -645,7 +645,7 @@
           </div>
           <div class="ts-input is-start-icon" style="margin:5px 0">
             <span class="ts-icon is-user-icon"></span>
-            <input type="text" placeholder="Edit username" value="" id="settings-my-name">
+            <input type="text" placeholder="Edit username" value="" id="settings-my-name" maxlength="25">
           </div>
           <!-- password -->
           <!-- <div class="ts-input is-start-icon" style="margin:5px 0">
@@ -746,6 +746,7 @@
   <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="/layout.js"></script>
   <script type="text/javascript" src="/chatroom.js"></script>
   <script type="text/javascript" src="/audiochat.js"></script>
   <script type="text/javascript" src="/friend.js"></script>
