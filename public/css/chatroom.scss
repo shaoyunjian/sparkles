@@ -33,37 +33,50 @@ i {
 //   height: 100%;
 // }
 
-// body {
-//   width: 100%;
-//   min-height: 100%;
-//   border: 1px solid green;
-// }
+body {
+  width: 100%;
+  min-height: 100%;
+  background-image: linear-gradient(45deg, #64cef4 0%, #f9ff9e 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 header {
-  position: absolute;
-  z-index: 1;
-  top: 1px;
-  height: 56.05px;
-  background: #f9fbff;
-  text-align: center;
+  position: fixed;
+  top: 0px;
+  // background-image: linear-gradient(to right, #c2e59c 0%, #64b3f4 100%);
+  background-image: linear-gradient(to right, #64cef4 0%, #f9ff9e 100%);
 
   display: flex;
-  border-bottom: 2px solid rgba(180, 180, 180, 0.3);
+  box-shadow: 1px 1px 2px 2px rgba(153, 153, 153, 0.3);
   width: 100vw;
 
-  .header-logo {
-    width: 100%;
-    height: 56.05px;
-    line-height: 56.05px;
-    font-size: 34px;
-    font-family: "Monoton";
-    margin-left: 15px;
-    color: rgb(0, 0, 0);
-    // color: white;
+  h1 {
+    color: #fff;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    letter-spacing: -2px;
+    text-align: center;
+    text-shadow: 1px 2px 1px rgba(0, 0, 0, .6);
+    margin-left: 20px;
   }
 }
 
 /* ----- left box: chat list --------- */
+main {
+  width: 1200px;
+  height: 650px;
+  border: 0px solid gray;
+  border-radius: 20px;
+  margin-top: 50px;
+  overflow: hidden;
+  // box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+}
+
 
 .chat-list {
 
@@ -74,8 +87,6 @@ header {
     .active {
       background-color: var(--ts-gray-100);
       border-radius: 10px;
-      // border-radius: 0 40px 40px 0;
-      // border-left: 4px solid #383838;
     }
 
     .chat-list-middle-item {
@@ -93,7 +104,6 @@ header {
       .chat-list-last-message {
         width: 190px;
         height: 25px;
-        // font-size: 14px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -106,6 +116,8 @@ header {
 
     .chat-list-item:hover {
       background-color: var(--ts-gray-100);
+      // background-color: #d4d6d9;
+      // background-color: var(--ts-gray-300);
       border-radius: 10px;
     }
 
@@ -165,13 +177,15 @@ header {
 // ---- right-box: chat box ------
 
 .right-box {
+  .cell.top-bar {
+    height: 84px;
+  }
 
   // ------ middle scrollbar -----
 
   .middle-scollbar {
     overflow: auto;
-    // background: #efefefad;
-    background: #f1f1f1;
+    background: #efefefad;
 
     .ts-content {
       .chat-message-box {
@@ -199,11 +213,8 @@ header {
             margin-bottom: 10px;
 
             .receiver-bubble {
-              // background: rgb(245, 247, 251);
-              // background: rgb(241, 241, 241);
-              // background-color: var(--ts-gray-300);
-              // border: 1px solid var(--ts-gray-300);
-              background: white;
+              background-image: linear-gradient(135deg, #64cef48f 50%, #ffffff 100%);
+              border-bottom: 3px solid rgba(109, 109, 109, 0.3);
               border-radius: 0 10px 10px 10px;
               padding: 15px;
             }
@@ -240,11 +251,8 @@ header {
           }
 
           .sender-bubble {
-            background: linear-gradient(to bottom left, rgb(134, 225, 255) 35%, #f9fbff 100%) no-repeat;
-            // background: #ffbf0077;
-            // background: linear-gradient(to bottom left, #74777888 35%, #f9fbff 100%) no-repeat;
-            // background: #f9de55db;
-            // background: var(--ts-gray-400);
+            background-image: linear-gradient(135deg, #f9ff9e93 0%, #f9ff9e 100%);
+            border-bottom: 3px solid rgba(100, 100, 100, 0.4);
             border-radius: 10px 0 10px 10px;
             margin-left: auto;
             padding: 15px;
@@ -256,7 +264,7 @@ header {
 
   .bubble {
     min-height: 30px;
-    max-width: 700px;
+    max-width: 600px;
     margin: 5px 5px 5px 10px;
   }
 }
@@ -630,7 +638,7 @@ header {
 
     .history-message-middle-item {
       .history-message-content {
-        width: 160px; //right side
+        width: 150px; //right side
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -650,7 +658,7 @@ header {
   }
 
   #message-search-copy {
-    width: 200px;
+    width: 160px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
