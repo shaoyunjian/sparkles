@@ -101,6 +101,10 @@ async function fetchChatListAPI(senderInfo) {
 
     const result = chatListLayout(chatListData)
     chatListScrollbar.appendChild(result)
+    if (chatListData) {
+      const chatListDefault = document.querySelector("#chat-list-default")
+      chatListDefault.style.display = "none"
+    }
 
     const localDateTime = new Date()
     const currentDateTime = localDateTime.toISOString()
@@ -108,9 +112,7 @@ async function fetchChatListAPI(senderInfo) {
 
     if (lastMessageDate !== currentLocalDate) {
       if (!data.last_message_time) {
-        document.querySelector(`[id="${roomId}"] .chat-list-last-message`).textContent = ""
-
-        document.querySelector(`[id="${roomId}"] .chat-list-last-message-time`).textContent = ""
+        document.querySelector(`[id="${roomId}"] .chat-list-last-message-time`).textContent = "New"
       } else {
         document.querySelector(`[id="${roomId}"] .chat-list-last-message-time`).textContent = `${date}`
       }
@@ -448,7 +450,7 @@ async function displayMessageHistory(roomId) {
   } else {
     chatMessageBox.innerHTML = `
       <div style="display:flex; justify-content: center; align-items: center;">
-        <img src="./Connected-world-pana.png" style="width:500px; opacity:50%"/>
+        <img src="./chatroom-default.png" style="width:450px; opacity:50%"/>
       </div>
     `
   }
