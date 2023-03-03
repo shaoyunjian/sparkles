@@ -9,6 +9,6 @@ exports.cookieJwtAuth = (req, res, next) => {
     next()
   } catch {
     res.clearCookie("token")
-    return res.redirect("/login")
+    return res.redirect("/")
   }
 } 
