@@ -96,7 +96,7 @@ async function fetchChatListAPI(senderInfo) {
       avatarUrl: avatarUrl,
       friendName: friendName,
       lastMessage: data.last_message,
-      lastMessageTime, lastMessageTime
+      lastMessageTime: lastMessageTime
     }
 
     const result = chatListLayout(chatListData)
@@ -193,7 +193,11 @@ const inputMessage = document.querySelector("#input-message")
 socket.on("message", message => {
   handleMessageList(message)
   if (message.roomId === currentRoomId) {
+    const chatroomDefaultImage = document.querySelector("#chatroom-default-image")
+    if (chatroomDefaultImage) { chatroomDefaultImage.remove() }
+
     appendMessage(message)
+
     if (message.userId === currentUserId) {
       storeMessageToDB(message)
       storeLatestMessage(message)
@@ -449,8 +453,8 @@ async function displayMessageHistory(roomId) {
     })
   } else {
     chatMessageBox.innerHTML = `
-      <div style="display:flex; justify-content: center; align-items: center;">
-        <img src="./chatroom-default.png" style="width:450px; opacity:50%"/>
+      <div style="display:flex; justify-content: center; align-items: center;" id="chatroom-default-image">
+        <img src="./chatroom-default.png" style="width:450px; opacity:50%;"/>
       </div>
     `
   }
