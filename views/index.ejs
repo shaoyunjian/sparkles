@@ -5,36 +5,123 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.1.0/tocas.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
-  <link rel="stylesheet" href="user.css">
-  <title>Login</title>
+  <link rel="stylesheet" type="text/css" href="/index.css">
+  <title>Sparkles Chat</title>
 </head>
 
 <body>
+  <header>
+    <div class="top-bar" id="top-bar">
+      <div class="top-bar-left">Sparkles Chat</div>
+      <div class="top-bar-right">
+        <div class="sign-in-btn" id="nav-login-btn">Log In</div>
+        <div class="sign-up-btn" id="nav-signup-btn">Sign Up</div>
+      </div>
+
+    </div>
+    <div class="svg-container">
+      <svg viewbox="0 0 800 400" class="svg">
+        <path id="curve" fill="#64cef4" d="M 800 250 Q 400 350 0 250 L 0 0 L 800 0 L 800 200 Z">
+        </path>
+      </svg>
+    </div>
+    <div class="greeting">
+      <div class="greeting-one">Welcome to Sparkles Chat</div>
+      <div class="greeting-two">Provide real-time text and audio chat services</div>
+    </div>
+  </header>
+
   <main>
-
-    <!-- login -->
-    <div class="login-container">
-      <div class="login-title">Login</div>
-      <div><input type="email" placeholder="email" id="login-email"></div>
-      <div><input type="password" placeholder="password" id="login-password"></div>
-      <div class="login-message"></div>
-      <button id="login-btn">Login</button>
-    </div>
-
-    <!-- register -->
-    <div class="register-container">
-      <div class="register-title">Create Account</div>
-      <div><input type="text" placeholder="username" id="register-username"></div>
-      <div><input type="email" placeholder="email" id="register-email"></div>
-      <div><input type="password" placeholder="password" id="register-password"></div>
-      <div class="register-message"></div>
-      <button id="register-btn">Create Account</button>
-    </div>
-
+    <img src="/chatroom-demo.png" style="width: 60%;">
   </main>
 
-  <script src="user.js"></script>
+  <footer>
+    <p>COPYRIGHT © 2023 SPARKLES CHAT</p>
+    <svg viewBox="0 0 1440 320">
+      <path fill="#f9ff9e" fill-opacity="1"
+        d="M0,192L80,192C160,192,320,192,480,176C640,160,800,128,960,117.3C1120,107,1280,117,1360,122.7L1440,128L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z">
+      </path>
+    </svg>
+  </footer>
+
+  <div class="ts-modal " id="login-modal">
+    <div class="ts-content">
+      <div class="ts-center">
+        <div class="ts-segment" style="width: 350px; padding: 15px 30px 30px 30px;">
+          <span class="ts-close is-tertiary" id="login-modal-close-btn"></span>
+          <div class="ts-content">
+            <div class="ts-header is-center-aligned is-big is-heavy">Login</div>
+          </div>
+          <div class="ts-wrap is-vertical">
+            <div class="ts-input is-start-icon is-fluid">
+              <span class="ts-icon is-envelope-icon" id="login-account-icon"></span>
+              <input type="text" placeholder="email" value="sparkles@sparkles.com" id="login-email" />
+            </div>
+            <div class="login-error-message" id="login-email-error-message"></div>
+            <div class="ts-input is-start-icon is-fluid">
+              <span class="ts-icon is-lock-icon" id="login-password-icon"></span>
+              <input type="password" placeholder="password" value="12345678" id="login-password" />
+            </div>
+            <div class="login-error-message" id="login-password-error-message"></div>
+            <div class="login-message">
+            </div>
+            <button class="ts-button is-fluid" id="login-btn">
+              Log In
+            </button>
+            <div class="login-to-signup-description">Don't have a account?
+              <span id="login-to-signup-btn">Create one!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ts-modal register-container" id="signup-modal">
+    <div class="ts-content">
+      <div class="ts-center">
+        <div class="ts-segment" style="width: 350px; padding: 20px 30px 30px 30px;">
+          <span class="ts-close is-tertiary" id="signup-modal-close-btn"></span>
+          <div class="ts-content">
+            <div class="ts-header is-center-aligned is-big is-heavy">Create New Account</div>
+          </div>
+          <div class="ts-wrap is-vertical">
+            <div class="ts-input is-start-icon is-fluid">
+              <span class="ts-icon is-user-icon" id="signup-username-icon"></span>
+              <input type="text" placeholder="username" id="signup-username" />
+            </div>
+            <div class="signup-error-message" id="signup-username-error-message"></div>
+            <div class="ts-input is-start-icon is-fluid">
+              <span class="ts-icon is-envelope-icon" id="signup-email-icon"></span>
+              <input type="text" placeholder="email" id="signup-email" />
+            </div>
+            <div class="signup-error-message" id="signup-email-error-message"></div>
+            <div class="ts-input is-start-icon is-fluid">
+              <span class="ts-icon is-lock-icon" id="signup-password-icon"></span>
+              <input type="password" placeholder="password" id="signup-password" />
+            </div>
+            <div class="signup-error-message" id="signup-password-error-message"></div>
+            <div class="signup-message">
+            </div>
+            <div class="signup-success-message">
+              <!-- Signup successful! -->
+            </div>
+            <button class="ts-button is-fluid" id="signup-btn">
+              Sign Up
+            </button>
+            <div class="signup-to-login-description">Have an account?
+              <span id="signup-to-login-btn">Log in</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.1.0/tocas.min.js"></script>
+  <script type="text/javascript" src="/index.js"></script>
 </body>
 
 </html>

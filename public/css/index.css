@@ -1,0 +1,201 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Monoton&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poiret+One&display=swap");
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Noto Sans TC", "sans-serif";
+}
+
+.box-shadow {
+  box-shadow: 1px 1px 2px 2px rgba(153, 153, 153, 0.3);
+}
+
+.top-bar {
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #64cef4;
+  width: 100%;
+  height: 62px;
+  padding: 10px;
+  z-index: 1;
+}
+.top-bar .top-bar-left {
+  color: #fff;
+  font-family: "Open Sans", "sans-serif";
+  font-weight: 800;
+  font-size: 30px;
+  text-shadow: 1px 2px 1px rgba(0, 0, 0, 0.6);
+  margin-left: 20px;
+}
+.top-bar .top-bar-right {
+  display: flex;
+  margin-left: auto;
+}
+.top-bar .top-bar-right .sign-in-btn,
+.top-bar .top-bar-right .sign-up-btn {
+  cursor: pointer;
+  color: black;
+  background: #ffffff;
+  width: 80px;
+  border-radius: 50px;
+  text-align: center;
+  font-size: 14x;
+  height: 35px;
+  line-height: 35px;
+  margin: 0 5px;
+  box-shadow: 1px 2px 1px rgba(69, 69, 69, 0.6);
+}
+.top-bar .top-bar-right .sign-in-btn:hover,
+.top-bar .top-bar-right .sign-up-btn:hover {
+  background: #eeeff1;
+}
+
+.svg-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.greeting {
+  color: #fff;
+  padding-top: 10vw;
+  padding-bottom: 30vw;
+  text-align: center;
+}
+.greeting .greeting-one {
+  color: #fff;
+  font-family: "Open Sans", "sans-serif";
+  font-weight: 800;
+  font-size: 55px;
+  text-align: center;
+  text-shadow: 1px 2px 1px rgba(0, 0, 0, 0.6);
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+.greeting .greeting-two {
+  display: block;
+  color: #fff;
+  letter-spacing: 1px;
+  font-family: "Poiret One", sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  text-align: center;
+  text-shadow: 1px 2px 1px rgba(0, 0, 0, 0.3);
+}
+
+#login-account-icon,
+#login-password-icon,
+#signup-username-icon,
+#signup-email-icon,
+#signup-password-icon {
+  color: #64cef4;
+}
+
+#login-btn,
+#signup-btn {
+  font-size: 15px;
+  border: #64cef4;
+  background: #64cef4;
+  margin-top: 10px;
+}
+
+#login-btn:hover,
+#signup-btn:hover {
+  background: #3dbdeb;
+}
+
+#login-modal-close-btn,
+#signup-modal-close-btn {
+  position: absolute;
+  background: #106d90;
+  top: 15px;
+  right: 15px;
+}
+
+#login-modal-close-btn:hover,
+#signup-modal-close-btn:hover {
+  background: #084055;
+}
+
+.login-message {
+  font-size: 16px;
+  color: rgb(235, 5, 5);
+  margin: -5px auto -10px auto;
+}
+
+.signup-message {
+  font-size: 16px;
+  color: rgb(235, 5, 5);
+  margin: -5px auto -10px auto;
+}
+
+.signup-success-message {
+  font-size: 16px;
+  color: green;
+  margin: -5px auto -10px auto;
+}
+
+.login-error-message,
+.signup-error-message {
+  margin: -10px 0px -5px 5px;
+  font-size: 12px;
+  color: rgb(235, 5, 5);
+}
+
+.ts-input.is-negative :is(input, textarea) {
+  color: black;
+  font-weight: 400;
+}
+
+.login-to-signup-description,
+.signup-to-login-description {
+  text-align: center;
+  font-size: 15px;
+  margin-top: -5px;
+  color: var(--ts-gray-600);
+}
+
+#login-to-signup-btn,
+#signup-to-login-btn {
+  color: #0d88b5;
+}
+
+#login-to-signup-btn:hover,
+#signup-to-login-btn:hover {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+main {
+  padding: 10vh 0 80vh;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+footer {
+  text-align: center;
+  position: relative;
+}
+footer svg {
+  top: 10px;
+}
+footer p {
+  z-index: 1;
+  position: absolute;
+  bottom: 5vh;
+  width: 100%;
+  text-align: center;
+}
+
+.ts-button.is-disabled {
+  cursor: no-drop;
+}/*# sourceMappingURL=index.css.map */
