@@ -78,6 +78,10 @@ io.on("connection", socket => {
     } else if (request.type === "request-accepted") {
       io.to(friendSocketId).emit("requestAccepted", `${request.requesterName}`)
     }
+
+    if (request.type === "request-accepted") {
+      socket.emit("requestAcceptedAppendNewChatList", `${request.requesterName}`)
+    }
   })
 
   // incoming audio call popup
