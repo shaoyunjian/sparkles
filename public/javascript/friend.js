@@ -27,7 +27,7 @@ userSearchBar.addEventListener("input", () => {
   const inputValue = userSearchBar.value
   if (!inputValue) {
     userSearchList.innerHTML = `
-    <img src="/people-search2.png" style="height: 220px; opacity: 40%;">` }
+    <img src="/people-search.png" style="height: 220px; opacity: 40%;">` }
   searchUsersByKeyword(inputValue)
 
 })
@@ -146,6 +146,7 @@ function handleFriendRequest(friendId) {
   const friendRequestAddBtn = document.getElementById(`friendRequestAdd${friendId}`)
   const friendRequestConfirmBtn = document.getElementById(`friendRequestConfirm${friendId}`)
   const friendRequestDeclineBtn = document.getElementById(`friendRequestDecline${friendId}`)
+  const currentUsername = document.getElementById("home-my-name").textContent
 
   friendRequestBtn.addEventListener("click", (event) => {
 
@@ -189,8 +190,7 @@ async function sendFriendRequest(requesterId, requesterName, receiverId, statusC
     })
   })
 
-  // const jsonData = await response.json()
-  // console.log(jsonData)
+  const jsonData = await response.json()
 
   const request = {
     requesterId: requesterId,
@@ -305,4 +305,28 @@ async function getFriendList() {
         <div class="ts-divider"></div>
     `
   })
+}
+
+// prepend new chatroom to chat list
+async function prependNewChatToChatList() {
+
+  const response = await fetch("/api/chatroom", { method: "GET" })
+  const jsonData = await response.json()
+  const userData = jsonData.data[0].participants
+  const friendData = (userData[0]._id !== currentUserId) ? (userData[0]) : (userData[1])
+  // const lastMessage = changeTimeFormat(jsonData.data[0].last_message_time)[1]
+  // console.log(lastMessage)
+
+  const newChatInfo = {
+    roomId: jsonData.data[0]._id,
+    friendId: friendData._id,
+    avatarUrl: friendData.avatar_url,
+    friendName: friendData.name,
+    lastMessage: jsonData.data[0].last_message,
+    lastMessageTime: "New"
+  }
+
+  const chatListBox = chatListLayout(newChatInfo)
+  chatListScrollbar.prepend(chatListBox)
+  clickListToDisplayChatroom()
 }

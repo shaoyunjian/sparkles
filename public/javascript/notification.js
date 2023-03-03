@@ -6,6 +6,8 @@ const notificationBadge = document.querySelector("#notification-btn .notificatio
 
 notificationBtn.onclick = () => {
   notificationModal.classList.add("is-visible")
+  getMyFriendRequest(currentUserId)
+  notificationBadge.style.display = "none"
 }
 
 notificationModalCloseBtn.onclick = () => {
@@ -21,7 +23,7 @@ document.onclick = (event) => {
 
 // ------ friend request notification ----------
 
-getMyFriendRequest(currentUserId)
+// getMyFriendRequest(currentUserId)
 async function getMyFriendRequest(currentUserId) {
   const response = await fetch(`/api/friendRequest?currentUserId=${currentUserId}`)
   const jsonData = await response.json()
@@ -88,6 +90,8 @@ function handleFriendRequestForNotification(friendId) {
       friendRequestBtn.innerHTML = `
         <button class="friend-request-btn friend">Friend</button>`
 
+      notificationBadge.style.display = "none"
+
     } else if (event.target === friendRequestDeclineBtn) {
       // click the delete button to decline and delete request
       console.log("friendRequestDecline")
@@ -95,6 +99,8 @@ function handleFriendRequestForNotification(friendId) {
       deleteFriendRequest(friendId, currentUserId)
       friendRequestBtn.innerHTML = `
         <button class="friend-request-btn you">Deleted</button>`
+
+      notificationBadge.style.display = "none"
     }
   })
 }
@@ -106,8 +112,13 @@ socket.on("requestSended", (name) => {
 })
 
 socket.on("requestAccepted", (name) => {
-  notificationBadge.style.display = "block"
   toastr.info("accepted your friend request!", `${name}`)
+
+  prependNewChatToChatList()
+})
+
+socket.on("requestAcceptedAppendNewChatList", () => {
+  prependNewChatToChatList()
 })
 
 
