@@ -184,7 +184,7 @@ const chatListLayout = function (info) {
   const unreadCountBtn = document.createElement("div")
   unreadCountBtn.classList.add("unread-count-btn")
   const unreadCount = document.createElement("p")
-  unreadCount.innerText = "9+"
+  // unreadCount.innerText = "9+"
 
   unreadCountBtn.appendChild(unreadCount)
   chatListRightItem.appendChild(chatListLastMessageTime)
