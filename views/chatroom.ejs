@@ -159,7 +159,7 @@
           </div>
           <div class="greeting-two">Start chatting on Sparkles Chat !</div>
         </div>
-        <img src="/home-chatroom-default.png" style="height:600px; width: 700px; margin: auto; opacity: 55%;">
+        <img src="/home-chatroom-default.png" style="width: 80%; margin: auto; opacity: 55%;">
       </div>
 
       <!-- right box: chatroom -->
@@ -347,7 +347,8 @@
               </div>
               <div class="column is-fluid">
                 <div class="ts-input is-solid is-fluid">
-                  <input type="text" placeholder="Send a message..." id="input-message" maxlength="1000" />
+                  <input type="text" placeholder="Send a message..." id="input-message" maxlength="1000"
+                    autocomplete="off" />
                 </div>
               </div>
               <div class="column">
@@ -378,7 +379,8 @@
           <div class="column">
             <div class="ts-input is-solid is-fluid is-start-icon" id="message-search-input-field">
               <span class="ts-icon is-magnifying-glass-icon"></span>
-              <input type="text" placeholder="Search for messages..." id="message-search-input" maxlength="1000" />
+              <input type="text" placeholder="Search for messages..." id="message-search-input" maxlength="1000"
+                autocomplete="off" />
               <div class="ts-dropdown is-bottom" id="message-search-dropdown">
                 <div class="item" style="display:flex;">
                   <div>Search:</div>
@@ -429,7 +431,7 @@
         <!-- <div class="ts-content"> -->
         <div class="ts-input is-solid is-fluid is-start-icon">
           <span class="ts-icon is-magnifying-glass-icon"></span>
-          <input type="text" placeholder="Enter a name or email..." id="user-search-bar" />
+          <input type="text" placeholder="Enter a name or email..." id="user-search-bar" autocomplete="off" />
         </div>
       </div>
       <div class="ts-divider"></div>
@@ -530,7 +532,8 @@
           </div>
           <div class="ts-input is-start-icon" style="margin:5px 0">
             <span class="ts-icon is-user-icon"></span>
-            <input type="text" placeholder="Edit username" value="" id="settings-my-name" maxlength="25">
+            <input type="text" placeholder="Edit username" value="" id="settings-my-name" maxlength="10"
+              autocomplete="off">
           </div>
           <!-- password -->
           <!-- <div class="ts-input is-start-icon" style="margin:5px 0">
@@ -610,7 +613,7 @@
     </div>
     <div class="connecting-name"></div>
     <div class="connecting-description">Audio connecting...</div>
-    <div class="connecting-time">0:06</div>
+    <div class="connecting-time"></div>
     <div class="incoming-call-icons">
       <i class="fas fa-microphone mute-unmute-toggle-btn" id="unmute-btn"></i>
       <i class="fas fa-microphone-slash mute-unmute-toggle-btn display-none" id="mute-btn"></i>
