@@ -48,29 +48,36 @@ audioCallBtn.addEventListener("click", () => {
 })
 
 socket.on("incomingCallPopup", (audioCallInfo) => {
-  displayIncomingCallPopup(audioCallInfo.callerAvatar, audioCallInfo.callerName)
+  console.log(audioCallInfo)
+  displayIncomingCallPopup(audioCallInfo.callerAvatar, audioCallInfo.callerName, audioCallInfo.peerId)
   handleIncomingCall(audioCallInfo.callerAvatar, audioCallInfo.callerName, audioCallInfo.peerId)
 })
 
 
-function displayIncomingCallPopup(avatarUrl, name) {
-  const popup = `
-    <div class="incoming-call-popup">
-      <audio autoplay loop>
-        <source src="https://d1gnt5bnf8w529.cloudfront.net/ringtone.wav" type="audio/wav">
-      </audio>
-      <div class="caller-avatar">
-        <img src="${avatarUrl}">
-      </div>
-      <div class="caller-name">${name}</div>
-      <div class="incoming-call-description">Incoming call...</div>
-      <div class="incoming-call-icons">
-        <i class="fas fa-phone" id="accept-call-btn"></i>
-        <i class="fas fa-phone" id="decline-call-btn"></i>
-      </div>
-    </div>
-    `
-  main.innerHTML += popup
+// end call functionality (unfinished)
+const endCallBtn = document.querySelector("#end-call-btn")
+endCallBtn.addEventListener("click", () => {
+
+  const endCallData = {
+    senderId: currentUserId,
+    receiverId: currentFriendId,
+    roomId: currentRoomId
+  }
+  socket.emit("endCall", endCallData)
+})
+
+function displayIncomingCallPopup(avatarUrl, name, senderId) {
+  const ringtone = document.querySelector("#ringtone")
+  const incomingCallPopup = document.querySelector(".incoming-call-popup")
+  const callerAvatarUrl = document.querySelector("#caller-avatar-url")
+  const callerName = document.querySelector(".caller-name")
+
+  incomingCallPopup.classList.remove("display-none")
+  incomingCallPopup.id = `incomingCall${senderId}`
+  ringtone.play()
+  callerAvatarUrl.attributes.src.value = `${avatarUrl}`
+  callerName.textContent = `${name}`
+
 }
 
 function handleIncomingCall(avatarUrl, name, friendId) {
@@ -87,10 +94,15 @@ function handleIncomingCall(avatarUrl, name, friendId) {
   })
 
   declineCallBtn.addEventListener("click", () => {
-    console.log("拒絕")
-    incomingCallPopup.remove()
-    socket.emit("decline-call")
-    window.location = window.location.href
+    incomingCallPopup.classList.add("display-none")
+
+    const ringtone = document.querySelector("audio")
+    ringtone.pause()
+    ringtone.currentTime = 0
+
+    const incomingCallId = incomingCallPopup.id.split("incomingCall")[1]
+    socket.emit("declineCall", { currentUserId, incomingCallId })
+
   })
 }
 
@@ -121,25 +133,49 @@ async function getAudio(friendId) {
     })
 
     // call a peer with the peer ID of the destination peer, providing our mediaStream
-    peer.call(friendId, stream)
+    const connection = peer.call(friendId, stream)
+
+    socket.on("declineCall", (data) => {
+      console.log(data)
+
+      const audioConnectingPopup = document.querySelector(".audio-connecting-popup")
+      audioConnectingPopup.classList.add("display-none")
+
+      stream.getTracks().forEach((track) => {
+        track.stop()
+      })
+
+      connection.close()
+    })
+
+    socket.on("endCallReceived", (data) => {
+      const audioConnectingPopup = document.querySelector(".audio-connecting-popup")
+      audioConnectingPopup.classList.add("display-none")
+      stream.getTracks().forEach((track) => {
+        track.stop()
+      })
+
+      connection.close()
+    })
 
   } catch (error) {
     console.log(error)
   }
 }
 
-// XX
-// socket.on("userDisconnected", peerId => {
-//   if (peers[peerId]) {
-//     peers[peerId].close()
-//   }
-// })
 
+socket.on("endCallReceived", (data) => {
+  const incomingCallPopup = document.querySelector(".incoming-call-popup")
+  if (incomingCallPopup) {
+    incomingCallPopup.classList.add("display-none")
+    const ringtone = document.querySelector("audio")
+    ringtone.pause()
+    ringtone.currentTime = 0
+  }
 
-// peer.on("open", peerId => {
-//   socket.emit("joinAudioChat", { currentRoomId, peerId })
-// })
-
+  const audioConnectingPopup = document.querySelector(".audio-connecting-popup")
+  audioConnectingPopup.classList.add("display-none")
+})
 
 function addAudioStream(audio, stream) {
   //The value of srcObject can be set to a MediaStream object, which represents a stream of audio data. 
@@ -179,25 +215,19 @@ function controlMicrophone(stream) {
 
 // ------ audio connecting popup -------
 function addAudioConnectingPopup(friendAvatar, friendName) {
-  const popup = `
-    <div class="audio-connecting-popup">
-      <div class="audio-connecting-avatar">
-        <img src="${friendAvatar}">
-        <i class="fas fa-microphone-slash display-none"></i>
-      </div>
-      <div class="caller-name">${friendName}</div>
-      <div class="incoming-call-description">Audio connecting...</div>
-      <div class="incoming-call-description">0:00</div>
-      <div class="incoming-call-icons">
-        <i class="fas fa-microphone mute-unmute-toggle-btn" id="unmute-btn"></i>
-        <i class="fas fa-microphone-slash mute-unmute-toggle-btn display-none" id="mute-btn"></i>
-        <i class="fas fa-phone" id="end-call-btn"></i>
-      </div>
-    </div>
-  `
+  const audioConnectingPopup = document.querySelector(".audio-connecting-popup")
+  const audioConnectingAvatarUrl = document.querySelector("#audio-connecting-avatar-url")
+  const connectingName = document.querySelector(".connecting-name")
+  const connectingTime = document.querySelector(".connecting-time")
 
-  main.innerHTML += popup
-
+  audioConnectingPopup.classList.remove("display-none")
+  audioConnectingAvatarUrl.attributes.src.value = `${friendAvatar}`
+  connectingName.textContent = `${friendName}`
+  // connectingTime.innerHTML = `
+  //   <div class="loading-data three-bounce">
+  //     <div class="bounce1"></div>
+  //     <div class="bounce2"></div>
+  //     <div class="bounce3"></div>
+  //   </div>
+  // `
 }
-
-

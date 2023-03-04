@@ -101,23 +101,33 @@ io.on("connection", socket => {
     })
   })
 
+  socket.on("declineCall", ({ currentUserId, incomingCallId }) => {
+    const receiverSocketId = getUserSocketIdByUserId(currentUserId)
+    const senderSocketId = getUserSocketIdByUserId(incomingCallId)
+
+    receiverSocketId.forEach((id) => {
+      io.sockets.to(id).emit("declineCall", `declineCall${id}`)
+    })
+
+    senderSocketId.forEach((id) => {
+      io.sockets.to(id).emit("declineCall", `declineCall${id}`)
+    })
+  })
+
   // end call
   socket.on("endCall", (endCallData) => {
-    // console.log(endCallData)
-    socket.emit("endCallReceived", "Close Popup")
+    const senderId = endCallData.senderId
+    const senderSocketId = getUserSocketIdByUserId(senderId)
 
     const receiverId = endCallData.receiverId
-    const userSocketId = getUserSocketIdByUserId(receiverId)
+    const receiverSocketId = getUserSocketIdByUserId(receiverId)
 
-    // const endCallInfo = {
-    //   callerName: endCallData.callerName,
-    //   callerAvatar: endCallData.callerAvatar,
-    //   roomId: endCallData.roomId,
-    //   peerId: endCallData.callerId
-    // }
+    senderSocketId.forEach((senderSocketIdData) => {
+      io.sockets.to(senderSocketIdData).emit("endCallReceived", "Close sender's popup")
+    })
 
-    userSocketId.forEach((userSocketIdData) => {
-      io.to(userSocketIdData).emit("endCallReceived", "Close Popup1")
+    receiverSocketId.forEach((receiverSocketIdData) => {
+      socket.to(receiverSocketIdData).emit("endCallReceived", "Close receiver's popup")
     })
   })
 

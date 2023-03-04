@@ -19,7 +19,9 @@ function getUserSocketIdByUserId(userId) {
 
   let userSocketId = []
   user.forEach((value) => {
-    userSocketId.push(value.id)
+    if (!userSocketId.includes(value.id)) {
+      userSocketId.push(value.id)
+    }
   })
 
   return userSocketId
