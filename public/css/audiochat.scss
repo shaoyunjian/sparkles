@@ -81,14 +81,40 @@
   flex-direction: column;
   padding: 20px;
 
-  .caller-name {
+  .connecting-name {
     color: white;
     font-size: 20px;
   }
 
-  .incoming-call-description {
+  .connecting-description,
+  .connecting-time {
     color: rgb(177, 177, 177);
     font-size: 14px;
+  }
+
+  .three-bounce div {
+    width: 10px;
+    height: 9px;
+    background: #c5c5c5;
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: threeBounceDelay 1.4s infinite ease-in-out;
+    animation: threeBounceDelay 1.4s infinite ease-in-out;
+    -webkit-animation-fill-mode: "both";
+    animation-fill-mode: "both";
+    margin: 0 1px;
+  }
+
+  .three-bounce .bounce1 {
+    width: 9px;
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+  }
+
+  .three-bounce .bounce2 {
+    width: 9px;
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
   }
 
   .audio-connecting-avatar {
@@ -125,7 +151,7 @@
       font-size: 22px;
       color: #ffffff;
       border-radius: 50%;
-      margin: 15px 20px 0 20px;
+      margin: 10px 20px 0 20px;
       text-align: center;
       line-height: 50px;
     }
@@ -140,4 +166,8 @@
       transform: rotate(225deg);
     }
   }
+}
+
+.display-none {
+  display: none;
 }
