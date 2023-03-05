@@ -47,7 +47,7 @@ async function getMyFriendRequest(currentUserId) {
             </div>
           </div>
           <div class="column">
-            <div class="ts-text is-bold is-tiny is-start-aligned"
+            <div class="ts-text is-tiny is-start-aligned"
               style="width: 150px; overflow:hidden;white-space: nowrap; text-overflow: ellipsis; margin-bottom: -5px;">
               New friend request from
             </div>
@@ -81,7 +81,6 @@ function handleFriendRequestForNotification(friendId) {
 
     if (event.target === friendRequestConfirmBtn) {
       // click the accept button to accept request
-      console.log("friendRequestConfirm")
       acceptFriendRequest(friendId, currentUserId, 2)
       addFriendToDB(currentUserId, friendId)
       addFriendToDB(friendId, currentUserId)
@@ -94,7 +93,6 @@ function handleFriendRequestForNotification(friendId) {
 
     } else if (event.target === friendRequestDeclineBtn) {
       // click the delete button to decline and delete request
-      console.log("friendRequestDecline")
 
       deleteFriendRequest(friendId, currentUserId)
       friendRequestBtn.innerHTML = `

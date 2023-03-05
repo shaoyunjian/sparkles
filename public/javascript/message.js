@@ -99,9 +99,6 @@ async function getMessageHistoryByKeyword(roomId, keyword) {
         const messageHistoryTime = historyMessageItem.dataset.id
         const messageArrivedTime = document.querySelector(`[id='${messageHistoryTime}']`)
         messageArrivedTime.scrollIntoView() // scroll to the msg
-        // highlight unfinished
-        // const text = document.querySelector(`[id='${messageHistoryTime}'] .bubble`).innerText
-        // document.querySelector(`[id='${messageHistoryTime}'] .bubble`).innerHTML = `<span class="ts-text is-mark is-large">${text}</span>`
       }
     })
 

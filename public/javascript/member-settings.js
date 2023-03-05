@@ -5,10 +5,6 @@ const settingsInputFile = document.querySelector("#settings-input-file")
 const saveBtn = document.querySelector("#save-btn")
 const signOutBtn = document.querySelector("#sign-out-btn")
 
-// test
-// memberSettingsModal.classList.add("is-visible")
-//
-
 memberSettingsBtn.addEventListener("click", () => {
   memberSettingsModal.classList.add("is-visible")
 })
@@ -26,18 +22,7 @@ document.addEventListener("click", (event) => {
 // --------------- logout -----------------
 
 signOutBtn.addEventListener("click", () => {
-
   fetchSignOutAPI()
-  async function fetchSignOutAPI() {
-    const response = await fetch("/api/user/auth", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" }
-    })
-    const jsonData = await response.json()
-    if (jsonData.ok) {
-      window.location = "/"
-    }
-  }
 })
 
 // ----------- profile edit -----------------
@@ -60,11 +45,9 @@ saveBtn.addEventListener("click", () => {
   let editedPassword
   let editedProfileStatus
 
-  // profile (unfinished: password and profile status)
+  // profile 
   editedAvatarUrl = settingsInputFile.files[0]
   editedName = settingsMyName.value
-  // editedPassword = "0224"
-  // editedProfileStatus = "lala"
 
   const editedProfile = {
     email: currentUserEmail,
@@ -91,7 +74,6 @@ saveBtn.addEventListener("click", () => {
       const uploadedImageUrl = jsonData.data // cloudfront-imageUrl
 
       editedProfile.avatarUrl = uploadedImageUrl
-      console.log("image updated：", editedProfile)
       editProfile(editedProfile)
 
       settingsInputFile.value = ""
@@ -101,7 +83,6 @@ saveBtn.addEventListener("click", () => {
       homeMyAvatar.src = uploadedImageUrl
     }
   } else {
-    console.log("no image updated：", editedProfile)
     editProfile(editedProfile)
 
     homeMyName.textContent = editedName
