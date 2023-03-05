@@ -246,6 +246,10 @@ router.get("/user/auth", async (req, res) => {
           "data": null
         })
       }
+    } else {
+      res.status(200).send({
+        "data": null
+      })
     }
 
   } catch (e) {
