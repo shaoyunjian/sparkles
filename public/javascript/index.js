@@ -274,3 +274,33 @@ function handleHeaderCurve() {
     }
   }
 }
+
+
+// scroll to top
+
+const logo = document.querySelector("#logo")
+const scrollBtn = document.querySelector("#back-to-top")
+
+logo.style.visibility = "hidden"
+scrollBtn.style.visibility = "hidden"
+
+document.addEventListener("scroll", () => {
+  itemVisibility()
+});
+
+const itemVisibility = () => {
+  if (window.scrollY > 400) {
+    logo.style.visibility = "visible"
+    scrollBtn.style.visibility = "visible"
+  } else {
+    logo.style.visibility = "hidden"
+    scrollBtn.style.visibility = "hidden"
+  }
+}
+
+scrollBtn.onclick = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  })
+}
