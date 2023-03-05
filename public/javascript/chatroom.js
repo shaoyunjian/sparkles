@@ -15,6 +15,8 @@ const emojiSelector = document.querySelector(".emoji-selector")
 const allEmojis = document.querySelectorAll(".emoji")
 const emojiIcon = document.querySelector("#emoji-icon")
 const chatListScrollbar = document.querySelector("#chat-list-scrollbar")
+const navSignOutBtn = document.querySelector("#nav-signout-btn")
+navSignOutBtn.addEventListener("click", fetchSignOutAPI)
 
 // ------- get user's info from JWT -------
 const jwt = document.cookie
@@ -495,7 +497,6 @@ function appendMessage(msg) {
       chatMessageBox.appendChild(friendTextMessage)
     } else {
       const friendImageMessage = getFriendImageMessage(msg, currentLocalTime)
-      console.log(friendImageMessage)
       chatMessageBox.appendChild(friendImageMessage)
     }
   }
