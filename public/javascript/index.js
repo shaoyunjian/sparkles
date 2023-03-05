@@ -8,6 +8,10 @@ const loginModalCloseBtn = document.querySelector("#login-modal-close-btn")
 const signupModalCloseBtn = document.querySelector("#signup-modal-close-btn")
 const loginToSignupBtn = document.querySelector("#login-to-signup-btn")
 const signupToLoginBtn = document.querySelector("#signup-to-login-btn")
+const notLoggedInStatus = document.querySelector("#not-loggedin-status")
+const loggedInStatus = document.querySelector("#loggedin-status")
+const accessChatroomBtn = document.querySelector("#nav-chatroom-btn")
+const signOutBtn = document.querySelector("#nav-signout-btn")
 
 navLoginBtn.onclick = () => {
   loginModal.classList.add("is-visible")
@@ -45,6 +49,14 @@ signupToLoginBtn.onclick = () => {
   loginModal.classList.add("is-visible")
 }
 
+accessChatroomBtn.onclick = () => {
+  window.location = "/chatroom"
+}
+
+signOutBtn.onclick = () => {
+  fetchSignOutAPI()
+}
+
 // --------- login -----------
 
 const loginEmail = document.querySelector("#login-email")
@@ -78,8 +90,9 @@ loginBtn.onclick = () => {
     const jsonData = await response.json()
 
     if (jsonData.ok) {
+      notLoggedInStatus.style.display = "none"
+      loggedInStatus.style.display = "flex"
       window.location = "/chatroom"
-
     } else if (jsonData.error) {
       if (jsonData.message === "Email or password is wrong") {
         loginMessage.textContent = "Email or password is incorrect"
@@ -87,6 +100,22 @@ loginBtn.onclick = () => {
     }
   }
 
+}
+
+// --------- check current login status ---------
+
+checkLoginStatus()
+async function checkLoginStatus() {
+  const response = await fetch("/api/user/auth")
+  const jsonData = await response.json()
+
+  if (jsonData.data) {
+    notLoggedInStatus.style.display = "none"
+    loggedInStatus.style.display = "flex"
+  } else {
+    notLoggedInStatus.style.display = "flex"
+    loggedInStatus.style.display = "none"
+  }
 }
 
 // --------- sign up -----------

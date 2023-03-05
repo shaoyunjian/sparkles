@@ -6,7 +6,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Noto Sans TC", "sans-serif";
+  font-family: "Noto Sans TC", sans-serif;
 }
 
 .box-shadow {
@@ -27,7 +27,7 @@
 }
 .top-bar .top-bar-left {
   color: #fff;
-  font-family: "Open Sans", "sans-serif";
+  font-family: sans-serif;
   font-weight: 800;
   font-size: 30px;
   text-shadow: 1px 2px 1px rgba(0, 0, 0, 0.6);
@@ -38,7 +38,8 @@
   margin-left: auto;
 }
 .top-bar .top-bar-right .sign-in-btn,
-.top-bar .top-bar-right .sign-up-btn {
+.top-bar .top-bar-right .sign-up-btn,
+.top-bar .top-bar-right .chatroom-btn {
   cursor: pointer;
   color: black;
   background: #ffffff;
@@ -51,9 +52,24 @@
   margin: 0 5px;
   box-shadow: 1px 2px 1px rgba(69, 69, 69, 0.6);
 }
+.top-bar .top-bar-right .chatroom-btn {
+  width: 100px;
+  font-weight: 500;
+  background: #fff374;
+}
 .top-bar .top-bar-right .sign-in-btn:hover,
-.top-bar .top-bar-right .sign-up-btn:hover {
+.top-bar .top-bar-right .sign-up-btn:hover,
+.top-bar .top-bar-right .chatroom-btn:hover {
   background: #eeeff1;
+}
+.top-bar .top-bar-right .chatroom-btn:hover {
+  background: #ffde4d;
+}
+.top-bar .top-bar-right #loggedin-status {
+  display: none;
+}
+.top-bar .top-bar-right.logged-in {
+  display: none;
 }
 
 .svg-container {
@@ -66,26 +82,23 @@
 
 .greeting {
   color: #fff;
-  padding-top: 10vw;
+  padding-top: 200px;
   padding-bottom: 30vw;
   text-align: center;
 }
 .greeting .greeting-one {
-  color: #fff;
-  font-family: "Open Sans", "sans-serif";
+  font-family: sans-serif;
   font-weight: 800;
-  font-size: 55px;
+  font-size: 65px;
   text-align: center;
   text-shadow: 1px 2px 1px rgba(0, 0, 0, 0.6);
   margin-left: 20px;
   margin-bottom: 10px;
 }
 .greeting .greeting-two {
-  display: block;
-  color: #fff;
   letter-spacing: 1px;
   font-family: "Poiret One", sans-serif;
-  font-size: 24px;
+  font-size: 35px;
   font-weight: 800;
   text-align: center;
   text-shadow: 1px 2px 1px rgba(0, 0, 0, 0.3);
@@ -172,13 +185,6 @@
 #signup-to-login-btn:hover {
   cursor: pointer;
   font-weight: 700;
-}
-
-main {
-  padding: 10vh 0 80vh;
-  position: relative;
-  text-align: center;
-  overflow: hidden;
 }
 
 footer {
