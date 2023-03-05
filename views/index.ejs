@@ -14,10 +14,14 @@
 <body>
   <header>
     <div class="top-bar" id="top-bar">
-      <div class="top-bar-left">Sparkles Chat</div>
-      <div class="top-bar-right">
+      <div class="top-bar-left" id="logo">Sparkles Chat</div>
+      <div class="top-bar-right not-logged-in" id="not-loggedin-status">
         <div class="sign-in-btn" id="nav-login-btn">Log In</div>
         <div class="sign-up-btn" id="nav-signup-btn">Sign Up</div>
+      </div>
+      <div class="top-bar-right logged-in" id="loggedin-status">
+        <div class="chatroom-btn" id="nav-chatroom-btn">Chatroom</div>
+        <div class="sign-up-btn" id="nav-signout-btn">Sign Out</div>
       </div>
 
     </div>
@@ -29,12 +33,11 @@
     </div>
     <div class="greeting">
       <div class="greeting-one">Welcome to Sparkles Chat</div>
-      <div class="greeting-two">Provide real-time text and audio chat services</div>
+      <div class="greeting-two">Real-time text and voice chat services</div>
     </div>
   </header>
 
   <main>
-    <img src="/chatroom-demo.png" style="width: 60%;">
   </main>
 
   <footer>
@@ -121,6 +124,7 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.1.0/tocas.min.js"></script>
+  <script type="text/javascript" src="/common.js"></script>
   <script type="text/javascript" src="/index.js"></script>
 </body>
 
