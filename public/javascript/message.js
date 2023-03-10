@@ -55,7 +55,7 @@ messageSearchInputField.addEventListener("keyup", () => {
 async function getMessageHistoryByKeyword(roomId, keyword) {
   if (!keyword) return
 
-  const response = await fetch(`http://127.0.0.1:8080/api/message/${roomId}?messageKeyword=${keyword}`)
+  const response = await fetch(`/api/message/${roomId}?messageKeyword=${keyword}`)
   const jsonData = await response.json()
   const resultCount = jsonData.data.length
 
