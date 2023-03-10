@@ -90,6 +90,9 @@ improve the speed and performance of accessing the content.
 
 # Backend Technique
 
+### Deployment
+- Docker
+
 ### Language / Web Framework
 - Node.js / Express.js
 
