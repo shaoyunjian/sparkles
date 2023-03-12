@@ -126,16 +126,16 @@ improve the speed and performance of accessing the content.
 ## Architecture
 ### Server Architecture
 
-<img src="public/images/server-structure.png" width="500px">
+<img src="public/images/server-structure.png" width="600px">
 
 <br>
 
 ### Socket Architecture
 
-<img src="public/images/socket-architecture.png" width="500px">
+<img src="public/images/socket-architecture.png" width="600px">
 
 ## Database Schema
-<img src="public/images/sparkles-db-schema.png" width="500px">
+<img src="public/images/sparkles-db-schema.png" width="600px">
 
 ## Frontend Technique
 - JavaScript
@@ -144,7 +144,7 @@ improve the speed and performance of accessing the content.
 - AJAX
 - PeerJS
 
-<img src="public/images/peerjs.png" width="500px">
+<img src="public/images/peerjs.png" width="600px">
 
 ## API Documentation
 <a href="https://app.swaggerhub.com/apis-docs/shaoyunjian/sparkleschat/1.0.0">API Documentation</a>
