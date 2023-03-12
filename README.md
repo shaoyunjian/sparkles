@@ -34,6 +34,7 @@
   - [Cloud Services (AWS)](#cloud-services-aws)
   - [Networking](#networking)
   - [Authentication](#authentication)
+  - [MVC Pattern](#architectural-pattern)
   - [Version Control](#version-control)
 - [Architecture](#architecture)
 - [Database Schema](#database-schema)
