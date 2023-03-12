@@ -659,14 +659,14 @@ main {
     background: var(--ts-gray-100)
   }
 
-  #message-search-copy {
-    width: 160px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
 }
 
+.search-copy {
+  width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 // display-none
 

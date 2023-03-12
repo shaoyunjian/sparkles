@@ -519,7 +519,8 @@ main {
   border-radius: 10px;
   background: var(--ts-gray-100);
 }
-#message-search-box #message-search-copy {
+
+.search-copy {
   width: 160px;
   white-space: nowrap;
   overflow: hidden;

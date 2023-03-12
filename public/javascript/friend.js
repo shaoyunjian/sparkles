@@ -23,14 +23,35 @@ document.addEventListener("click", (event) => {
 // ----------- search users -----------
 
 const userSearchBar = document.querySelector("#user-search-bar")
+const userSearchDropdown = document.querySelector("#user-search-dropdown")
+const userSearchCopy = document.querySelector("#user-search-copy")
+
 userSearchBar.addEventListener("input", () => {
-  const inputValue = userSearchBar.value
+  const inputValue = userSearchBar.value.trim()
   if (!inputValue) {
     userSearchList.innerHTML = `
-    <img src="/people-search.png" style="height: 220px; opacity: 40%;">` }
-  searchUsersByKeyword(inputValue)
-
+    <img src="/people-search.png" style="height: 220px; opacity: 40%;">`
+    userSearchDropdown.classList.remove("is-visible")
+  } else {
+    userSearchDropdown.classList.add("is-visible")
+    userSearchCopy.textContent = inputValue
+  }
 })
+
+userSearchBar.addEventListener("keypress", (event) => {
+  if (event.key === "Enter") {
+    userSearchDropdown.classList.remove("is-visible")
+    const inputValue = userSearchBar.value.trim()
+    searchUsersByKeyword(inputValue)
+  }
+})
+
+userSearchDropdown.onclick = () => {
+  userSearchDropdown.classList.remove("is-visible")
+  const inputValue = userSearchBar.value.trim()
+  searchUsersByKeyword(inputValue)
+}
+
 
 async function searchUsersByKeyword(data) {
   const response = await fetch(`/api/user?keyword=${data}`)
@@ -105,6 +126,8 @@ async function fetchRequestStatusAPI(friendId) {
 
 function checkRequestStatus(data, friendId) {
   const friendRequestBtn = document.getElementById(`friendRequest${friendId}`)
+
+  if (!friendRequestBtn) return
 
   if (data.statusCode === 1) {
     if (data.requesterId._id === currentUserId) {
