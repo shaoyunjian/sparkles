@@ -1,5 +1,6 @@
 const express = require("express")
 const router = express.Router()
+const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const User = require("../models/user-schema")
 const mongoDB = require("../models/mongoose")
@@ -13,6 +14,10 @@ router.post("/user", async (req, res) => {
   const name = req.body.name
   const email = req.body.email
   const password = req.body.password
+
+  //------- bcrypt hash -------
+  const salt = await bcrypt.genSalt(10) // random string for hashing password
+  const hashedInput = await bcrypt.hash(password, salt)
 
   try {
     const userValidationResult = userDataValidation(name, email, password)
@@ -43,7 +48,7 @@ router.post("/user", async (req, res) => {
         User.create({
           name: name,
           email: email,
-          password: password
+          password: hashedInput
         })
         res.status(200).send({ "ok": true })
       } else {
@@ -183,24 +188,31 @@ router.patch("/user", async (req, res) => {
 //  ----------- login -------------
 
 router.put("/user/auth", async (req, res) => {
-  const email = req.body.email
-  const password = req.body.password
+  const emailInput = req.body.email
+  const passwordInput = req.body.password
 
   try {
-    if (!email || !password) {
+    if (!emailInput || !passwordInput) {
       res.status(400).send({
         "error": true,
         "message": "Empty input"
       })
     } else {
-      const userData = await User.findOne({ email: email, password: password })
-      if (userData) {
+      //bcrypt check 
+      const userInfo = await User.findOne({ email: emailInput })
+      const hashedPassword = userInfo.password
+      const bcryptResult = bcrypt.compareSync(passwordInput, hashedPassword)
+
+      const userData = await User.findOne({ email: emailInput, password: hashedPassword })
+
+      if (bcryptResult && userData) {
         const payload = {
           id: userData.id,
           name: userData.name,
           email: userData.email,
           avatarUrl: userData.avatar_url
         }
+
         const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: "7d" })
         res.cookie("token", token)
 
