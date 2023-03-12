@@ -43,8 +43,8 @@
 
 
 
-# Main Features
-## Real-Time Text Chat with Socket.IO
+## Main Features
+### Real-Time Text Chat with Socket.IO
 <img src="public/images/text-msg.gif">
 
 - Use `Socket.IO` for real-time chat.
@@ -53,12 +53,12 @@
 
 <br>
 
-## Real-Time Voice Chat with peer.js
+### Real-Time Voice Chat with peer.js
 <img src="public/images/audio-chat.gif">
 
 - Use `PeerJS` with WebRTC for real-time voice chat.
 
-## Image Sharing
+### Image Sharing
 <img src="public/images/image-msg-2.gif">
 
 - Support image sharing.
@@ -67,30 +67,30 @@
 improve the speed and performance of accessing the content.
 
 
-# Other Features
+## Other Features
 ## User Search
 <img src="public/images/user-search.gif" >
 
-## Friend Request
+### Friend Request
 <img src="public/images/friend-request.gif">
 
 - Search friends and send friend requests.
 - Add friends or delete friend friend requests.
 
-## Avatar Edit
+### Avatar Edit
 <img src="public/images/avatar-edit.gif">
 
 - Upload images to S3 if user change their avatar.
 - Using `AWS CloudFront` in conjunction with `AWS S3` to store user-uploaded images,<br>
 improve the speed and performance of accessing the content.
 
-## Member System
+### Member System
 - Authenticate user with `JSON Web Token (JWT)`.
 - Use `bcrypt` to hash and verify password.
 
 <br>
 
-# Backend Technique
+## Backend Technique
 
 ### Deployment
 - Docker
@@ -119,7 +119,10 @@ improve the speed and performance of accessing the content.
 ### Version Control
 - Git/ GitHub
 
-# Architecture
+### Architectural Pattern
+- MVC pattern
+
+## Architecture
 ### Server Architecture
 
 <img src="public/images/server-structure.png" width="500px">
@@ -130,11 +133,10 @@ improve the speed and performance of accessing the content.
 
 <img src="public/images/socket-architecture.png" width="500px">
 
-
-# Database Schema
+## Database Schema
 <img src="public/images/sparkles-db-schema.png" width="500px">
 
-# Frontend Technique
+## Frontend Technique
 - JavaScript
 - HTML
 - SCSS/CSS
@@ -143,10 +145,10 @@ improve the speed and performance of accessing the content.
 
 <img src="public/images/peerjs.png" width="500px">
 
-# API Documentation
+## API Documentation
 <a href="https://app.swaggerhub.com/apis-docs/shaoyunjian/sparkleschat/1.0.0">API Documentation</a>
 
-# Contact
+## Contact
 ☁️ 簡劭芸 Shaoyun Jian 
 
 ✉ Email: shaoyunjianfw@gmail.com
