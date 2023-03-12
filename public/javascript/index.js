@@ -186,7 +186,6 @@ signupBtn.onclick = () => {
       })
     })
     const jsonData = await response.json()
-    console.log(jsonData)
 
     if (jsonData.ok) {
       signupMessage.textContent = ""

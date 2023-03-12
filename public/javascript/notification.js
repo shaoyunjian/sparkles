@@ -23,7 +23,6 @@ document.onclick = (event) => {
 
 // ------ friend request notification ----------
 
-// getMyFriendRequest(currentUserId)
 async function getMyFriendRequest(currentUserId) {
   const response = await fetch(`/api/friendRequest?currentUserId=${currentUserId}`)
   const jsonData = await response.json()

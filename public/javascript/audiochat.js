@@ -1,21 +1,10 @@
 // --------------- peer.js ----------------
 
-// create a new instance of the peer object from peer.js library
-// const peer = new Peer(currentUserId) // run peerServer cloud
-
-// undefined means that the library will automatically generate an ID for the peer.
-// const peer = new Peer(currentUserId, { //run our own peerServer
-//   host: "/",
-//   port: "8081"
-// })
-
 const peer = new Peer(currentUserId, {
   secure: true,
   host: "0.peerjs.com",
   port: "443"
 })
-
-console.log("peerId", peer.id)
 
 const audioChatArea = document.querySelector("#audio-chat")
 const myAudio = document.createElement("audio")
@@ -48,13 +37,12 @@ audioCallBtn.addEventListener("click", () => {
 })
 
 socket.on("incomingCallPopup", (audioCallInfo) => {
-  console.log(audioCallInfo)
   displayIncomingCallPopup(audioCallInfo.callerAvatar, audioCallInfo.callerName, audioCallInfo.peerId)
   handleIncomingCall(audioCallInfo.callerAvatar, audioCallInfo.callerName, audioCallInfo.peerId)
 })
 
 
-// end call functionality (unfinished)
+// end call functionality 
 const endCallBtn = document.querySelector("#end-call-btn")
 endCallBtn.addEventListener("click", () => {
 
@@ -106,7 +94,7 @@ function handleIncomingCall(avatarUrl, name, friendId) {
   })
 }
 
-// -----------  ----------------
+// ---------------------------
 
 async function getAudio(friendId) {
 
@@ -136,8 +124,6 @@ async function getAudio(friendId) {
     const connection = peer.call(friendId, stream)
 
     socket.on("declineCall", (data) => {
-      console.log(data)
-
       const audioConnectingPopup = document.querySelector(".audio-connecting-popup")
       audioConnectingPopup.classList.add("display-none")
 

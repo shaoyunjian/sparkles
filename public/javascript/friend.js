@@ -113,7 +113,7 @@ async function fetchRequestStatusAPI(friendId) {
   const jsonData = await response.json()
 
   if (!jsonData.data.length) {
-    // console.log("not friend yet")
+    // not friend yet
     let data = { statusCode: 0 }
     checkRequestStatus(data, friendId)
   } else {
@@ -175,14 +175,12 @@ function handleFriendRequest(friendId) {
 
     if (event.target === friendRequestAddBtn) {
       // click the add button to send friend request
-      console.log("send request")
       sendFriendRequest(currentUserId, currentUsername, friendId, 1)
       friendRequestBtn.innerHTML = `
         <button class="friend-request-btn requested">Requested</button>`
 
     } else if (event.target === friendRequestConfirmBtn) {
       // click the accept button to accept request
-      console.log("friendRequestConfirm")
       acceptFriendRequest(friendId, currentUserId, 2)
       addFriendToDB(currentUserId, friendId)
       addFriendToDB(friendId, currentUserId)
@@ -193,7 +191,6 @@ function handleFriendRequest(friendId) {
 
     } else if (event.target === friendRequestDeclineBtn) {
       // click the delete button to decline and delete request
-      console.log("friendRequestDecline")
       deleteFriendRequest(friendId, currentUserId)
       friendRequestBtn.innerHTML = `
         <button class="friend-request-btn add" id="friendRequest${friendId}">Add Friend</button>`
@@ -235,9 +232,6 @@ async function acceptFriendRequest(friendId, myId, statusCode) {
     })
   })
 
-  //   const jsonData = await response.json()
-  //   console.log(jsonData)
-
   const request = {
     requesterId: myId,
     requesterName: currentUsername,
@@ -258,8 +252,6 @@ async function deleteFriendRequest(friendId, myId, statusCode) {
     })
   })
 
-  // const jsonData = await response.json()
-  // console.log(jsonData)
 }
 
 // ---------- add friend -------------
@@ -273,8 +265,6 @@ async function addFriendToDB(userId, friendId) {
     })
   })
 
-  // const jsonData = await response.json()
-  // console.log(jsonData)
 }
 
 // ----- create 1 to 1 chatroom ------
@@ -287,18 +277,10 @@ async function create1to1Chatroom(sender, receiver) {
       participants: participants
     })
   })
-
-  const jsonData = await response.json()
-
-  if (jsonData.ok) {
-    console.log("Created successfully")
-  } else if (jsonData.message === "Chatroom already exists") {
-    console.log("Chatroom already exists")
-  }
 }
 
 // ------ display friend list --------
-// getFriendList() // currently hidden
+
 async function getFriendList() {
   const response = await fetch("/api/friend")
   const jsonData = await response.json()
@@ -337,8 +319,6 @@ async function prependNewChatToChatList() {
   const jsonData = await response.json()
   const userData = jsonData.data[0].participants
   const friendData = (userData[0]._id !== currentUserId) ? (userData[0]) : (userData[1])
-  // const lastMessage = changeTimeFormat(jsonData.data[0].last_message_time)[1]
-  // console.log(lastMessage)
 
   const newChatInfo = {
     roomId: jsonData.data[0]._id,
