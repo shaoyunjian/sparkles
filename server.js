@@ -23,7 +23,7 @@ app.use("/api/", friendRouter)
 app.use("/api/", messageRouter)
 
 // middleware
-const { cookieJwtAuth } = require("./cookieJwtAuth")
+const { cookieJwtAuth } = require("./middleware/cookieJwtAuth")
 
 // -----------------------------
 

@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const { cookieJwtAuth } = require("../cookieJwtAuth")
+const { cookieJwtAuth } = require("../middleware/cookieJwtAuth")
 
 const friendController = require("../controllers/friend-controller")
 
