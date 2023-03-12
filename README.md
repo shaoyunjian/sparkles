@@ -33,6 +33,7 @@
   - [Database](#database)
   - [Cloud Services (AWS)](#cloud-services-aws)
   - [Networking](#networking)
+  - [Authentication](#authentication)
   - [Version Control](#version-control)
 - [Architecture](#architecture)
 - [Database Schema](#database-schema)
@@ -85,6 +86,7 @@ improve the speed and performance of accessing the content.
 
 ## Member System
 - Authenticate user with `JSON Web Token (JWT)`.
+- Use `bcrypt` to hash and verify password.
 
 <br>
 
@@ -110,9 +112,12 @@ improve the speed and performance of accessing the content.
 - NGINX
 - SSL (Let's Encrypt)
 
+### Authentication
+- JSON Web Token (JWT)
+- Bcrypt
+
 ### Version Control
 - Git/ GitHub
-
 
 # Architecture
 ### Server Architecture
