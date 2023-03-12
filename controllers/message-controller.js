@@ -1,6 +1,6 @@
 require("dotenv").config()
 const Message = require("../models/message-schema")
-const { uploadImageToS3 } = require("../models/s3")
+const { uploadImageToS3 } = require("../config//s3")
 const CLOUDFRONT_URL = process.env.CLOUDFRONT_URL
 
 

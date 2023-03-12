@@ -1,7 +1,7 @@
 const User = require("../models/user-schema")
 const FriendRequest = require("../models/friendRequest-schema")
 const { ObjectId } = require("mongodb")
-const mongoDB = require("../models/mongoose")
+const mongoDB = require("../config/mongoose")
 
 
 const getFriendList = async (req, res) => {

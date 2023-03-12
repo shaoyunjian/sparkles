@@ -1,5 +1,5 @@
 const User = require("../models/user-schema")
-const mongoDB = require("../models/mongoose")
+const mongoDB = require("../config/mongoose")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const { userDataValidation } = require("../utils/auth")
