@@ -69,7 +69,7 @@ improve the speed and performance of accessing the content.
 
 
 ## Other Features
-## User Search
+### User Search
 <img src="public/images/user-search.gif" >
 
 ### Friend Request
