@@ -675,3 +675,8 @@ main {
 .display-none {
   display: none;
 }
+
+#home-my-avatar-url {
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}

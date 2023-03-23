@@ -531,4 +531,10 @@ main {
 #chatbox,
 .display-none {
   display: none;
+}
+
+#home-my-avatar-url {
+  aspect-ratio: 1/1;
+  -o-object-fit: cover;
+     object-fit: cover;
 }/*# sourceMappingURL=chatroom.css.map */
