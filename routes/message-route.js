@@ -3,7 +3,6 @@ const router = express.Router()
 const fileUpload = require("express-fileupload")
 router.use(fileUpload())
 const { cookieJwtAuth } = require("../middleware/cookieJwtAuth")
-
 const messageController = require("../controllers/message-controller")
 
 // ------------ message ------------

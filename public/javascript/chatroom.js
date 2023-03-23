@@ -19,6 +19,7 @@ const navSignOutBtn = document.querySelector("#nav-signout-btn")
 navSignOutBtn.addEventListener("click", fetchSignOutAPI)
 
 // ------- get user's info from JWT -------
+
 const jwt = document.cookie
 const parts = jwt.split(".")
 const payload = JSON.parse(atob(parts[1]))
@@ -188,8 +189,6 @@ const chatMessageBox = document.querySelector(".chat-message-box")
 const chatScrollBar = document.querySelector(".middle-scollbar")
 const sendMessageBtn = document.querySelector("#send-message-btn")
 const inputMessage = document.querySelector("#input-message")
-
-// socket.emit("newUser", { currentUserId, currentUsername })
 
 // socket on event
 socket.on("message", message => {
@@ -369,6 +368,7 @@ function emitMessageToServer(currentUsername, currentUserId) {
 }
 
 // ---- store my message into database -----
+
 async function storeMessageToDB(message) {
 
   const response = await fetch("/api/message", {
@@ -385,6 +385,7 @@ async function storeMessageToDB(message) {
 }
 
 // --------- store latest message ---------
+
 async function storeLatestMessage(message) {
 
   if (message.text) {
@@ -433,6 +434,7 @@ async function fetchChatroomAPI(roomId) {
 }
 
 // ----- display text message history ------
+
 async function displayMessageHistory(roomId) {
   const response = await fetch(`/api/message/${roomId}`, { method: "GET" })
 

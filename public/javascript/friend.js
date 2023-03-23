@@ -255,6 +255,7 @@ async function deleteFriendRequest(friendId, myId, statusCode) {
 }
 
 // ---------- add friend -------------
+
 async function addFriendToDB(userId, friendId) {
   const response = await fetch("/api/friend", {
     method: "PATCH",
@@ -268,6 +269,7 @@ async function addFriendToDB(userId, friendId) {
 }
 
 // ----- create 1 to 1 chatroom ------
+
 async function create1to1Chatroom(sender, receiver) {
   const participants = [sender, receiver]
   const response = await fetch("/api/chatroom", {

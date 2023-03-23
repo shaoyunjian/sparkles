@@ -1,4 +1,4 @@
-// --------------- peer.js ----------------
+// -------------- peer.js ----------------
 
 const peer = new Peer(currentUserId, {
   secure: true,
@@ -12,6 +12,7 @@ myAudio.muted = true //avoid echos from ourselves
 
 
 // ------------ audio call ----------------
+
 const main = document.querySelector("main")
 const audioCallBtn = document.querySelector("#audio-call-btn")
 
@@ -94,7 +95,7 @@ function handleIncomingCall(avatarUrl, name, friendId) {
   })
 }
 
-// ---------------------------
+// --------- handle audio ----------------
 
 async function getAudio(friendId) {
 
@@ -173,6 +174,7 @@ function addAudioStream(audio, stream) {
 
 
 // -------- mic controller ------------
+
 function controlMicrophone(stream) {
   const muteBtn = document.querySelector("#mute-btn")
   const unmuteBtn = document.querySelector("#unmute-btn")
@@ -200,6 +202,7 @@ function controlMicrophone(stream) {
 
 
 // ------ audio connecting popup -------
+
 function addAudioConnectingPopup(friendAvatar, friendName) {
   const audioConnectingPopup = document.querySelector(".audio-connecting-popup")
   const audioConnectingAvatarUrl = document.querySelector("#audio-connecting-avatar-url")
@@ -209,11 +212,4 @@ function addAudioConnectingPopup(friendAvatar, friendName) {
   audioConnectingPopup.classList.remove("display-none")
   audioConnectingAvatarUrl.attributes.src.value = `${friendAvatar}`
   connectingName.textContent = `${friendName}`
-  // connectingTime.innerHTML = `
-  //   <div class="loading-data three-bounce">
-  //     <div class="bounce1"></div>
-  //     <div class="bounce2"></div>
-  //     <div class="bounce3"></div>
-  //   </div>
-  // `
 }

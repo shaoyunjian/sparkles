@@ -21,11 +21,8 @@ app.use("/api/", userRouter)
 app.use("/api/", chatroomRouter)
 app.use("/api/", friendRouter)
 app.use("/api/", messageRouter)
-
-// middleware
 const { cookieJwtAuth } = require("./middleware/cookieJwtAuth")
 
-// -----------------------------
 
 app.get("/", (req, res) => {
   res.render("index")
@@ -140,8 +137,7 @@ io.on("connection", socket => {
 
 })
 
-// ---------------------------------------------- 
-
+// ------------------
 
 server.listen(port, () => {
   console.log(`App is running on port ${port}`)

@@ -127,7 +127,6 @@ toastr.options = {
   "newestOnTop": true,
   "progressBar": true,
   "positionClass": "toast-top-right",
-  // "preventDuplicates": true,
   "onclick": null,
   "showDuration": "500",
   "hideDuration": "1000",
