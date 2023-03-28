@@ -108,14 +108,14 @@ socket.on("requestSended", (name) => {
   toastr.info("sent you a friend request!", `${name}`)
 })
 
-socket.on("requestAccepted", (name) => {
-  toastr.info("accepted your friend request!", `${name}`)
+socket.on("requestAccepted", (request) => {
+  toastr.info("accepted your friend request!", `${JSON.parse(request).requesterName}`)
 
-  prependNewChatToChatList()
+  fetchChatListAPI(currentUserId)
 })
 
 socket.on("requestAcceptedAppendNewChatList", () => {
-  prependNewChatToChatList()
+  window.location = window.location.href
 })
 
 

@@ -54,7 +54,7 @@ async function getMyInfo() {
   homeMyName.textContent = currentName
   homeMyAvatar.src = currentAvatar
 
-  fetchChatListAPI(currentUserInfo)
+  fetchChatListAPI(currentUserId)
 
   // ------- emit message to server ----------
   if (inputMessage) {
@@ -66,9 +66,7 @@ async function getMyInfo() {
 
 // ------------- get chat list ------------
 
-async function fetchChatListAPI(senderInfo) {
-  const currentId = senderInfo.currentId
-  const currentName = senderInfo.currentName
+async function fetchChatListAPI(currentId) {
 
   const response = await fetch("/api/chatroom", { method: "GET" })
   const jsonData = await response.json()
@@ -77,6 +75,17 @@ async function fetchChatListAPI(senderInfo) {
   let friendId
   let friendName
   let avatarUrl
+
+  chatListScrollbar.innerHTML = `
+    <div class="ts-content is-dense" id="chat-list-default">
+      <div class="ts-space"></div>
+      <div style="text-align: center; font-size: 20px;font-weight: 400; color: var(--ts-gray-500);">
+        Use <span class="ts-icon is-user-plus-icon"></span> to find friends. ⤴
+      </div>
+      <div class="ts-space"></div>
+      <img src="/chatlist-default.png" style="width:300px; border-radius: 5px;opacity: 50%;">
+    </div>
+  `
 
   jsonData.data.forEach((data) => {
     roomId = data._id
@@ -106,7 +115,9 @@ async function fetchChatListAPI(senderInfo) {
     chatListScrollbar.appendChild(result)
     if (chatListData) {
       const chatListDefault = document.querySelector("#chat-list-default")
-      chatListDefault.style.display = "none"
+      if (chatListDefault) {
+        chatListDefault.style.display = "none"
+      }
     }
 
     const localDateTime = new Date()
@@ -125,8 +136,6 @@ async function fetchChatListAPI(senderInfo) {
       document.querySelector(`[id="${roomId}"] .chat-list-last-message`).innerHTML = `
       <span class="ts-icon is-image-icon"></span> Photo`
     }
-
-    socket.emit("newUser", { currentId, currentName })
     checkOnlineStatus(friendId)
 
   })
@@ -189,6 +198,10 @@ const chatMessageBox = document.querySelector(".chat-message-box")
 const chatScrollBar = document.querySelector(".middle-scollbar")
 const sendMessageBtn = document.querySelector("#send-message-btn")
 const inputMessage = document.querySelector("#input-message")
+
+let currentId = currentUserId
+let currentName = currentUsername
+socket.emit("newUser", { currentId, currentName })
 
 // socket on event
 socket.on("message", message => {
@@ -581,6 +594,7 @@ const avatarBadge = document.querySelector(".avatar-badge")
 avatarBadge.classList.add("online")
 
 function checkOnlineStatus(friendId) {
+  socket.emit("newUser", { currentId, currentName })
   socket.on("newUser", (onlineUsersId) => {
     onlineUsersId.forEach((onlineUserId) => {
       const friendOnlineStatus = document.getElementById(`${friendId}`)

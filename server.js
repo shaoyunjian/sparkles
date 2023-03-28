@@ -73,11 +73,11 @@ io.on("connection", socket => {
     if (request.type === "request-sent") {
       io.to(friendSocketId).emit("requestSended", `${request.requesterName}`)
     } else if (request.type === "request-accepted") {
-      io.to(friendSocketId).emit("requestAccepted", `${request.requesterName}`)
+      io.to(friendSocketId).emit("requestAccepted", `${JSON.stringify(request)}`)
     }
 
     if (request.type === "request-accepted") {
-      socket.emit("requestAcceptedAppendNewChatList", `${request.requesterName}`)
+      socket.emit("requestAcceptedAppendNewChatList", request)
     }
   })
 
