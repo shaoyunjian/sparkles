@@ -271,12 +271,16 @@ async function addFriendToDB(userId, friendId) {
 // ----- create 1 to 1 chatroom ------
 
 async function create1to1Chatroom(sender, receiver) {
+  const localDateTime = new Date()
+  const currentDateTime = localDateTime.toISOString()
+
   const participants = [sender, receiver]
   const response = await fetch("/api/chatroom", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      participants: participants
+      participants: participants,
+      lastMessageTime: currentDateTime
     })
   })
 }

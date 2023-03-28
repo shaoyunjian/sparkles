@@ -41,6 +41,7 @@ const getChatList = async (req, res) => {
 
 const addParticipantsToChatroom = async (req, res) => {
   const participants = req.body.participants
+  const lastMessageTime = req.body.lastMessageTime
 
   try {
     const chatroomExists = await Chatroom
@@ -56,7 +57,8 @@ const addParticipantsToChatroom = async (req, res) => {
 
     if (!chatroomExists) {
       await Chatroom.create({
-        participants: participants
+        participants: participants,
+        last_message_time: lastMessageTime
       })
 
       res.status(200).send({

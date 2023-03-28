@@ -11,8 +11,7 @@ const chatroomSchema = new mongoose.Schema({
     default: "✨Start chatting now!"
   },
   last_message_time: {
-    type: Date,
-    default: Date.now()
+    type: Date
   }
 })
 
