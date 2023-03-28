@@ -75,7 +75,9 @@ function handleIncomingCall(avatarUrl, name, friendId) {
   const declineCallBtn = document.querySelector("#decline-call-btn")
 
   acceptCallBtn.addEventListener("click", () => {
-    incomingCallPopup.remove()
+    incomingCallPopup.classList.add("display-none")
+    const ringtone = document.querySelector("#ringtone")
+    ringtone.pause()
 
     // receive the audio call
     addAudioConnectingPopup(avatarUrl, name)
