@@ -29,7 +29,7 @@
   - [Avatar Edit](#avatar-edit)
   - [Member System](#member-system)
 - [Backend Technique](#backend-technique)
-  - [Language/Web Framework](#language--web-framework)
+  - [Language / Web Framework](#language--web-framework)
   - [Database](#database)
   - [Cloud Services (AWS)](#cloud-services-aws)
   - [Networking](#networking)
@@ -39,7 +39,7 @@
 - [Architecture](#architecture)
 - [Database Schema](#database-schema)
 - [Frontend Technique](#frontend-technique)
-- [API Doc](#api-doc)
+- [API Documentation](#api-documentation)
 - [Contact](#contact)
 
 
@@ -95,6 +95,7 @@ improve the speed and performance of accessing the content.
 
 ### Deployment
 - Docker
+- Setup CI/CD pipeline with GitHub Actions
 
 ### Language / Web Framework
 - Node.js / Express.js
@@ -118,7 +119,7 @@ improve the speed and performance of accessing the content.
 - Bcrypt
 
 ### Version Control
-- Git/ GitHub
+- Git / GitHub
 
 ### Architectural Pattern
 - MVC pattern
@@ -126,7 +127,7 @@ improve the speed and performance of accessing the content.
 ## Architecture
 ### Server Architecture
 
-<img src="public/images/server-structure.png" width="600px">
+<img src="https://user-images.githubusercontent.com/110411867/229297628-5281c586-91f1-4e68-ad57-0fb69bed7a3a.png" width="600px">
 
 <br>
 
@@ -144,10 +145,11 @@ improve the speed and performance of accessing the content.
 - AJAX
 - PeerJS
 
-<img src="public/images/peerjs.png" width="600px">
+<img src="public/images/peerjs.png" width="700px">
 
 ## API Documentation
-<a href="https://app.swaggerhub.com/apis-docs/shaoyunjian/sparkleschat/1.0.0">API Documentation</a>
+
+https://app.swaggerhub.com/apis-docs/shaoyunjian/sparkleschat/1.0.0
 
 ## Contact
 ☁️ 簡劭芸 Shaoyun Jian 
