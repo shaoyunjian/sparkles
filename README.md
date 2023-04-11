@@ -55,7 +55,7 @@
 <br>
 
 ### Real-Time Voice Chat with peer.js
-<img src="public/images/audio-chat.gif">
+<img src="public/images/voice-chat.gif">
 
 - Use `PeerJS` with WebRTC for real-time voice chat.
 
