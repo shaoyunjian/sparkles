@@ -6,7 +6,8 @@
 
 ✨Sparkles Chat provides real-time voice and text communication, allowing you to chat with friends anytime and anywhere.
 
-🔗 Website URL: https://sparklezz.site/
+🔗 Website URL: ~https://sparklezz.site/~
+( ⚠️ This project is currently not maintained, and the URL is not available at this time )
 
 📃 API Documentation: https://app.swaggerhub.com/apis-docs/shaoyunjian/sparkleschat/1.0.0
 
